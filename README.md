@@ -13,4 +13,4 @@ Készített:
 # Funkciók
 
 # Adatbázis
-
+![Adatabázis diagramm](assets/VIZSGAREMEK.png)
