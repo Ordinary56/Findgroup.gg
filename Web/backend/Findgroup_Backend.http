@@ -1,11 +1,11 @@
 @Findgroup_Backend_HostAddress = http://localhost:5110
 
-GET {{Findgroup_Backend_HostAddress}}/todos/
+GET {{Findgroup_Backend_HostAddress}}/
 Accept: application/json
 
 ###
 
-GET {{Findgroup_Backend_HostAddress}}/todos/1
+GET {{Findgroup_Backend_HostAddress}}/
 Accept: application/json
 
 ###
