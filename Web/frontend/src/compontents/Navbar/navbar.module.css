@@ -1,0 +1,49 @@
+.desktop{
+    display: flex;
+    justify-content: center;
+    
+    >div{
+        display: flex;
+        gap: 20px;
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 100%;
+        justify-content: center;
+    }
+    a{
+        text-transform: uppercase;
+        color: white;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        strong{
+            padding-right: 5px;
+        }
+    }
+    a:hover{
+        border-bottom: 2px solid white;
+    }
+}
+.mobile{
+    .links{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:10vh;
+    text-align: center;
+    min-height: 80vh;   
+    }
+}
+.hambi{
+    width: 40px;
+    height: 5px;
+    background-color: black;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    box-shadow: 0px 10px 0px black, 0px -10px 0px black;
+    transition: all 0.3s;
+}
+.hambi:hover{
+    rotate: 45deg;
+}
