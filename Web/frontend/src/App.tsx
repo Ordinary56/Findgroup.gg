@@ -1,9 +1,9 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
-import Home from "./compontents/pages/Home"
-import Crew from "./compontents/pages/Crew"
-import Destination from "./compontents/pages/Destination"
-import Technology from "./compontents/pages/Technology"
-import Navbar from "./compontents/Navbar/Navbar"
+import Home from "./component/pages/Home"
+import Crew from "./component/pages/Crew"
+import Destination from "./component/pages/Destination"
+import Technology from "./component/pages/Technology"
+import Navbar from "./component/Navbar/Navbar"
 
 
 export const ROUTES ={
@@ -25,7 +25,7 @@ const App = () => {
         <Route path={ROUTES.technology.path} element={<Technology/>}/>
       </Routes>  
     </Router>
-    </div>
+    </div>  
   )
 }
 

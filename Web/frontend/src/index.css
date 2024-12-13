@@ -4,8 +4,12 @@
 }
 body{
   color: white;
-  background-image: url("./assets/SiteBackground.jpg");
 }
 .background{
-  background-color:rgba(0, 0, 0, 0.836);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.680),rgba(0, 0, 0, 0.680)) , url("./assets/SiteBackground.jpg"); 
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height:900px;
+  width: 100%;
+
 }
