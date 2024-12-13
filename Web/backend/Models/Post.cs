@@ -10,5 +10,6 @@
         public int TopicId { get; set; }
         public bool IsActive { get; set; }
 
+
     }
 }
