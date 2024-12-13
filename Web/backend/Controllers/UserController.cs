@@ -28,7 +28,7 @@ namespace Findgroup_Backend.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult> CreateNewUser([FromBody] User newUser)
+        public async Task<ActionResult> CreateNewUser([FromBody] NewUser newUser)
         {
             if (newUser == null)
             {
@@ -36,10 +36,15 @@ namespace Findgroup_Backend.Controllers
             }
             try
             {
-                var result = await _manager.CreateAsync(newUser);
+                IdentityUser createdUser = new()
+                {
+                    UserName = newUser.Username,
+                    Email = newUser.Email,
+                };
+                var result = await _manager.CreateAsync(createdUser, newUser.Password);
                 if(result.Succeeded)
                 {
-                    return CreatedAtAction(nameof(GetUsers), new { Id = newUser.Id }, newUser);
+                    return CreatedAtAction(nameof(GetUsers), new { Id = createdUser.Id }, newUser);
                 }
                 return BadRequest(result.Errors);
 
@@ -97,5 +102,6 @@ namespace Findgroup_Backend.Controllers
         }
     }
 
+    public record NewUser(string Username, string Email, string Password);
     public record ModifyUserModel(string Id,string Username, string Email, string PhoneNumber);
 }

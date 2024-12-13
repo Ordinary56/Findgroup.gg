@@ -12,8 +12,8 @@ namespace Findgroup_Backend.Controllers
     {
         ApplicationDbContext _context = context;
 
-        [HttpGet]
         [Authorize]
+        [HttpGet]
         public async Task<ActionResult> Home()
         {
             await Task.Delay(1);
