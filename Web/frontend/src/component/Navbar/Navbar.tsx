@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { ROUTES } from "../../App"
 import styles from "./navbar.module.css"
 import { useState } from "react"
-import Logo from "../../assets/Logo.jpeg"
+import Logo from "../../assets/Logo.png"
 
 const Navbar = () => {
     const [ismobile,setmobile]= useState(window.innerWidth<800)
