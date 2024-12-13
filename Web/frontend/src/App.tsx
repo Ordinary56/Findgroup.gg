@@ -16,16 +16,18 @@ export const ROUTES ={
 const App = () => {
   return (
     <div className="background">
-    <Router>
-      <Navbar/>
-      <Routes>
-        <Route path={ROUTES.homepage.path} element={<Home/>}/>
-        <Route path={ROUTES.crew.path} element={<Crew/>}/>
-        <Route path={ROUTES.destination.path} element={<Destination/>}/>
-        <Route path={ROUTES.technology.path} element={<Technology/>}/>
-      </Routes>  
-    </Router>
-    </div>  
+      <Router>
+        <Navbar/>
+        <Routes>
+          <Route path={ROUTES.homepage.path} element={<Home/>}/>
+          <Route path={ROUTES.crew.path} element={<Crew/>}/>
+          <Route path={ROUTES.destination.path} element={<Destination/>}/>
+          <Route path={ROUTES.technology.path} element={<Technology/>}/>
+        </Routes>  
+      </Router>
+      <div>
+      </div>  
+    </div>
   )
 }
 

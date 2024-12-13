@@ -1,6 +1,6 @@
 const Destination = () => {
   return (
-    <div>Destination</div>
+    <div>A Working Project</div>
   )
 }
 

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { ROUTES } from "../../App"
 import styles from "./navbar.module.css"
 import { useState } from "react"
-
+import Logo from "../../assets/Logo.jpeg"
 
 const Navbar = () => {
     const [ismobile,setmobile]= useState(window.innerWidth<800)
@@ -21,6 +21,7 @@ const Navbar = () => {
 const DesktopNavbar = () => {
     return (
       <nav className={styles.desktop}>
+        <img src={Logo} alt="" />
           <div>
           <Link to={ROUTES.homepage.path}>{ROUTES.homepage.title}</Link>
           <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>

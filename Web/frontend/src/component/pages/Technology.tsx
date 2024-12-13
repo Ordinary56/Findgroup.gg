@@ -1,6 +1,6 @@
 const Technology = () => {
   return (
-    <div>Technology</div>
+    <div>Kinda yes</div>
   )
 }
 
