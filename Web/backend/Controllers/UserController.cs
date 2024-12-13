@@ -10,9 +10,10 @@ namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class UserController(ApplicationDbContext context) : ControllerBase
+    public class UserController(ApplicationDbContext context, UserManager<IdentityUser> manager) : ControllerBase
     {
         ApplicationDbContext _context = context;
+        UserManager<IdentityUser> _manager = manager;
         [HttpGet]
         public async Task<ActionResult<List<IdentityUser>>> GetUsers()
         {
@@ -35,9 +36,14 @@ namespace Findgroup_Backend.Controllers
             }
             try
             {
-                await _context.Users.AddAsync(newUser);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetUsers), new { newUser.Id}, newUser);
+                var result = await _manager.CreateAsync(newUser);
+                if(result.Succeeded)
+                {
+                    return CreatedAtAction(nameof(GetUsers), new { Id = newUser.Id }, newUser);
+                }
+                return BadRequest(result.Errors);
+
+                
             }
             catch (Exception ex) 
             {
@@ -45,7 +51,7 @@ namespace Findgroup_Backend.Controllers
             }
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> ModifyUser(string id, [FromBody] User modifiedUser)
+        public async Task<ActionResult> ModifyUser(string id, [FromBody] ModifyUserModel modifiedUser)
         {
             if (id != modifiedUser.Id) 
             {
@@ -53,7 +59,11 @@ namespace Findgroup_Backend.Controllers
             }
             try
             {
-                _context.Entry(modifiedUser).State = EntityState.Modified;
+                var user = await _context.Users.FindAsync(id);
+                user.UserName = modifiedUser.Username;
+                user.Email = modifiedUser.Email;
+                user.PhoneNumber = modifiedUser.PhoneNumber;
+                _context.Entry(user).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
                 return NoContent();
             }
@@ -72,7 +82,8 @@ namespace Findgroup_Backend.Controllers
             try
             {
                 IdentityUser? user = await _context.Users.FindAsync(id);
-                _context.Entry<IdentityUser>(user).State = EntityState.Deleted;
+                _context.Entry(user).State = EntityState.Deleted;
+                await _context.Users.ExecuteDeleteAsync();
                 return Ok();
             }
             catch (DBConcurrencyException)
@@ -85,4 +96,6 @@ namespace Findgroup_Backend.Controllers
             }
         }
     }
+
+    public record ModifyUserModel(string Id,string Username, string Email, string PhoneNumber);
 }
