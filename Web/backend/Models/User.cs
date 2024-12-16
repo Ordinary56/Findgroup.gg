@@ -2,7 +2,7 @@
 
 namespace Findgroup_Backend.Models
 {
-    public class User : IdentityUser
+    public partial class User : IdentityUser
     {
     }
 }
