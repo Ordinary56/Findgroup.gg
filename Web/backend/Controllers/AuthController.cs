@@ -1,9 +1,11 @@
-﻿using Findgroup_Backend.Models;
+﻿using Findgroup_Backend.Helpers;
+using Findgroup_Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 namespace Findgroup_Backend.Controllers;
 
@@ -14,7 +16,7 @@ public class AuthController(
     IConfiguration configuration,
     SignInManager<User> signInManager,
     ILogger<AuthController> logger
-    ) : ControllerBase
+    ) : ControllerBase, ITokenHandler
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly IConfiguration _configuration = configuration;
@@ -44,27 +46,27 @@ public class AuthController(
             new(ClaimTypes.Role, "User")
         };
 
-        var token = GenerateAccessToken(authClaims);
+        // Generate Authentication Token for user
+        var token = ITokenHandler.GenerateAccessToken(authClaims, _configuration);
+        // Generate Refresh Token for user
+        var refreshToken = ITokenHandler.GenerateRefreshToken();
+        user.RefreshToken = refreshToken;
+        // Expiry time is 1 week
+        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+        // Update the user
+        await _userManager.UpdateAsync(user);
+
         _logger.LogInformation("Successfully Authenticated user");
+        // return the tokens
         return Ok(new
         {
             token = new JwtSecurityTokenHandler().WriteToken(token),
-            expiration = token.ValidTo
+            expiration = token.ValidTo,
+            refreshToken = refreshToken
         });
     }
-    private JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims)
-    {
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]));
-
-        return new JwtSecurityToken(
-            issuer: _configuration["JwtSettings:Issuer"],
-            audience: _configuration["JwtSettings:Audience"],
-            expires: DateTime.Now.AddHours(3),
-            claims: claims,
-            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-            );
-    }
-
+   
+ 
 
 }
 
