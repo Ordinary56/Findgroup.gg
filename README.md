@@ -1,15 +1,20 @@
 # Findgroup.gg
 Csapatkereső (Looking For Goup) alkalmazás
-Készített:
+Készítette:
   - Balogh Tamás
   - Papp László Levente
 
 # Tartalomjegyzék
-
+- [Telepítés](#telepítés)
+- [Weboldal](#weboldal)
+- [Funkciók](#funkciók)
+- [Adatbázis](#adatbázis)
+  
 # Telepítés
 
-# Weboldal
 
+# Weboldal
+Az alkalmazás weboldala meglátogatható az alábbi linken: [LINK IDE](https://example.com)
 # Funkciók
 
 # Adatbázis
