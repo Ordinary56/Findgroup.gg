@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WPF.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for MainViewModel.xaml
+    /// Interaction logic for HomeView.xaml
     /// </summary>
-    public partial class MainViewModel : UserControl
+    public partial class DashboardView : UserControl
     {
-        public MainViewModel()
+        public DashboardView()
         {
             InitializeComponent();
         }
