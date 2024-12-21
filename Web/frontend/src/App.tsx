@@ -15,6 +15,7 @@ export const ROUTES ={
 
 const App = () => {
   return (
+    
     <div className="background">
       <Router>
         <Navbar/>
@@ -25,9 +26,8 @@ const App = () => {
           <Route path={ROUTES.technology.path} element={<Technology/>}/>
         </Routes>  
       </Router>
-      <div>
-      </div>  
     </div>
+    
   )
 }
 

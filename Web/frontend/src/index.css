@@ -9,7 +9,8 @@ body{
   background-image: linear-gradient(rgba(0, 0, 0, 0.680),rgba(0, 0, 0, 0.680)) , url("./assets/SiteBackground.jpg"); 
   background-repeat: no-repeat;
   background-size: cover;
-  min-height:900px;
+  height:936.4px;
   width: 100%;
 
 }
+
