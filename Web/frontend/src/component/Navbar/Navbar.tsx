@@ -21,7 +21,7 @@ const Navbar = () => {
 const DesktopNavbar = () => {
     return (
       <nav className={styles.desktop}>
-        <img src={Logo} alt="" />
+        <img src={Logo} alt=""  className={styles.logo}/>
           <div>
           <Link to={ROUTES.homepage.path}>{ROUTES.homepage.title}</Link>
           <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>

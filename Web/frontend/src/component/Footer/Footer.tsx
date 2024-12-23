@@ -1,8 +1,13 @@
+import styles from "./footer.module.css"
 
 const Footer = () => {
-  return (
-    <div>Footer</div>
-  )
-}
+    return (
+      <footer className={styles.footer}>
+          <div>
+            Privacy Policy
+          </div>
+      </footer>
+    )
+  }
 
 export default Footer

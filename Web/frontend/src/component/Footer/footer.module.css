@@ -1,10 +1,10 @@
-footer{
+.footer{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50px;
-    background-color: black;
-    bottom: -95px;
+    background-color: rgba(255, 255, 255, 0.349);
+    bottom: -165px;
     position: relative;
   }
   

@@ -4,6 +4,7 @@ import Crew from "./component/pages/Crew"
 import Destination from "./component/pages/Destination"
 import Technology from "./component/pages/Technology"
 import Navbar from "./component/Navbar/Navbar"
+import Footer from "./component/Footer/Footer"
 
 
 export const ROUTES ={
@@ -14,8 +15,7 @@ export const ROUTES ={
 }
 
 const App = () => {
-  return (
-    
+  return ( 
     <div className="background">
       <Router>
         <Navbar/>
@@ -26,6 +26,7 @@ const App = () => {
           <Route path={ROUTES.technology.path} element={<Technology/>}/>
         </Routes>  
       </Router>
+      <Footer/>
     </div>
     
   )
