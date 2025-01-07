@@ -29,3 +29,15 @@ public interface ITokenHandler
 
     }
 }
+
+
+/// <summary>
+/// TODO: Implement token encryption for OAuth tokens
+/// </summary>
+public static class OAuthTokenEncryptor
+{
+    public static string EncrypToken(string token)
+    {
+        throw new NotImplementedException();
+    }
+}

@@ -12,6 +12,9 @@ namespace Findgroup_Backend.Data
             optionsBuilder.UseMySql(_configuration.GetConnectionString("DefaultConnection"),
                 ServerVersion.AutoDetect(_configuration.GetConnectionString("DefaultConnection")));
         }
-        public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } 
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<User> Users {  get; set; }
     }
 }
