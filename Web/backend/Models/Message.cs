@@ -2,7 +2,7 @@
 
 namespace Findgroup_Backend.Models
 {
-    public class Message
+    public sealed class Message
     {
 
         [Key]
@@ -16,6 +16,8 @@ namespace Findgroup_Backend.Models
 
         [Required]
         public string Content { get; set; } = "";
+
+        public User User { get; set; }
 
     }
 }

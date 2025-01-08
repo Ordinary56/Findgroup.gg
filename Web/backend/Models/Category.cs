@@ -1,7 +1,14 @@
-﻿namespace Findgroup_Backend.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Findgroup_Backend.Models
 {
     public class Category
     {
-        public 
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        public string CategoryName { get; set; }
+
     }
 }
