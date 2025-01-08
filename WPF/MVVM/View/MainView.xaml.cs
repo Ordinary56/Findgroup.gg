@@ -24,5 +24,10 @@ namespace WPF.MVVM.View
         {
             InitializeComponent();
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
