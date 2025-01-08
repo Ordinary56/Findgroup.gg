@@ -25,7 +25,7 @@ namespace WPF.MVVM.ViewModel
         private string username;
 
         [ObservableProperty]
-        private string password;
+        private SecureString password;
         public AsyncRelayCommand AuthenticateCommand { get; }
         public INavigation Navigation => _navigation;
         public MainViewModel(INavigation navigation, HttpClient client, ILogger<MainViewModel> logger)
@@ -46,7 +46,7 @@ namespace WPF.MVVM.ViewModel
             var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/Auth/login", new
             {
                 Username = username,
-                Password = password
+                Password = password.ToString()
             });
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
