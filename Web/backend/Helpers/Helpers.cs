@@ -36,7 +36,8 @@ public interface ITokenHandler
 /// </summary>
 public static class OAuthTokenEncryptor
 {
-    public static string EncrypToken(string token)
+
+    public static string EncryptToken(string token)
     {
         throw new NotImplementedException();
     }
