@@ -2,7 +2,7 @@
 
 namespace Findgroup_Backend.Models
 {
-    public class OAuthAccount
+    public sealed class OAuthAccount
     {
         [Key]
         public int Id { get; set; }
