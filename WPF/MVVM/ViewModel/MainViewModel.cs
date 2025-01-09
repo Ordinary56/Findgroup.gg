@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using WPF.Core;
@@ -21,10 +22,10 @@ namespace WPF.MVVM.ViewModel
         private readonly ILogger<MainViewModel> _logger;
 
         [ObservableProperty]
-        private string username = "";
+        private string username;
 
         [ObservableProperty]
-        private string password = "";
+        private SecureString password;
         public AsyncRelayCommand AuthenticateCommand { get; }
         public INavigation Navigation => _navigation;
         public MainViewModel(INavigation navigation, HttpClient client, ILogger<MainViewModel> logger)
@@ -45,7 +46,7 @@ namespace WPF.MVVM.ViewModel
             var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/Auth/login", new
             {
                 Username = username,
-                Password = password
+                Password = password.ToString()
             });
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {

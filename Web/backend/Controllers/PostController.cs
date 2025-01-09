@@ -20,11 +20,14 @@ namespace Findgroup_Backend.Controllers
                 List<Post> posts = await _context.Posts.ToListAsync();
                 return Ok(posts);
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 return StatusCode(500, "Internal Server Error" + ex.Message);
             }
         }
+    }
+    private record UserModel();
+
         [HttpGet("id")]
         public async Task<ActionResult> GetPost(int id)
         {
