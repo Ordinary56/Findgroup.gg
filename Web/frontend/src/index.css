@@ -4,13 +4,13 @@
 }
 body{
   color: white;
+
 }
 .background{
   background-image: linear-gradient(rgba(0, 0, 0, 0.680),rgba(0, 0, 0, 0.680)) , url("./assets/SiteBackground.jpg"); 
   background-repeat: no-repeat;
-  background-size: cover;
-  height:936.4px;
+  background-size:cover;
+  height:100vh;
   width: 100%;
-
 }
 

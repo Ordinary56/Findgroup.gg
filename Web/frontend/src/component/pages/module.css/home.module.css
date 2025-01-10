@@ -5,11 +5,13 @@
     align-items: center;
     background: #7c7a7a;
     margin-top: 120px;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 .game {
     background-image: url("../../../assets/test.png");
     background-repeat: no-repeat;
-    
     height: 130px;
     width: 190px;
+    border: none;
 }
