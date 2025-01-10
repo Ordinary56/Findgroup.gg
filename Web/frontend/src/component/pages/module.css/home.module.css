@@ -1,7 +1,15 @@
-.container{
+
+.gamechooser{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-    height: 70vh;
+    background: #7c7a7a;
+    margin-top: 120px;
+}
+.game {
+    background-image: url("../../../assets/test.png");
+    background-repeat: no-repeat;
+    
+    height: 130px;
+    width: 190px;
 }
