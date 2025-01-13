@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Configuration;
 using System.Data;
@@ -13,27 +14,66 @@ namespace WPF;
 /// </summary>
 public partial class App : Application
 {
-    IServiceProvider _provider;
+
+    private readonly IServiceProvider _provider;
+    private const string URL_BASE_ADDRESS = "http://localhost:5510/";
+    public IHost Host { get; private set; }
     public App()
     {
-        ServiceCollection collection = new();
-        collection.AddLogging();
-        collection.AddHttpClient();
-        collection.AddSingleton<MainWindow>(provider => new()
-        {
-            DataContext = provider.GetRequiredService<MainViewModel>()
-        });
-        collection.AddSingleton<INavigation, NavigationService>();
-        collection.AddSingleton<Func<Type, ViewModelBase>>(provider => viewmodel => (ViewModelBase)provider.GetRequiredService(viewmodel));
-        collection.AddSingleton<MainViewModel>();
+        
+    }
+    public IHostBuilder CreateHostBuilder()
+    {
+        return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
+            .ConfigureServices(ServiceConfig)
+            .ConfigureLogging(AddLogging)
+            ;
 
-        _provider = collection.BuildServiceProvider();
+    }
+
+    /// <summary>
+    /// -- THIS COMMENT NEEDS FURTHER DOCUMENTATION -- 
+    /// List of all services that the app uses throught it's lifetime
+    /// Different services has different lifetimes and scopes
+    /// <list type="bullet">
+    ///     <item>
+    ///         <description>Singleton - Returns the same object per request</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>Transient - New object is created per request</description>
+    ///     </item>
+    /// </list>
+    /// </summary>
+    /// <param name="services">The host's service collection</param>
+    public static void ServiceConfig(IServiceCollection services)
+    {
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<DashboardViewModel>();
+        services.AddSingleton<Func<Type, ViewModelBase>>(provider => viewmodel => (ViewModelBase)provider.GetRequiredService(viewmodel));
+        services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<MainWindow>(provider => new MainWindow()
+        {
+            DataContext = provider.GetRequiredService<INavigationService>()
+        });
+        services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
+        {
+            client.BaseAddress = new Uri(URL_BASE_ADDRESS + "/Auth");
+        }); 
+    }
+    public static void AddLogging(ILoggingBuilder builder)
+    {
+        builder.ClearProviders();
+        builder.AddConsole();
+        builder.AddDebug();
     }
     protected override void OnStartup(StartupEventArgs e)
     {
-        MainWindow window = _provider.GetRequiredService<MainWindow>();
-        window.Show();
         base.OnStartup(e);
+        Host = CreateHostBuilder().Build();
+        // this is still an anti-pattern due to manually settings CurrentViewModel, but this will do it 
+        Host.Services.GetRequiredService<INavigationService>().CurrentViewModel = Host.Services.GetRequiredService<MainViewModel>();
+        var MainWindow = Host.Services.GetRequiredService<MainWindow>();
+        MainWindow.Show();
     }
 }
 

@@ -9,13 +9,13 @@ using WPF.Core;
 
 namespace WPF.Services
 {
-    public interface INavigation
+    public interface INavigationService
     {
         public ViewModelBase CurrentViewModel { get; set; }
         public void MoveTo<T>() where T : ViewModelBase;
 
     }
-    public class NavigationService(Func<Type, ViewModelBase>  factory) : ObservableObject, INavigation
+    public class NavigationService(Func<Type, ViewModelBase>  factory) : ObservableObject, INavigationService
     {
         Func<Type, ViewModelBase> _factory = factory;
         private ViewModelBase _viewModel;
