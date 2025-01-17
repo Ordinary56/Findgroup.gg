@@ -14,6 +14,7 @@ export const ROUTES ={
   "technology": {path:"/technology" ,title:"Technology"},
 }
 
+
 const App = () => {
   return ( 
     <div className="background">

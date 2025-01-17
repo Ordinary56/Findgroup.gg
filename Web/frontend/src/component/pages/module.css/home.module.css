@@ -1,17 +1,19 @@
-
-.gamechooser{
+.gamechooser {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    background: #7c7a7a;
-    margin-top: 120px;
-    margin-left: 50px;
-    margin-right: 50px;
-}
-.game {
-    background-image: url("../../../assets/test.png");
-    background-repeat: no-repeat;
-    height: 130px;
-    width: 190px;
-    border: none;
-}
+    padding: 20px;
+  }
+  
+  .gamechooserItem {
+    padding: 10px;
+    cursor: pointer;
+    background-color: lightgray;
+    border-radius: 5px;
+    transition: border 0.3s ease;
+  }
+  
+  .Highlighted {
+    border: 2px solid red;
+  }
+  
