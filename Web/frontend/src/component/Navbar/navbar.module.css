@@ -1,0 +1,52 @@
+.desktop{
+    display: flex;
+    justify-content: center;
+    
+    >div{
+        display: flex;
+        gap: 20px;
+        background-color: rgba(255, 255, 255, 0.349);
+        width: 100%;
+        justify-content: center;
+    }
+    a{
+        text-transform: uppercase;
+        color: white;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        strong{
+            padding-right: 5px;
+        }
+    }
+    a:hover{
+        border-bottom: 2px solid white;
+    }
+}
+.mobile{
+    .links{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap:10vh;
+    text-align: center;
+    min-height: 80vh;   
+    }
+}
+.hambi{
+    width: 40px;
+    height: 5px;
+    background-color: rgb(255, 255, 255);
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    box-shadow: 0px 10px 0px rgb(255, 255, 255), 0px -10px 0px rgb(255, 255, 255);
+    transition: all 0.3s;
+}
+.hambi:hover{
+    rotate: 45deg;
+}
+.logo{
+    background-color: rgba(255, 255, 255, 0.349);
+}
