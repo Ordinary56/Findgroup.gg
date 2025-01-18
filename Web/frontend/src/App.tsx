@@ -5,6 +5,7 @@ import Destination from "./component/pages/Destination"
 import Technology from "./component/pages/Technology"
 import Navbar from "./component/Navbar/Navbar"
 import Footer from "./component/Footer/Footer"
+import LoginPage from "./component/Login/Login"
 
 
 export const ROUTES ={
@@ -18,6 +19,7 @@ export const ROUTES ={
 const App = () => {
   return ( 
     <div className="background">
+      <LoginPage/>
       <Router>
         <Navbar/>
         <Routes>
