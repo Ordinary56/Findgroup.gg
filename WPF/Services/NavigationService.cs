@@ -1,10 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 using WPF.Core;
 
 namespace WPF.Services
@@ -17,7 +11,7 @@ namespace WPF.Services
     }
     public class NavigationService(Func<Type, ViewModelBase>  factory) : ObservableObject, INavigationService
     {
-        Func<Type, ViewModelBase> _factory = factory;
+        readonly Func<Type, ViewModelBase> _factory = factory;
         private ViewModelBase _viewModel;
         public ViewModelBase CurrentViewModel
         {

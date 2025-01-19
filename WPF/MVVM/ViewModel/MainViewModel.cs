@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Security;
 using WPF.Core;
+using WPF.MVVM.Model;
 using WPF.Services;
 
 namespace WPF.MVVM.ViewModel
@@ -14,18 +15,23 @@ namespace WPF.MVVM.ViewModel
     {
         private readonly INavigationService _navigation;
         private readonly ILogger<MainViewModel> _logger;
+        private readonly IAuthenticationService _authenticationService;
 
         [ObservableProperty]
         private string username;
 
         [ObservableProperty]
         private SecureString password;
+
+        [ObservableProperty]
+        private bool isAuthenticated;
         public AsyncRelayCommand AuthenticateCommand { get; }
         public INavigationService Navigation => _navigation;
-        public MainViewModel(INavigationService navigation, ILogger<MainViewModel> logger)
+        public MainViewModel(INavigationService navigation, IAuthenticationService authentication,ILogger<MainViewModel> logger)
         {
             _navigation = navigation;
             _logger = logger;
+            _authenticationService = authentication;
             AuthenticateCommand = new(AuthenticateAsync);
         }
 
@@ -33,8 +39,13 @@ namespace WPF.MVVM.ViewModel
 
         private async Task AuthenticateAsync()
         {
-            // TODO: Refactor this method and use IAuthenticateService
-            await Task.CompletedTask;
+            User user = new()
+            {
+                Username = username ?? string.Empty,
+                Password = password.ToString() ?? string.Empty
+            };
+            bool res = await _authenticationService.Authenticate(user);
+            IsAuthenticated = res;
         }
     }
 }

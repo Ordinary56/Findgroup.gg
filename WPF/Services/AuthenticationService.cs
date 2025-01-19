@@ -16,34 +16,35 @@ namespace WPF.Services
     public interface IAuthenticationService
     {
         // Logs in the user
-        public Task Authenticate(User user);
+        public Task<bool> Authenticate(User user);
         // Updates the User's refresh token
         public Task Refresh(User user);
     }
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService(HttpClient httpClient, ILogger<AuthenticationService> logger) : IAuthenticationService
     {
-        private readonly HttpClient _httpClient;
-        private readonly ILogger<AuthenticationService> _logger;
-        public AuthenticationService(HttpClient httpClient, ILogger<AuthenticationService> logger)
-        {
-            _httpClient = httpClient;
-            _logger = logger;
-        }
+        private readonly HttpClient _httpClient = httpClient;
+        private readonly ILogger<AuthenticationService> _logger = logger;
 
-        public async Task Authenticate(User user)
+        public async Task<bool> Authenticate(User user)
         {
             var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress,user);
             try
             {
                 response.EnsureSuccessStatusCode();
                 // TODO: Make this method more efficient
-                var content = await JsonSerializer.DeserializeAsync<Dictionary<string,string>>(response.Content.ReadAsStream());
-                user.AuthenticationToken = content["token"];
-                user.RefreshToken = content["refresh"];
+                string content = await response.Content.ReadAsStringAsync();
+                JsonDocument doc = JsonDocument.Parse(content);
+                JsonElement token = doc.RootElement.GetProperty("token");
+                JsonElement refresh = doc.RootElement.GetProperty("refresh");
+                user.AuthenticationToken = token.ToString();
+                user.RefreshToken = refresh.ToString();
+                return true;
             }
+
             catch (HttpRequestException ex) 
             {
                 _logger.LogError("There was exception during login: {Reason}", ex.Message);
+                return false;
             }
 
         }
