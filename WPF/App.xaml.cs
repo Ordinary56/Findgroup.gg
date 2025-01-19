@@ -19,11 +19,7 @@ public partial class App : Application
 {
     private const string URL_BASE_ADDRESS = "http://localhost:5510/api";
     public IHost Host { get; private set; }
-    public App()
-    {
-
-    }
-    public static IHostBuilder CreateHostBuilder()
+   public static IHostBuilder CreateHostBuilder()
     {
         return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
             .ConfigureServices(ServiceConfig)

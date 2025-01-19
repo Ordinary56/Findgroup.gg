@@ -22,6 +22,9 @@ namespace WPF.MVVM.ViewModel
 
         [ObservableProperty]
         private SecureString password;
+
+        [ObservableProperty]
+        private bool isAuthenticated;
         public AsyncRelayCommand AuthenticateCommand { get; }
         public INavigationService Navigation => _navigation;
         public MainViewModel(INavigationService navigation, IAuthenticationService authentication,ILogger<MainViewModel> logger)
@@ -42,6 +45,7 @@ namespace WPF.MVVM.ViewModel
                 Password = password.ToString() ?? string.Empty
             };
             bool res = await _authenticationService.Authenticate(user);
+            IsAuthenticated = res;
         }
     }
 }
