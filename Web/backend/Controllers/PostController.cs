@@ -20,14 +20,11 @@ namespace Findgroup_Backend.Controllers
                 List<Post> posts = await _context.Posts.ToListAsync();
                 return Ok(posts);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return StatusCode(500, "Internal Server Error" + ex.Message);
             }
         }
-    }
-    private record UserModel();
-
         [HttpGet("id")]
         public async Task<ActionResult> GetPost(int id)
         {
@@ -56,7 +53,7 @@ namespace Findgroup_Backend.Controllers
                 await _context.SaveChangesAsync();
                 return CreatedAtAction(nameof(GetPosts), new { Id = post.Id }, post);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return StatusCode(500, "Internal Server Error: " + ex.Message);
             }
@@ -71,7 +68,8 @@ namespace Findgroup_Backend.Controllers
             // TODO: implement ModifyPost later
             throw new NotImplementedException();
         }
+        public record UserModel(string Id);
+        public record PostModel(string Content, string UserId);
     }
-    public record UserModel(string Id);
-    public record PostModel(string Content, string UserId);
+
 }
