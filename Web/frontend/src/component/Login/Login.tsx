@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { apiService } from "../../api/apiService";
+import styles from "./login.module.css";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -18,26 +19,28 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <div className={styles.loginContainer}>
+    <form onSubmit={handleLogin} className={styles.loginForm}>
+      <h1>Login to FindGroup</h1>
       <div>
-        <label>Felhasználónév:</label>
-        <input
+        <label>Username:</label>
+        <input className={styles.loginInput}
           type="text"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value) }
         />
       </div>
       <div>
-        <label>Jelszó:</label>
-        <input
+        <label>Password:</label>
+        <input className={styles.passwordInput}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button type="submit">Bejelentkezés</button>
+      <button type="submit" className={styles.loginButton}>Login</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
-    </form>
+    </form></div>
   );
 };
 
