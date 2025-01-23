@@ -1,5 +1,13 @@
 const API_BASE_URL = "http://localhost:5000/api";
 
+type Topic = {
+  id: number;
+  title: string;
+  createdate: string;
+  user_id: number;
+  category_id: number;
+};
+
 export const apiService = {
   // Token kezelés
   setToken: (token: string) => {
@@ -53,6 +61,21 @@ export const apiService = {
       throw new Error(errorData.message || "Regisztráció sikertelen");
     }
   },
+  // Témák lekérés
+
+  
+  fetchTopicsByCategory: async (categoryId: number): Promise<Topic[]> => {
+    const response = await apiService.fetchWithAuth(
+      `/Topic/topicsByCategory?categoryId=${categoryId}`
+    );
+  
+    if (!response.ok) {
+      throw new Error("Hiba történt a témák lekérésekor.");
+    }
+  
+    return await response.json();
+  },
+  
 
   // Token frissítés
   refreshToken: async (): Promise<void> => {
