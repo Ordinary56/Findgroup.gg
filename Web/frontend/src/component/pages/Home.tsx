@@ -1,25 +1,26 @@
-import { useState } from "react";
-import styles from "./module.css/home.module.css";
+import * as React from 'react';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import styles from "./module.css/home.module.css"
 
-const Home = () => {
-  const [isHighlighted, setIsHighlighted] = useState(false);
+export default function Home() {
+  const [game, setgame] = React.useState('League of legends');
 
-  const handleDivClick = () => {
-    setIsHighlighted((prev) => !prev);
+  const handleChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newgame: string,
+  ) => {
+    setgame(newgame);
   };
 
   return (
-    <>
-      <div className={styles.gamechooser}>
-        <div
-          onClick={handleDivClick}
-          className={`${styles.gamechooserItem} ${isHighlighted ? styles.Highlighted : ""}`}>
-          asd
-        </div>
-        
-      </div>
-    </>
-  );
-};
+    <ToggleButtonGroup
+    className={styles.gamechooser}
+      value={game}
+        onChange={handleChange}>
+      <ToggleButton value="League of legends" className={styles.gamechooserItem}>League of legends</ToggleButton>
+      <ToggleButton value="Apex legends" className={styles.gamechooserItem} >Apex legends</ToggleButton>
 
-export default Home;
+    </ToggleButtonGroup>
+  );
+}
