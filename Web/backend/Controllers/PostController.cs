@@ -13,6 +13,7 @@ namespace Findgroup_Backend.Controllers
     {
         private readonly ApplicationDbContext _context = context;
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult> GetPosts()
         {
             try

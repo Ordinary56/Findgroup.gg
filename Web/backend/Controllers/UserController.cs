@@ -1,5 +1,6 @@
 ﻿using Findgroup_Backend.Data;
 using Findgroup_Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -82,13 +83,14 @@ namespace Findgroup_Backend.Controllers
             }
         }
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             try
             {
                 IdentityUser? user = await _context.Users.FindAsync(id);
                 _context.Entry(user).State = EntityState.Deleted;
-                await _context.Users.ExecuteDeleteAsync();
+                await _context.Users.Where(u => u == user).ExecuteDeleteAsync();
                 return Ok();
             }
             catch (DBConcurrencyException)
