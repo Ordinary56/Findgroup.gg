@@ -2,11 +2,8 @@
 using Findgroup_Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 namespace Findgroup_Backend.Controllers;
 
 [ApiController]
@@ -65,7 +62,25 @@ public class AuthController(
             refreshToken = refreshToken
         });
     }
-   
+    [HttpPost("logout")] 
+    public async Task<ActionResult> LogoutUser()
+    {
+        try
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                await _signInManager.SignOutAsync();
+                return Ok();
+            }
+            _logger.LogError("{currentUser}", User);
+            return Unauthorized("Unauthorized");
+        }
+        catch (Exception ex) 
+        {
+            return BadRequest(ex.Message);
+        }
+
+    }
  
 
 }

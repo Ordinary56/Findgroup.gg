@@ -62,14 +62,24 @@ namespace Findgroup_Backend.Controllers
 
         [Authorize]
         [HttpPatch]
-        public async Task<ActionResult> ModifyPost()
+        public async Task<ActionResult> ModifyPost([FromBody] ModifyPostModel content)
         {
-
-            // TODO: implement ModifyPost later
-            throw new NotImplementedException();
+            try
+            {
+                var target = await _context.Posts.FindAsync(content.Id);
+                target.Content = content.Content;
+                _context.Entry(target).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+            catch(DBConcurrencyException)
+            {
+                return NotFound();
+            }
         }
         public record UserModel(string Id);
         public record PostModel(string Content, string UserId);
+        public record ModifyPostModel(string Content, int Id);
     }
 
 }

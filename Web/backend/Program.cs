@@ -37,7 +37,10 @@ public class Program
         builder.Services.AddAuthorization();
 
         var app = builder.Build();
-
+        if(app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
         app.UseHttpsRedirection();
         app.MapControllers();
         app.UseAuthentication();

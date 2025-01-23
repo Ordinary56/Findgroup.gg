@@ -10,12 +10,12 @@ namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class UserController(ApplicationDbContext context, UserManager<IdentityUser> manager) : ControllerBase
+    public class UserController(ApplicationDbContext context, UserManager<User> manager) : ControllerBase
     {
         ApplicationDbContext _context = context;
-        UserManager<IdentityUser> _manager = manager;
+        UserManager<User> _manager = manager;
         [HttpGet]
-        public async Task<ActionResult<List<IdentityUser>>> GetUsers()
+        public async Task<ActionResult<List<User>>> GetUsers()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace Findgroup_Backend.Controllers
             }
             try
             {
-                IdentityUser createdUser = new()
+                User createdUser = new()
                 {
                     UserName = newUser.Username,
                     Email = newUser.Email,
