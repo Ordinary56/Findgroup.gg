@@ -13,10 +13,10 @@ const Home = () => {
       <div className={styles.gamechooser}>
         <div
           onClick={handleDivClick}
-          className={`${styles.gamechooserItem} ${isHighlighted ? styles.Highlighted : ""}`}
-        >
+          className={`${styles.gamechooserItem} ${isHighlighted ? styles.Highlighted : ""}`}>
           asd
         </div>
+        
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 const API_BASE_URL = "http://localhost:5000/api";
 
 export const apiService = {
-  // Tárolás
+  // Token kezelés
   setToken: (token: string) => {
     localStorage.setItem("accessToken", token);
   },
@@ -36,6 +36,22 @@ export const apiService = {
     const data = await response.json();
     apiService.setToken(data.token);
     apiService.setRefreshToken(data.refreshToken);
+  },
+
+  // Regisztráció
+  register: async (username: string, password: string, email?: string): Promise<void> => {
+    const response = await fetch(`${API_BASE_URL}/Auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password, email }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Regisztráció sikertelen");
+    }
   },
 
   // Token frissítés
