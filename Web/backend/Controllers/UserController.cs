@@ -12,8 +12,8 @@ namespace Findgroup_Backend.Controllers
     [Route("/api/[controller]")]
     public class UserController(ApplicationDbContext context, UserManager<User> manager) : ControllerBase
     {
-        ApplicationDbContext _context = context;
-        UserManager<User> _manager = manager;
+        readonly ApplicationDbContext _context = context;
+        readonly UserManager<User> _manager = manager;
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetUsers()
         {

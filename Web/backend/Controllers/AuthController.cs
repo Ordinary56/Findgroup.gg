@@ -59,7 +59,7 @@ public class AuthController(
         {
             token = new JwtSecurityTokenHandler().WriteToken(token),
             expiration = token.ValidTo,
-            refreshToken = refreshToken
+            refreshToken
         });
     }
     [HttpPost("logout")] 
