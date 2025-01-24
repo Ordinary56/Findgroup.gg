@@ -52,22 +52,11 @@ export default function Home() {
 
   return (
     <div>
-      <ToggleButtonGroup
-        className={clsx(styles.gamechooser)}
-        value={selectedGame}
-        exclusive
-        onChange={handleGameChange}
-      >
-        <ToggleButton
-          value="League of legends"
-          className={clsx(styles.gamechooserItem)}
-        >
+      <ToggleButtonGroup className={clsx(styles.gamechooser)} value={selectedGame} exclusive onChange={handleGameChange}>
+        <ToggleButton value="League of legends" className={clsx(styles.gamechooserItem)}>
           League of legends
         </ToggleButton>
-        <ToggleButton
-          value="Apex legends"
-          className={clsx(styles.gamechooserItem)}
-        >
+        <ToggleButton value="Apex legends" className={clsx(styles.gamechooserItem)}>
           Apex legends
         </ToggleButton>
       </ToggleButtonGroup>

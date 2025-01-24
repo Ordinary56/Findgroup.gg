@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom"
 import { ROUTES } from "../../App"
 
-const CreateButton = () => {
+const BackToHomeButton = () => {
   return (
       <div>        
-      <Link to={ROUTES.create.path}> Create a FindGroup</Link>
+      <Link to={ROUTES.homepage.path}>Back to Home</Link>
       </div>     
   )
 }
 
-export default CreateButton
+export default BackToHomeButton
