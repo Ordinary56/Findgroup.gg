@@ -9,9 +9,9 @@ namespace WPF.MVVM.Model
 {
     public class OAuthAccount
     {
-        public string ServiceName { get; set; }
-        public string AccountName { get; set; }
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
+        public string ServiceName { get; set; } = "";
+        public string AccountName { get; set; } = "";
+        public string AccessToken { get; set; } = "";
+        public string RefreshToken { get; set; } = "";
     }
 }

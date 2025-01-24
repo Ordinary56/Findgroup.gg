@@ -13,13 +13,13 @@ namespace WPF.MVVM.Model
     [Serializable]
     public class User
     {
-        public string Username { get; set; }
+        public string Username { get; set; } = "";
         [JsonIgnore]
-        public string Password { get; set; }
+        public string Password { get; set; } = "";
         
-        public string AuthenticationToken { get; set; }
-        public string RefreshToken { get; set; }
+        public string AuthenticationToken { get; set; } = "";
+        public string RefreshToken { get; set; } = "";
         [JsonIgnore]
-        public List<OAuthAccount> OAuthAccounts { get; set; }
+        public List<OAuthAccount> OAuthAccounts { get; set; } = new();
     }
 }

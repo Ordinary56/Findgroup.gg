@@ -21,18 +21,21 @@ namespace WPF;
 /// </summary>
 public partial class App : Application
 {
-    private const string URL_BASE_ADDRESS = "http://localhost:5510/api";
     public IHost Host { get; private set; }
-    public static IConfiguration Configuration { get; private set; } = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .Build()
-   public static IHostBuilder CreateHostBuilder()
+    public static IConfiguration Configuration { get; private set; }
+    private static IHostBuilder CreateHostBuilder()
     {
         return Microsoft.Extensions.Hosting.Host
             .CreateDefaultBuilder()
             .ConfigureServices(ServiceConfig)
             .ConfigureLogging(AddLogging);
 
+    }
+    private static IConfigurationBuilder CreateConfiguration()
+    {
+        return new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
     }
 
     /// <summary>
@@ -81,10 +84,7 @@ public partial class App : Application
         {
             DataContext = provider.GetRequiredService<MainViewModel>()
         });
-        services.AddHttpClient<IAuthenticationService, AuthenticationService>(client =>
-        {
-            client.BaseAddress = new Uri(URL_BASE_ADDRESS + "/Auth");
-        }).SetHandlerLifetime(TimeSpan.FromMinutes(10));
+        services.AddHttpClient<IAuthenticationService, AuthenticationService>().SetHandlerLifetime(TimeSpan.FromMinutes(10));
     }
     public static void AddLogging(ILoggingBuilder builder)
     {
@@ -95,12 +95,16 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        Configuration = CreateConfiguration().Build();
         Host = CreateHostBuilder().Build();
         // this is still an anti-pattern due to manually settings CurrentViewModel, but this will do it 
         Host.Services.GetRequiredService<INavigationService>().CurrentViewModel = Host.Services.GetRequiredService<MainViewModel>();
         var MainWindow = Host.Services.GetRequiredService<MainWindow>();
         MainWindow.Show();
     }
+
+
+
     protected override async void OnExit(ExitEventArgs e)
     {
         base.OnExit(e);

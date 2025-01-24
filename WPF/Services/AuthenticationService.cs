@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -9,6 +11,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using WPF.Extensions;
+using WPF.Helpers;
 using WPF.MVVM.Model;
 
 namespace WPF.Services
@@ -20,24 +23,25 @@ namespace WPF.Services
         // Updates the User's refresh token
         public Task Refresh(User user);
     }
-    public class AuthenticationService(HttpClient httpClient, ILogger<AuthenticationService> logger) : IAuthenticationService
+    public class AuthenticationService(HttpClient httpClient, ILogger<AuthenticationService> logger, IStorageHelper storage, IConfiguration config) : IAuthenticationService
     {
         private readonly HttpClient _httpClient = httpClient;
         private readonly ILogger<AuthenticationService> _logger = logger;
-
+        private readonly IStorageHelper _storage = storage;
+        private readonly IConfiguration _config = config;
+        private Uri AuthUri = new(config["ApiUrl"] + "/Auth");
+        private Uri RefreshUri = new(config["ApiUrl"] + "/refresh");
         public async Task<bool> Authenticate(User user)
         {
-            var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress,user);
+            var response = await _httpClient.PostAsJsonAsync(AuthUri,user);
             try
             {
                 response.EnsureSuccessStatusCode();
-                // TODO: Make this method more efficient
-                string content = await response.Content.ReadAsStringAsync();
-                JsonDocument doc = JsonDocument.Parse(content);
-                JsonElement token = doc.RootElement.GetProperty("token");
-                JsonElement refresh = doc.RootElement.GetProperty("refresh");
-                user.AuthenticationToken = token.ToString();
-                user.RefreshToken = refresh.ToString();
+                var stream = await response.Content.ReadAsStreamAsync();
+                var tokens = await JsonSerializer.DeserializeAsync<(string token, string validTo, string refreshToken)>(stream);
+                user.AuthenticationToken = tokens.token;
+                user.RefreshToken = tokens.refreshToken;
+                _storage.SaveData("saved/data.txt", user.SerializeData());
                 return true;
             }
 
@@ -49,9 +53,18 @@ namespace WPF.Services
 
         }
 
-        public Task Refresh(User user)
+        public async Task Refresh(User user)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.PostAsJsonAsync(RefreshUri, user);
+            try
+            {
+                response.EnsureSuccessStatusCode();
+                var stream = await response.Content.ReadAsStreamAsync();
+                var tokens = await JsonSerializer.DeserializeAsync<(string token, string refreshToken)>(stream);
+                user.AuthenticationToken = tokens.token;
+                user.RefreshToken = tokens.refreshToken;
+                _storage.SaveData("saved");
+            }
         }
     }
 }

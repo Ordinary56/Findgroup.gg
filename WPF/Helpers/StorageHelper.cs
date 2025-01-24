@@ -41,7 +41,7 @@ namespace WPF.Helpers
             }
             catch(FileNotFoundException)
             {
-                return "-- NOT FOUND --";
+                return "-#-";
             }
             catch(Exception ex)
             {
