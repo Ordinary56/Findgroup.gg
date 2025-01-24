@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { GoogleOAuthProvider, GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { apiService } from "../../api/apiService";
 import styles from "./module.css/login.module.css";
-
-const GOOGLE_CLIENT_ID = "615291494882-j9amcmdhbgnep1lnl3oru182enemdcde.apps.googleusercontent.com"; // Cseréld le a saját Google Client ID-re
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -14,85 +11,36 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     try {
       await apiService.login(username, password);
-      alert("Login successful!");
+      alert("Sikeres bejelentkezés!");
     } catch (err) {
       console.error(err);
-      setError("Login failed!");
+      setError("Bejelentkezés sikertelen!");
     }
-  };
-
-  const handleGoogleSuccess = async (credentialResponse: CredentialResponse) => {
-    if (credentialResponse.credential) {
-      console.log("Google login successful:", credentialResponse);
-
-      try {
-        const response = await apiService.fetchWithAuth("/Auth/GoogleLogin", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: credentialResponse.credential }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          apiService.setToken(data.token);
-          apiService.setRefreshToken(data.refreshToken);
-          alert("Successful Google Login!");
-        } else {
-          setError("Failed Google Login!");
-        }
-      } catch (error) {
-        console.error("Google Login Error:", error);
-        setError("Failed Google Login!");
-      }
-    } else {
-      setError("Wrong Google answer!");
-    }
-  };
-
-  const handleGoogleError = () => {
-    console.error("Google Login Failed");
-    setError("Google Login Failed!");
   };
 
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <div className={styles.loginContainer}>
-        <form onSubmit={handleLogin} className={styles.loginForm}>
-          <h1>Login to FindGroup</h1>
-          <div>
-            <label>Username:</label>
-            <input
-              className={styles.loginInput}
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Password:</label>
-            <input
-              className={styles.passwordInput}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button type="submit" className={styles.loginButton}>
-            Login
-          </button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-        </form>
-        <div className={styles.googleLogin}>
-          <h3>Or sign in with Google:</h3>
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            text="continue_with" // Ez biztosítja, hogy a szöveg angol legyen
-             locale="en_GB"// Angol nyelv beállítása
-          />
-        </div>
+    <div className={styles.loginContainer}>
+    <form onSubmit={handleLogin} className={styles.loginForm}>
+      <h1>Login to FindGroup</h1>
+      <div>
+        <label>Username:</label>
+        <input className={styles.loginInput}
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value) }
+        />
       </div>
-    </GoogleOAuthProvider>
+      <div>
+        <label>Password:</label>
+        <input className={styles.passwordInput}
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <button type="submit" className={styles.loginButton}>Login</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </form></div>
   );
 };
 

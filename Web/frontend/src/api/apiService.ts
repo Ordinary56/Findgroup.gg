@@ -45,24 +45,6 @@ export const apiService = {
     apiService.setToken(data.token);
     apiService.setRefreshToken(data.refreshToken);
   },
-  googleLogin: async (tokenId: string): Promise<void> => {
-    const response = await fetch(`${API_BASE_URL}/Auth/google-login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ tokenId }),
-    });
-  
-    if (!response.ok) {
-      throw new Error("Google Login Failed");
-    }
-  
-    const data = await response.json();
-    apiService.setToken(data.token);
-    apiService.setRefreshToken(data.refreshToken);
-  },
-  
 
   // Regisztráció
   register: async (username: string, password: string, email?: string): Promise<void> => {
