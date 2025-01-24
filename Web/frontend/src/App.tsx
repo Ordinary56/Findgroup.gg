@@ -5,6 +5,7 @@ import RegisterPage from "./component/pages/Register"
 import LoginPage from "./component/pages/Login"
 import Navbar from "./component/Navbar/Navbar"
 import Footer from "./component/Footer/Footer"
+import CreateButton from "./component/Create_group_button/Create_group_button"
 
 
 export const ROUTES ={
@@ -27,6 +28,14 @@ const App = () => {
           <Route path={ROUTES.register.path} element={<RegisterPage/>}/>
         </Routes>  
       </Router>
+      
+      <Router>
+      <CreateButton/>
+      <Routes>
+      <Route path={ROUTES.register.path} element={<RegisterPage/>}/>
+      </Routes>
+      </Router>
+
       <Footer/>
     </div>
     
