@@ -1,12 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Configuration;
 using System.Data;
 using System.IO;
+using System.IO.IsolatedStorage;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Windows;
 using WPF.Core;
+using WPF.Helpers;
 using WPF.MVVM.Model;
 using WPF.MVVM.ViewModel;
 using WPF.Services;
@@ -19,12 +23,15 @@ public partial class App : Application
 {
     private const string URL_BASE_ADDRESS = "http://localhost:5510/api";
     public IHost Host { get; private set; }
+    public static IConfiguration Configuration { get; private set; } = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .Build()
    public static IHostBuilder CreateHostBuilder()
     {
-        return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
+        return Microsoft.Extensions.Hosting.Host
+            .CreateDefaultBuilder()
             .ConfigureServices(ServiceConfig)
-            .ConfigureLogging(AddLogging)
-            ;
+            .ConfigureLogging(AddLogging);
 
     }
 
@@ -44,13 +51,27 @@ public partial class App : Application
     /// <param name="services">The host's service collection</param>
     public static void ServiceConfig(IServiceCollection services)
     {
+        services.AddSingleton<IStorageHelper, StorageHelper>();
+        services.AddSingleton(Configuration);
         services.AddSingleton<User>(provider =>
         {
-            if (File.Exists("saved/data.json"))
+            var storage = provider.GetRequiredService<IStorageHelper>();
+            try
             {
-                // TODO: load in the user if json file exists
+                string data = storage.LoadData(@"./saved/data.txt");
+                string[] fields = data.Split("-");
+                return new User()
+                {
+                    Username = fields[0],
+                    Password = fields[1],
+                    AuthenticationToken = fields[2],
+                    RefreshToken = fields[3]
+                };
             }
-            return new User();
+            catch (Exception)
+            {
+                return new User();
+            }
         });
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
