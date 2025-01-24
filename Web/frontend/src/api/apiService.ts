@@ -38,13 +38,31 @@ export const apiService = {
     });
 
     if (!response.ok) {
-      throw new Error("Bejelentkezés sikertelen");
+      throw new Error("Login Failed");
     }
 
     const data = await response.json();
     apiService.setToken(data.token);
     apiService.setRefreshToken(data.refreshToken);
   },
+  googleLogin: async (tokenId: string): Promise<void> => {
+    const response = await fetch(`${API_BASE_URL}/Auth/google-login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ tokenId }),
+    });
+  
+    if (!response.ok) {
+      throw new Error("Google Login Failed");
+    }
+  
+    const data = await response.json();
+    apiService.setToken(data.token);
+    apiService.setRefreshToken(data.refreshToken);
+  },
+  
 
   // Regisztráció
   register: async (username: string, password: string, email?: string): Promise<void> => {
@@ -58,7 +76,7 @@ export const apiService = {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || "Regisztráció sikertelen");
+      throw new Error(errorData.message || "Registration failed");
     }
   },
   // Témák lekérés
@@ -70,7 +88,7 @@ export const apiService = {
     );
   
     if (!response.ok) {
-      throw new Error("Hiba történt a témák lekérésekor.");
+      throw new Error("An error occurred while retrieving topics.");
     }
   
     return await response.json();
@@ -81,7 +99,7 @@ export const apiService = {
   refreshToken: async (): Promise<void> => {
     const refreshToken = apiService.getRefreshToken();
     if (!refreshToken) {
-      throw new Error("Nincs elérhető frissítő token");
+      throw new Error("No refresh token available");
     }
 
     const response = await fetch(`${API_BASE_URL}/RefreshToken/refresh`, {
@@ -93,7 +111,7 @@ export const apiService = {
     });
 
     if (!response.ok) {
-      throw new Error("Token frissítési hiba");
+      throw new Error("Token update error");
     }
 
     const data = await response.json();
@@ -130,7 +148,7 @@ export const apiService = {
       } catch (error) {
         apiService.clearTokens();
         console.error(error);
-        throw new Error("Token frissítés sikertelen. Jelentkezz be újra.");
+        throw new Error("Token update failed. Log in again.");
       }
     }
 
