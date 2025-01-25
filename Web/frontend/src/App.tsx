@@ -7,6 +7,7 @@ import Navbar from "./component/Navbar/Navbar";
 import Footer from "./component/Footer/Footer";
 import CreateButton from "./component/Create_group_button/Create_group_button";
 import CreateGroup from "./component/pages/CreateGroup";
+import TopicDetails from "./component/pages/InspectListing";
 
 export const ROUTES = {
   homepage: { path: "/", title: "Home" },
@@ -24,6 +25,8 @@ const AppContent = () => {
       <Navbar />
       <Routes>
         <Route index element={<Home />} /> {/* Alapértelmezett útvonal */}
+        <Route path="/" element={<Home />} />
+        <Route path="/topics/:topicId" element={<TopicDetails />} />
         <Route path={ROUTES.crew.path} element={<Crew />} />
         <Route path={ROUTES.login.path} element={<LoginPage />} />
         <Route path={ROUTES.register.path} element={<RegisterPage />} />

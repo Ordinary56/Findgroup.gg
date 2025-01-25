@@ -75,6 +75,26 @@ export const apiService = {
   
     return await response.json();
   },
+  fetchTopicById: async (id: number) => {
+    try {
+      const response = await fetch(`/api/topics/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiService.getToken()}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch topic details");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error in fetchTopicById:", error);
+      throw error;
+    }
+  },
   
 
   // Token frissítés
