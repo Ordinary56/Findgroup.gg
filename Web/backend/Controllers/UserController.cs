@@ -1,6 +1,5 @@
 ﻿using Findgroup_Backend.Data;
 using Findgroup_Backend.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +10,12 @@ namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class UserController(ApplicationDbContext context, UserManager<User> manager) : ControllerBase
+    public class UserController(ApplicationDbContext context, UserManager<IdentityUser> manager) : ControllerBase
     {
-        readonly ApplicationDbContext _context = context;
-        readonly UserManager<User> _manager = manager;
+        ApplicationDbContext _context = context;
+        UserManager<IdentityUser> _manager = manager;
         [HttpGet]
-        public async Task<ActionResult<List<User>>> GetUsers()
+        public async Task<ActionResult<List<IdentityUser>>> GetUsers()
         {
             try
             {
@@ -37,7 +36,7 @@ namespace Findgroup_Backend.Controllers
             }
             try
             {
-                User createdUser = new()
+                IdentityUser createdUser = new()
                 {
                     UserName = newUser.Username,
                     Email = newUser.Email,
@@ -83,16 +82,15 @@ namespace Findgroup_Backend.Controllers
             }
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             try
             {
                 IdentityUser? user = await _context.Users.FindAsync(id);
                 _context.Entry(user).State = EntityState.Deleted;
-                await _context.Users.Where(u => u == user).ExecuteDeleteAsync();
+                await _context.Users.ExecuteDeleteAsync();
                 return Ok();
-            }
+            T }
             catch (DBConcurrencyException)
             {
                 return NotFound("Request user was not found");
