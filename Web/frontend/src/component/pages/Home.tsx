@@ -6,6 +6,7 @@ import TopicList from "../List/List";
 import { apiService } from "../../api/apiService";
 import styles from "./module.css/home.module.css";
 import clsx from "clsx";
+import CreatorScreenAfterListing from "./CreatorScreenAfterListnig";
 
 type Topic = {
   id: number;
@@ -79,6 +80,7 @@ export default function Home() {
       </ToggleButtonGroup>
 
       <TopicList topics={topics} loading={loading} onTopicClick={handleTopicClick} />
+      <CreatorScreenAfterListing />
     </div>
   );
 }

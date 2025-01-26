@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { apiService } from "../../api/apiService";
 import BackToHomeButton from "../Back_To_Home_Button/Back_to_Home";
+import styles from "./module.css/inspectlisting.module.css";
 
 type Topic = {
   id: number;
@@ -47,16 +48,19 @@ const TopicDetails: React.FC = () => {
       {/* A kiválasztott tab alapján jelennek meg a tartalmak */}
       {selectedTab === "details" && (
         <div>
-          <p>Created on: {topic.createdate}</p>
-          <p>Category ID: {topic.category_id}</p>
-          <p>User ID: {topic.user_id}</p>
+          <div>
+          <div className={styles.tags}></div>
+          <div className={styles.description}></div>
+          </div>
         </div>
       )}
 
       {selectedTab === "members" && (
         <div>
+          <div>
           {/* Itt később a tagok listáját lehet megjeleníteni */}
           <p>List of Members (to be implemented)</p>
+          </div>
         </div>
       )}
     </div>

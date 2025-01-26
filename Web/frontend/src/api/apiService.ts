@@ -7,6 +7,20 @@ type Topic = {
   user_id: number;
   category_id: number;
 };
+type Member = {
+  id: string; // Ez az IdentityUser.Id
+  userName: string; // Ez az IdentityUser.UserName
+  email: string; // Ez az IdentityUser.Email
+  phoneNumber?: string; // Ez az IdentityUser.PhoneNumber (opcionális)
+};
+
+type ApiUser = {
+  id: string;
+  userName: string;
+  email: string;
+  phoneNumber?: string;
+};
+
 
 export const apiService = {
   // Token kezelés
@@ -96,6 +110,22 @@ export const apiService = {
     }
   },
   
+  async fetchMembers(): Promise<Member[]> {
+    const response = await fetch("/api/User"); // Az API végpontja
+    if (!response.ok) {
+      throw new Error("Failed to fetch members");
+    }
+
+    // Adatok típusa ApiUser[], ez biztosítja a map metódus helyes működését
+    const users: ApiUser[] = await response.json();
+
+    return users.map((user) => ({
+      id: user.id,
+      userName: user.userName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+    }));
+  },
 
   // Token frissítés
   refreshToken: async (): Promise<void> => {

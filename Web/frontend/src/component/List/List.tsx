@@ -16,11 +16,11 @@ type TopicListProps = {
 
 const TopicList: React.FC<TopicListProps> = ({ topics, loading, onTopicClick }) => {
   if (loading) {
-    return <p>Betöltés...</p>;
+    return <p>Loading...</p>;
   }
 
   if (topics.length === 0) {
-    return <p>Nincsenek elérhető témák.</p>;
+    return <p>No available groups.</p>;
   }
 
   return (
@@ -33,7 +33,7 @@ const TopicList: React.FC<TopicListProps> = ({ topics, loading, onTopicClick }) 
           style={{ cursor: "pointer" }}
         >
           <h3>{topic.title}</h3>
-          <p>Létrehozva: {new Date(topic.createdate).toLocaleDateString()}</p>
+          <p>Created: {new Date(topic.createdate).toLocaleDateString()}</p>
         </div>
       ))}
     </div>
