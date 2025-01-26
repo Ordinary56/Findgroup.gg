@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Findgroup_Backend.Models
 {
@@ -6,7 +7,8 @@ namespace Findgroup_Backend.Models
     {
         [Required]
         public string Content { get; set; } = "";
-        public int PostId { get; set; }
+        [ForeignKey("Post")]
+        public int? PostId { get; set; }
         public Post Post { get; set; } = default!;
 
     }
