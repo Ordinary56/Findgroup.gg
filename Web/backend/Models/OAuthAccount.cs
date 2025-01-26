@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Findgroup_Backend.Models
 {
@@ -13,6 +14,8 @@ namespace Findgroup_Backend.Models
         public string RefreshToken { get; set; }
         public DateTime? TokenExpiry {  get; set; }
 
+
+        [ForeignKey("User")]
         public string UserId { get; set; }
         public User User { get; set; }
     }

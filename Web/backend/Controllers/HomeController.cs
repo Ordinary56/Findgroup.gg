@@ -10,7 +10,7 @@ namespace Findgroup_Backend.Controllers
     [ApiController]
     public class HomeController(ApplicationDbContext context) : ControllerBase
     {
-        ApplicationDbContext _context = context;
+        readonly ApplicationDbContext _context = context;
 
         [Authorize]
         [HttpGet]

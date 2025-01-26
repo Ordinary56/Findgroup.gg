@@ -10,7 +10,7 @@ public interface ITokenHandler
 {
     public static JwtSecurityToken GenerateAccessToken(IEnumerable<Claim> claims, IConfiguration configuration)
     {
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Secret"]));
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")));
 
         return new JwtSecurityToken(
             issuer: configuration["JwtSettings:Issuer"],
