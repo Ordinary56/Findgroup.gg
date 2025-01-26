@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="saved\" />
     <Folder Include="Styles\" />
   </ItemGroup>
 </Project>
