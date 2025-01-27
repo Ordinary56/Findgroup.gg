@@ -67,7 +67,7 @@ namespace Findgroup_Backend.Controllers
         {
             try
             {
-                var target = await _context.Posts.FindAsync(content.Id);
+                Post? target = await _context.Posts.FindAsync(content.Id);
                 target.Content = content.Content;
                 _context.Entry(target).State = EntityState.Modified;
                 await _context.SaveChangesAsync();

@@ -40,7 +40,7 @@ public class AuthController(
 
         var authClaims = new List<Claim>
         {
-            new(ClaimTypes.Name, user.UserName),
+            new(ClaimTypes.Name, user.UserName!),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(ClaimTypes.Role, "User")
         };
@@ -60,7 +60,6 @@ public class AuthController(
         return Ok(new
         {
             token = new JwtSecurityTokenHandler().WriteToken(token),
-            expiration = token.ValidTo,
             refreshToken
         });
     }
@@ -99,7 +98,7 @@ public class AuthController(
     {
         try
         {
-            if (!User.Identity.IsAuthenticated)
+            if ( User.Identity == null || !User.Identity.IsAuthenticated)
             {
                 _logger.LogError("{currentUser}", User);
                 return Unauthorized("Unauthorized");

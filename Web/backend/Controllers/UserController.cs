@@ -10,10 +10,10 @@ namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class UserController(ApplicationDbContext context, UserManager<IdentityUser> manager) : ControllerBase
+    public class UserController(ApplicationDbContext context, UserManager<User> manager) : ControllerBase
     {
         ApplicationDbContext _context = context;
-        UserManager<IdentityUser> _manager = manager;
+        UserManager<User> _manager = manager;
         [HttpGet]
         public async Task<ActionResult<List<IdentityUser>>> GetUsers()
         {
@@ -27,34 +27,7 @@ namespace Findgroup_Backend.Controllers
                 return StatusCode(500, "Internal Server error" + ex.Message);
             }
         }
-        [HttpPost]
-        public async Task<ActionResult> CreateNewUser([FromBody] NewUser newUser)
-        {
-            if (newUser == null)
-            {
-                return BadRequest("User is null");
-            }
-            try
-            {
-                IdentityUser createdUser = new()
-                {
-                    UserName = newUser.Username,
-                    Email = newUser.Email,
-                };
-                var result = await _manager.CreateAsync(createdUser, newUser.Password);
-                if(result.Succeeded)
-                {
-                    return CreatedAtAction(nameof(GetUsers), new { Id = createdUser.Id }, newUser);
-                }
-                return BadRequest(result.Errors);
-
-                
-            }
-            catch (Exception ex) 
-            {
-                return StatusCode(500, "Internal Server Error" + ex.Message);
-            }
-        }
+        
         [HttpPut("{id}")]
         public async Task<ActionResult> ModifyUser(string id, [FromBody] ModifyUserModel modifiedUser)
         {
@@ -86,9 +59,9 @@ namespace Findgroup_Backend.Controllers
         {
             try
             {
-                IdentityUser? user = await _context.Users.FindAsync(id);
+                User user = await _context.Users.FindAsync(id);
                 _context.Entry(user).State = EntityState.Deleted;
-                await _context.Users.ExecuteDeleteAsync();
+                await _context.SaveChangesAsync();
                 return Ok();
             }
             catch (DBConcurrencyException)
@@ -97,7 +70,7 @@ namespace Findgroup_Backend.Controllers
             }
             catch(Exception ex)
             {
-                return StatusCode(500, "Internal Server Error" + ex.Message);
+                return StatusCode(500, "Internal Server Error: " + ex.Message);
             }
         }
     }

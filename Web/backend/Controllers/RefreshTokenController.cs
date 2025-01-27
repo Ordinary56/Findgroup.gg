@@ -21,8 +21,8 @@ namespace Findgroup_Backend.Controllers
         {
             var principal = GetPrincipalFromExpiredToken(model.Token);
             if (principal == null) return BadRequest("Invalid access or refresh token");
-            var username = principal.Identity?.Name;
-            var user = await _manager.FindByNameAsync(username);
+            string username = principal.Identity!.Name!;
+            User? user = await _manager.FindByNameAsync(username);
             if (user == null || user.RefreshToken != model.Token || user.RefreshTokenExpiryTime <= DateTime.UtcNow) 
                     return BadRequest("Invalid Refresh Token");
             var newAccessToken = ITokenHandler.GenerateAccessToken(principal.Claims,_configuration);
