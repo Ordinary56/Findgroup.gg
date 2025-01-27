@@ -1,7 +1,9 @@
 ﻿using Findgroup_Backend.Helpers;
 using Findgroup_Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 namespace Findgroup_Backend.Controllers;
@@ -62,18 +64,48 @@ public class AuthController(
             refreshToken
         });
     }
+    [HttpPost("register")]
+    public async Task<ActionResult> RegisterNewUser([FromBody] RegisterModel newUser)
+    {
+        if (newUser == null)
+        {
+            return BadRequest("User is null");
+        }
+        try
+        {
+            User createdUser = new()
+            {
+                UserName = newUser.Username,
+                Email = newUser.Email,
+                PhoneNumber = newUser.PhoneNumber,
+            };
+            var result = await _userManager.CreateAsync(createdUser, newUser.Password);
+            if (result.Succeeded)
+            {
+                return CreatedAtAction(nameof(UserController.GetUsers), new { Id = createdUser.Id }, newUser);
+            }
+            return BadRequest(result.Errors);
+
+
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Internal Server Error" + ex.Message);
+        }
+    }
+    [Authorize(Roles = "User, Admin")]
     [HttpPost("logout")] 
     public async Task<ActionResult> LogoutUser()
     {
         try
         {
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
             {
-                await _signInManager.SignOutAsync();
-                return Ok();
+                _logger.LogError("{currentUser}", User);
+                return Unauthorized("Unauthorized");
             }
-            _logger.LogError("{currentUser}", User);
-            return Unauthorized("Unauthorized");
+            await _signInManager.SignOutAsync();
+            return Ok();
         }
         catch (Exception ex) 
         {
@@ -86,8 +118,15 @@ public class AuthController(
 }
 
 // DTOs
-public sealed record LoginModel
+public record LoginModel
 {
-    public string Username { get; init; }
-    public string Password { get; init; }
+    public string Username { get; init; } = "";
+    public string Password { get; init; } = "";
+}
+
+public sealed record RegisterModel : LoginModel
+{
+    [Required]
+    public string Email { get; init; } = "";
+    public string PhoneNumber { get; init; } = "";
 }

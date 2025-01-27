@@ -90,7 +90,7 @@ namespace Findgroup_Backend.Controllers
                 _context.Entry(user).State = EntityState.Deleted;
                 await _context.Users.ExecuteDeleteAsync();
                 return Ok();
-            T }
+            }
             catch (DBConcurrencyException)
             {
                 return NotFound("Request user was not found");
