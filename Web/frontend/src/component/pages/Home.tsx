@@ -16,7 +16,12 @@ type Topic = {
   category_id: number;
 };
 
-export default function Home() {
+const categoryMapping: Record<string, number> = {
+  "League of legends": 1,
+  "Apex legends": 2,
+};
+
+const Home: React.FC = () => {
   const [selectedGame, setSelectedGame] = useState<string>("League of legends");
   const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,29 +31,20 @@ export default function Home() {
     event: React.MouseEvent<HTMLElement>,
     newGame: string
   ) => {
-    if (newGame) {
-      setSelectedGame(newGame);
-    }
+    if (newGame) setSelectedGame(newGame);
   };
 
-  const handleTopicClick = (topicId: number) => {
-    navigate(`/topics/${topicId}`);
-  };
+  const handleTopicClick = (topicId: number) => navigate(`/topics/${topicId}`);
 
   useEffect(() => {
     const fetchTopics = async () => {
       setLoading(true);
       try {
-        const categoryMapping: Record<string, number> = {
-          "League of legends": 1,
-          "Apex legends": 2,
-        };
-
         const categoryId = categoryMapping[selectedGame];
         const topicsData = await apiService.fetchTopicsByCategory(categoryId);
         setTopics(topicsData);
       } catch (error) {
-        console.error("An error occurred while fetching groups:", error);
+        console.error("Error fetching topics:", error);
       } finally {
         setLoading(false);
       }
@@ -58,29 +54,32 @@ export default function Home() {
   }, [selectedGame]);
 
   return (
-    <div>
+    <div className={clsx(styles.container)}>
       <ToggleButtonGroup
         className={clsx(styles.gamechooser)}
         value={selectedGame}
         exclusive
         onChange={handleGameChange}
       >
-        <ToggleButton
-          value="League of legends"
-          className={clsx(styles.gamechooserItem)}
-        >
-          League of legends
-        </ToggleButton>
-        <ToggleButton
-          value="Apex legends"
-          className={clsx(styles.gamechooserItem)}
-        >
-          Apex legends
-        </ToggleButton>
+        {Object.keys(categoryMapping).map((game) => (
+          <ToggleButton
+            key={game}
+            value={game}
+            className={clsx(styles.gamechooserItem)}
+          >
+            {game}
+          </ToggleButton>
+        ))}
       </ToggleButtonGroup>
 
-      <TopicList topics={topics} loading={loading} onTopicClick={handleTopicClick} />
+      <TopicList
+        topics={topics}
+        loading={loading}
+        onTopicClick={handleTopicClick}
+      />
       <CreatorScreenAfterListing />
     </div>
   );
-}
+};
+
+export default Home;
