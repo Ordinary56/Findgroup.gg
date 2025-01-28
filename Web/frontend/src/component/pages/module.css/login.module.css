@@ -1,0 +1,30 @@
+.loginForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.349);
+    width: 20%;
+    height: 400px;
+}
+.loginContainer{
+    display: flex;
+    justify-content: center;
+}
+.loginInput, .passwordInput{
+    background-color: transparent;
+    border-radius: 20px;
+    border: white 2px solid;
+    height: 20px;
+    width: 250px;
+}
+.LoginButton{
+    width: 100px;
+    height: 20px;
+    border-radius: 20px;
+    border: none;
+
+}
