@@ -1,11 +1,52 @@
 @Findgroup_Backend_HostAddress = http://localhost:5110
 
-GET {{Findgroup_Backend_HostAddress}}/todos/
+GET {{Findgroup_Backend_HostAddress}}/
 Accept: application/json
 
 ###
 
-GET {{Findgroup_Backend_HostAddress}}/todos/1
+GET {{Findgroup_Backend_HostAddress}}/
 Accept: application/json
 
+###
+
+POST {{Findgroup_Backend_HostAddress}}/api/User
+Content-Type: application/json
+{
+  "UserName" : "janedoe",
+  "Email" : "janedoe@gmail.com",
+  "Password" : "Passwd123$"
+}
+
+###
+
+PUT {{Findgroup_Backend_HostAddress}}/api/User/125e3616-3af4-44f5-922a-625a37ba80e9
+Content-Type: application/json
+
+{
+  "Id" : "125e3616-3af4-44f5-922a-625a37ba80e9",
+  "UserName" : "Modified Jane",
+  "Email" : "janedoe@gmail.com",
+  "PhoneNumber" : "+3611111111"
+ 
+}
+
+###
+
+DELETE {{Findgroup_Backend_HostAddress}}/api/User/125e3616-3af4-44f5-922a-625a37ba80e9
+Content-Type: application/json
+
+###
+
+POST {{Findgroup_Backend_HostAddress}}/api/Auth/login
+Content-Type: application/json
+{
+  "Username" : "janedoe",
+  "Password" : "Passwd123$"
+}
+###
+
+GET {{Findgroup_Backend_HostAddress}}/api/Home/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiamFuZWRvZSIsImp0aSI6Ijc0YzgyZjQ3LTZhYjItNGViYS05ODQxLTExYmIyZWFkZTg2YiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MzQxMzAzNTIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTExMCIsImF1ZCI6ImZnLmdnIn0.G4kONYolLTbGX1OyxmmGmNyMH7bNsslhm4b34cRvgt4
 ###

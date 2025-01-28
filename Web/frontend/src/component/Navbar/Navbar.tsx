@@ -25,8 +25,10 @@ const DesktopNavbar = () => {
           <div>
           <Link to={ROUTES.homepage.path}>{ROUTES.homepage.title}</Link>
           <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>
+
           <Link to={ROUTES.login.path}>{ROUTES.login.title}</Link>
           <Link to={ROUTES.register.path}>{ROUTES.register.title}</Link>
+
           </div>
       </nav>
     )
@@ -38,8 +40,10 @@ const DesktopNavbar = () => {
             <div className={styles.links}>
             <Link to={ROUTES.homepage.path}>{ROUTES.homepage.title}</Link>
             <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>
+
             <Link to={ROUTES.login.path}>{ROUTES.login.title}</Link>
             <Link to={ROUTES.register.path}>{ROUTES.register.title}</Link>
+
             </div>
         </div>
     </nav>
