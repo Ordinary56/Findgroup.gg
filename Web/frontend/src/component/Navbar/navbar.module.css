@@ -5,11 +5,12 @@
     >div{
         display: flex;
         gap: 20px;
-        background-color: rgba(255, 255, 255, 0.349);
+        background-color: rgba(19, 16, 16, 0.877);
         width: 100%;
         justify-content: center;
     }
     a {
+        font-size: 25px;
         text-transform: uppercase;
         color: white;
         height: 40px;
@@ -25,7 +26,7 @@
 }
 .logo{
     
-    background-color: rgba(255, 255, 255, 0.349);
+    background-color: rgba(19, 16, 16, 0.877);
 }
 
 /* ---- MOBILE NAVBAR ---- */
@@ -81,11 +82,14 @@
 
 /* Mobil menü */
 .mobile .links {
+    height: 300px;
+    gap: 35px;
+    font-size: 25px;
     position: absolute;
     top: 60px;
     left: 0;
-    background-color: rgb(228, 98, 98);
-    width: 200px;
+    background-color: #fc6621;
+    width: 300px;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -99,6 +103,8 @@
 
 /* Megnyitott állapot */
 .mobile .links.open {
+    left:10px;
+    border: 2px solid rgb(218, 211, 211);
     opacity: 1;
     transform: translateY(0);
     visibility: visible;
@@ -114,5 +120,7 @@
 }
 
 .mobile .links a:hover {
-    color: #ffcc00;
+    background-color: #ac593960;
+    border-radius: 20px;
+     color: #e7c32f;
 }
