@@ -65,7 +65,7 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <div className="background">
+    <div>
       <AuthProvider>
         <Router>
           <AppContent />

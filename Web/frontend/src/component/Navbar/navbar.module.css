@@ -9,44 +9,110 @@
         width: 100%;
         justify-content: center;
     }
-    a{
+    a {
         text-transform: uppercase;
         color: white;
         height: 40px;
         display: flex;
         align-items: center;
         text-decoration: none;
-        strong{
-            padding-right: 5px;
-        }
+        font-weight: bold;
+        transition: 0.3s ease-in-out;
     }
     a:hover{
         border-bottom: 2px solid white;
     }
 }
-.mobile{
-    .links{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap:10vh;
-    text-align: center;
-    min-height: 80vh;   
-    }
+.logo{
+    
+    background-color: rgba(255, 255, 255, 0.349);
 }
-.hambi{
+
+/* ---- MOBILE NAVBAR ---- */
+.mobile {
+    position: relative;
+}
+
+/* A hamburger ikon alapállapotban */
+.hambi {
+    top: 25px;
+    left: 10px;
     width: 40px;
     height: 5px;
-    background-color: rgb(255, 255, 255);
-    margin-top: 20px;
-    margin-bottom: 20px;
-
-    box-shadow: 0px 10px 0px rgb(255, 255, 255), 0px -10px 0px rgb(255, 255, 255);
+    background-color: white;
+    position: relative;
     transition: all 0.3s;
+    cursor: pointer;
+    margin: 10px;
 }
-.hambi:hover{
-    rotate: 45deg;
+
+/* Hamburger ikon animáció */
+.hambi::before,
+.hambi::after {
+    content: "";
+    width: 40px;
+    height: 5px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease-in-out;
 }
-.logo{
-    background-color: rgba(255, 255, 255, 0.349);
+
+.hambi::before {
+    top: -12px;
+}
+
+.hambi::after {
+    top: 12px;
+}
+
+/* Amikor a hamburger menü nyitva van */
+.hambi.open {
+    background-color: transparent;
+}
+
+.hambi.open::before {
+    transform: translateY(12px) rotate(45deg);
+}
+
+.hambi.open::after {
+    transform: translateY(-12px) rotate(-45deg);
+}
+
+/* Mobil menü */
+.mobile .links {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    background-color: rgb(228, 98, 98);
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease-in-out;
+    visibility: hidden;
+}
+
+/* Megnyitott állapot */
+.mobile .links.open {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+/* Menü linkek */
+.mobile .links a {
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 10px 0;
+    transition: 0.3s;
+}
+
+.mobile .links a:hover {
+    color: #ffcc00;
 }
