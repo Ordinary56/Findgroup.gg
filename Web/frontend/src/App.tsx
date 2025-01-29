@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
-import { useAuth, AuthProvider } from "./component/Guest_page/AuthContext"; // Authentication logic
+import { useAuth, AuthProvider } from "./component/Auth_Context/AuthContext"; // Authentication logic
 import Navbar from "./component/Navbar/Navbar";
 import Footer from "./component/Footer/Footer";
 import LandingPage from "./component/pages/LandingPage";
@@ -65,7 +65,7 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <div className="background">
+    <div>
       <AuthProvider>
         <Router>
           <AppContent />

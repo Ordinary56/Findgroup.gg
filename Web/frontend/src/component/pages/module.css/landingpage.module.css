@@ -4,31 +4,66 @@
     padding: 20px;
     max-width: 600px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  
   }
   
   .landingPage h1 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-bottom: 20px;
   }
   
   .landingPage p {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 30px;
   }
   
   .loginButton, .registerButton {
-    padding: 10px 20px;
+    padding: 10px 30px;
     font-size: 1.2rem;
     color: #fff;
-    background-color: #007bff;
+    background-color: #fc6621;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 300px;
   }
   
-  .loginButton:hover {
-    background-color: #0056b3;
+  .loginButton:hover, .registerButton:hover {
+    background-color: #c26209;
   }
-  
+  .buttonContainer{
+    margin-top: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  @media only screen and (max-width: 800px) {
+    
+    .landingPage{
+      margin-top: 180px;
+    }
+
+    .landingPage h1 {
+      font-size: 3.6rem;
+      margin-bottom: 60px;
+    }
+    
+    .landingPage p {
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+    }
+
+    .loginButton,.registerButton {
+      height: 60px;
+      width: 400px;
+      font-size: 25px;
+    }
+
+    .buttonContainer{
+      margin-top: 90px;
+     font-size: 25px;
+    }
+  }

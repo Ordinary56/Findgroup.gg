@@ -1,54 +1,55 @@
-import { Link } from "react-router-dom"
-import { ROUTES } from "../../App"
-import styles from "./navbar.module.css"
-import { useState } from "react"
-import Logo from "../../assets/Logo.png"
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import { ROUTES } from "../../App";
+import styles from "./navbar.module.css";
+import Logo from "../../assets/Logo.png";
 
 const Navbar = () => {
-    const [ismobile,setmobile]= useState(window.innerWidth<800)
-    
-    window.addEventListener("resize",()=>{
-        setmobile(window.innerWidth<800)
-    })
-    
-    return (
-        <>
-    {ismobile? <MobileNavbar/>:<DesktopNavbar/>}
-    </>
-  )
-}
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 800);
+  window.addEventListener("resize", () => {
+    setIsMobile(window.innerWidth < 800);
+  });
+
+  return <>{isMobile ? <MobileNavbar /> : <DesktopNavbar />}</>;
+};
 
 const DesktopNavbar = () => {
-    return (
-      <nav className={styles.desktop}>
-        <img src={Logo} alt=""  className={styles.logo}/>
-          <div>
-          <Link to={ROUTES.homepage.path}>{ROUTES.homepage.title}</Link>
-          <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>
+  return (<>
+    <nav className={styles.desktop}>
+      <img src={Logo} alt="Logo" className={styles.logo} />
+      <div>
+        <Link to={ROUTES.homepage.path}>{ROUTES.homepage.title}</Link>
+        <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>
+        <Link to={ROUTES.login.path}>{ROUTES.login.title}</Link>
+        <Link to={ROUTES.register.path}>{ROUTES.register.title}</Link>
+      </div>
+    </nav></>
+  );
+};
 
-          <Link to={ROUTES.login.path}>{ROUTES.login.title}</Link>
-          <Link to={ROUTES.register.path}>{ROUTES.register.title}</Link>
+const MobileNavbar = () => {
+  // 🔹 Itt adunk meg egyértelmű típust!
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-          </div>
-      </nav>
-    )
-  }
-  const MobileNavbar = () => {
-    return (
-        <nav className={styles.mobile}>
-        <div className={styles.hambi}>
-            <div className={styles.links}>
-            <Link to={ROUTES.homepage.path}>{ROUTES.homepage.title}</Link>
-            <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>
-
-            <Link to={ROUTES.login.path}>{ROUTES.login.title}</Link>
-            <Link to={ROUTES.register.path}>{ROUTES.register.title}</Link>
-
-            </div>
-        </div>
+  return (
+    <nav className={styles.mobile}>
+      <div className={`${styles.hambi} ${menuOpen ? styles.open : ""}`} onClick={() => setMenuOpen(!menuOpen)}></div>
+      <div className={`${styles.links} ${menuOpen ? styles.open : ""}`}>
+        <Link to={ROUTES.homepage.path} onClick={() => setMenuOpen(false)}>
+          {ROUTES.homepage.title}
+        </Link>
+        <Link to={ROUTES.crew.path} onClick={() => setMenuOpen(false)}>
+          {ROUTES.crew.title}
+        </Link>
+        <Link to={ROUTES.login.path} onClick={() => setMenuOpen(false)}>
+          {ROUTES.login.title}
+        </Link>
+        <Link to={ROUTES.register.path} onClick={() => setMenuOpen(false)}>
+          {ROUTES.register.title}
+        </Link>
+      </div>
     </nav>
-    )
-  }
+  );
+};
 
-
-export default Navbar
+export default Navbar;

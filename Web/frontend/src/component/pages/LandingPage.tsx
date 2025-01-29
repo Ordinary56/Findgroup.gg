@@ -14,19 +14,15 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className={styles.landingPage}>
-      <h1>Welcome to FindGroup</h1>
+      <h1>Welcome to FindGroup!</h1>
       <p>Discover and join groups for your favorite games!</p>
-      <button className={styles.loginButton} onClick={handleLoginClick}>
+      <div className={styles.buttonContainer}><button className={styles.loginButton} onClick={handleLoginClick}>
         Login
       </button>
-      <br />
-      <br />
-      <span>Or</span>
-      <br />
-      <br />
-      <button className={styles.registerButton} onClick={handleRegisterClick}>
+            <span>Or</span>
+              <button className={styles.registerButton} onClick={handleRegisterClick}>
         Sign Up
-      </button>
+      </button></div>
     </div>
   );
 };
