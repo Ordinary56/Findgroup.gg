@@ -1,5 +1,9 @@
-﻿using Findgroup_Backend.Helpers;
+﻿using AutoMapper;
+using Findgroup_Backend.Data.Repositories;
+using Findgroup_Backend.Helpers;
 using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs;
+using Findgroup_Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,86 +15,37 @@ namespace Findgroup_Backend.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController(
-    UserManager<User> userManager,
-    IConfiguration configuration,
-    SignInManager<User> signInManager,
-    ILogger<AuthController> logger
-    ) : ControllerBase, ITokenHandler
-{
-    private readonly UserManager<User> _userManager = userManager;
-    private readonly IConfiguration _configuration = configuration;
-    private readonly SignInManager<User> _signInManager = signInManager;
+    IUserRepository repository,
+    IAuthService authService,
+    ITokenHandler tokenHandler,
+    ILogger<AuthController> logger,
+    IMapper mapper
+    ) : ControllerBase
+{   
+    private readonly IAuthService _auth = authService;
     private readonly ILogger<AuthController> _logger = logger;
+    private readonly ITokenHandler tokenHandler = tokenHandler;
+    private readonly IMapper _mapper =  mapper;   
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginModel model)
+    public async Task<IActionResult> Login([FromBody] LoginDTO model)
     {
-        var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, true, true);
-        if (!result.Succeeded)
-        {
-            _logger.LogError("Failed to authenticate user (using: {Username} - {Password})", model.Username, model.Password);
-            return Unauthorized("Invalid Login attempt");
-        }
-        var user = await _userManager.FindByNameAsync(model.Username);
-        if (user == null)
-        {
-            _logger.LogError("User is null");
-            return Unauthorized();
-        }
-
-        var authClaims = new List<Claim>
-        {
-            new(ClaimTypes.Name, user.UserName!),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(ClaimTypes.Role, "User")
-        };
-
-        // Generate Authentication Token for user
-        var token = ITokenHandler.GenerateAccessToken(authClaims, _configuration);
-        // Generate Refresh Token for user
-        var refreshToken = ITokenHandler.GenerateRefreshToken();
-        user.RefreshToken = refreshToken;
-        // Expiry time is 1 week
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
-        // Update the user
-        await _userManager.UpdateAsync(user);
-
-        _logger.LogInformation("Successfully Authenticated user");
-        // return the tokens
-        return Ok(new
-        {
-            token = new JwtSecurityTokenHandler().WriteToken(token),
-            refreshToken
-        });
-    }
-    [HttpPost("register")]
-    public async Task<ActionResult> RegisterNewUser([FromBody] RegisterModel newUser)
-    {
-        if (newUser == null)
-        {
-            return BadRequest("User is null");
-        }
         try
         {
-            User createdUser = new()
-            {
-                UserName = newUser.Username,
-                Email = newUser.Email,
-                PhoneNumber = newUser.PhoneNumber,
-            };
-            var result = await _userManager.CreateAsync(createdUser, newUser.Password);
-            if (result.Succeeded)
-            {
-                return CreatedAtAction(nameof(UserController.GetUsers), new { Id = createdUser.Id }, newUser);
-            }
-            return BadRequest(result.Errors);
-
-
+            var result = await _auth.LoginUser(model);
+            return Ok(result);
         }
-        catch (Exception ex)
+        catch (Exception ex) 
         {
-            return StatusCode(500, "Internal Server Error" + ex.Message);
+            return StatusCode(500, ex.Message);
         }
+    }
+    [HttpPost("register")]
+    public async Task<ActionResult> RegisterNewUser([FromBody] UserDTO newUser)
+    {
+        IdentityResult result = await _auth.RegisterUser(newUser);
+        if (result.Succeeded) return CreatedAtAction(nameof(UserController.GetUsers), new {Id = newUser.Id}, newUser);
+        return StatusCode(500, "Internal Server error: " + result.Errors);
     }
     [Authorize(Roles = "User, Admin")]
     [HttpPost("logout")] 
@@ -98,12 +53,7 @@ public class AuthController(
     {
         try
         {
-            if ( User.Identity == null || !User.Identity.IsAuthenticated)
-            {
-                _logger.LogError("{currentUser}", User);
-                return Unauthorized("Unauthorized");
-            }
-            await _signInManager.SignOutAsync();
+            await _auth.LogoutUser();
             return Ok();
         }
         catch (Exception ex) 
@@ -114,18 +64,4 @@ public class AuthController(
     }
  
 
-}
-
-// DTOs
-public record LoginModel
-{
-    public string Username { get; init; } = "";
-    public string Password { get; init; } = "";
-}
-
-public sealed record RegisterModel : LoginModel
-{
-    [Required]
-    public string Email { get; init; } = "";
-    public string PhoneNumber { get; init; } = "";
 }

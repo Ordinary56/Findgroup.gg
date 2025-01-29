@@ -9,5 +9,6 @@ namespace Findgroup_Backend.Data.Repositories
         public Task CreateNewCategory(Category newCategory);
         public Task ModifyCategory(Category modifiedCategory);
         public Task DeleteCategory(int id);
+        public Task Save();
     }
 }

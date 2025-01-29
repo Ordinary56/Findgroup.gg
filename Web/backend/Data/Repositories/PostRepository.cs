@@ -53,6 +53,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         protected virtual void Dispose(bool disposing) 
         {
+            if (_disposed) return;
             if (disposing)
             {
                 _context.Dispose();
