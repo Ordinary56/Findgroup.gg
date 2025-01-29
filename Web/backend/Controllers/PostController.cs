@@ -1,4 +1,6 @@
-﻿using Findgroup_Backend.Data;
+﻿using AutoMapper;
+using Findgroup_Backend.Data;
+using Findgroup_Backend.Data.Repositories;
 using Findgroup_Backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,29 +11,24 @@ namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PostController(ApplicationDbContext context) : ControllerBase
+    public class PostController(IPostRepository repository) : ControllerBase
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly IPostRepository _repository = repository;
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult> GetPosts()
-        {
-            try
-            {
-                List<Post> posts = await _context.Posts.ToListAsync();
-                return Ok(posts);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal Server Error" + ex.Message);
-            }
+        public async IAsyncEnumerable<Post> GetPosts()
+        { 
+                await foreach (var post in _repository.GetPosts()) 
+                {
+                    yield return post;
+                }
         }
         [HttpGet("id")]
         public async Task<ActionResult> GetPost(int id)
         {
             try
             {
-                Post post = await _context.Posts.SingleAsync(p => p.Id == id);
+                Post post = await _repository.GetPostById(id);
                 return Ok(post);
             }
             catch (Exception ex)
@@ -50,8 +47,7 @@ namespace Findgroup_Backend.Controllers
             };
             try
             {
-                await _context.Posts.AddAsync(post);
-                await _context.SaveChangesAsync();
+                await _repository.CreateNewPost(post);
                 return CreatedAtAction(nameof(GetPosts), new { Id = post.Id }, post);
             }
             catch (Exception ex)
@@ -67,10 +63,9 @@ namespace Findgroup_Backend.Controllers
         {
             try
             {
-                Post? target = await _context.Posts.FindAsync(content.Id);
-                target.Content = content.Content;
-                _context.Entry(target).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                Mapper mapper = new(null);
+                Post post = mapper.Map<Post>(content);
+                await _repository.ModifyPostAsync(post);
                 return NoContent();
             }
             catch(DBConcurrencyException)

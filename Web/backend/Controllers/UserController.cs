@@ -1,4 +1,6 @@
-﻿using Findgroup_Backend.Data;
+﻿using AutoMapper;
+using Findgroup_Backend.Data;
+using Findgroup_Backend.Data.Repositories;
 using Findgroup_Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,26 +12,21 @@ namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class UserController(ApplicationDbContext context, UserManager<User> manager) : ControllerBase
+    public class UserController(IUserRepository repository) : ControllerBase
     {
-        ApplicationDbContext _context = context;
-        UserManager<User> _manager = manager;
+        private readonly IUserRepository _userRepository = repository;
         [HttpGet]
-        public async Task<ActionResult<List<IdentityUser>>> GetUsers()
+        // [Authorize(Roles = "Admin")]
+        public async IAsyncEnumerable<User> GetUsers()
         {
-            try
+            await foreach( User user in _userRepository.GetUsers())
             {
-                var users = await _context.Users.ToListAsync();
-                return Ok(users);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal Server error" + ex.Message);
+                yield return user;
             }
         }
         
         [HttpPut("{id}")]
-        public async Task<ActionResult> ModifyUser(string id, [FromBody] ModifyUserModel modifiedUser)
+        public async Task<ActionResult> ModifyUser([FromRoute] string id, [FromBody] ModifyUserModel modifiedUser)
         {
             if (id != modifiedUser.Id) 
             {
@@ -37,12 +34,9 @@ namespace Findgroup_Backend.Controllers
             }
             try
             {
-                var user = await _context.Users.FindAsync(id);
-                user.UserName = modifiedUser.Username;
-                user.Email = modifiedUser.Email;
-                user.PhoneNumber = modifiedUser.PhoneNumber;
-                _context.Entry(user).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                Mapper mapper = new(null);
+                User _mappedDTO = mapper.Map<User>(modifiedUser);
+                await _userRepository.UpdateUser(_mappedDTO);
                 return NoContent();
             }
             catch (DBConcurrencyException)
@@ -55,13 +49,11 @@ namespace Findgroup_Backend.Controllers
             }
         }
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
             try
             {
-                User user = await _context.Users.FindAsync(id);
-                _context.Entry(user).State = EntityState.Deleted;
-                await _context.SaveChangesAsync();
+                await _userRepository.DeleteUser(id);
                 return Ok();
             }
             catch (DBConcurrencyException)

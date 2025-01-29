@@ -17,7 +17,7 @@ namespace Findgroup_Backend.Data
             }
             else
             {
-                optionsBuilder.UseInMemoryDatabase(_configuration.GetConnectionString("DevelopmentDB"));
+                optionsBuilder.UseInMemoryDatabase(_configuration["ConnectionStrings:DevelopmentDB"]);
             }
         }
 
