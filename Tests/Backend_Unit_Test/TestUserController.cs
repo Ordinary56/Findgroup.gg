@@ -1,52 +1,70 @@
-﻿using Findgroup_Backend.Controllers;
+﻿using AutoMapper;
+using Findgroup_Backend.Controllers;
 using Findgroup_Backend.Data;
+using Findgroup_Backend.Data.Repositories;
 using Findgroup_Backend.Models;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Moq;
-using System.Net;
-using MockFactory = Backend_Unit_Test.Mocks.MockFactory;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Backend_Unit_Test;
 public class TestUserController
 {
-    private readonly Mock<UserManager<IdentityUser>> _userManagerMock;
-    private readonly Mock<ApplicationDbContext> _mockDbContext;
-
+    private readonly Mock<IUserRepository> _mockUserRepo;
+    private readonly Mock<IMapper> _mockMapper;
+    private UserController _controller;
     public TestUserController()
     {
-
-        _userManagerMock = MockFactory.MockUserManager<IdentityUser>();
-        var mockConfig = new Mock<IConfiguration>();
-        mockConfig.Setup(x => x["ConnectionStrings:DevelopmentDB"]).Returns("testDataBase");
-        var mockEnv = new Mock<IWebHostEnvironment>();
-        mockEnv.Setup(x => x.EnvironmentName).Returns("Development");
-        _mockDbContext = new(mockConfig.Object, mockEnv.Object);
+        _mockUserRepo = new Mock<IUserRepository>();
+        _mockMapper = new Mock<IMapper>();
+        _controller = new(_mockUserRepo.Object, _mockMapper.Object);
     }
     [Fact]
     public async Task Test_GetUsers_Returns_Ok()
     {
         // TODO: Arrange the mocked db and userManager here
         // Arrange
-        var UserSet = MockFactory.CreateMockSet<User>([
-            new(){
-                UserName = "Test",
-            },
-            new() {UserName = "Test1"}
-            ]);
-        _mockDbContext.Setup(m => m.Users).Returns(UserSet.Object);
-        UserController controller = new(_mockDbContext.Object, manager: _userManagerMock.Object);
+        List<User> Users = [
+            new() {UserName = "Asd" },
+            new() {UserName = "Asd1"}
+            ];
+        var asyncUsers = Users.ToAsyncEnumerable();
+        _mockUserRepo.Setup(service => service.GetUsers()).Returns(asyncUsers);
+        
+
         // Act
-        var result = await controller.GetUsers();
+        IAsyncEnumerable<User> result = _controller.GetUsers();
+        var resultList = await result.ToListAsync();
+
         // Assert
-        Assert.Equal(200, (result.Result as ObjectResult).StatusCode);
-        Assert.NotNull(result);
+        Assert.NotNull(resultList);
+        Assert.NotEmpty(resultList);
+        Assert.Equal(2, resultList.Count);
+    }
+
+    [Theory]
+    [InlineData("1")]
+    [InlineData("2")]
+    [InlineData("3")]
+    public async Task Test_Get_User_Id_Returns_User(string id)
+    {
+
+        // Act
+        List<User> users = [
+            new(){Id = "1", UserName = "Asd"},
+            new() {Id = "2", UserName = "Asd1"},
+            new() {Id = "3", UserName = "Asd2"}
+            ];
+        _mockUserRepo.Setup(service => service.GetUserById(It.IsAny<string>()))
+            .Returns(async (string i) =>
+            {
+                await Task.Delay(1);
+                return users.First(u => u.Id == i);
+            });
+        var result = await _controller.GetUserById(id);
+        var resultType = Assert.IsType<OkObjectResult>(result.Result);
+        Assert.IsType<User>(resultType.Value);
+        Assert.NotNull(resultType.Value);
+
     }
 
 }
