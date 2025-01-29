@@ -1,5 +1,8 @@
-﻿using Findgroup_Backend.Data;
+﻿using AutoMapper;
+using Findgroup_Backend.Data;
+using Findgroup_Backend.Data.Repositories;
 using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,21 +12,17 @@ namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PostController(ApplicationDbContext context) : ControllerBase
+    public class PostController(IPostRepository repository, IMapper mapper) : ControllerBase
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly IPostRepository _repository = repository;
+        private readonly IMapper _mapper = mapper;
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<ActionResult> GetPosts()
+        public async IAsyncEnumerable<Post> GetPosts()
         {
-            try
+            await foreach (var post in _repository.GetPosts())
             {
-                List<Post> posts = await _context.Posts.ToListAsync();
-                return Ok(posts);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal Server Error" + ex.Message);
+                yield return post;
             }
         }
         [HttpGet("id")]
@@ -31,7 +30,7 @@ namespace Findgroup_Backend.Controllers
         {
             try
             {
-                Post post = await _context.Posts.SingleAsync(p => p.Id == id);
+                Post post = await _repository.GetPostById(id);
                 return Ok(post);
             }
             catch (Exception ex)
@@ -41,17 +40,12 @@ namespace Findgroup_Backend.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> CreateNewPost([FromBody] PostModel postDTO)
+        public async Task<ActionResult> CreateNewPost([FromBody] PostDTO postDTO)
         {
-            Post post = new()
-            {
-                Content = postDTO.Content,
-                UserId = postDTO.UserId
-            };
             try
             {
-                await _context.Posts.AddAsync(post);
-                await _context.SaveChangesAsync();
+                Post post = _mapper.Map<Post>(postDTO);
+                await _repository.CreateNewPost(post);
                 return CreatedAtAction(nameof(GetPosts), new { Id = post.Id }, post);
             }
             catch (Exception ex)
@@ -63,24 +57,23 @@ namespace Findgroup_Backend.Controllers
 
         [Authorize]
         [HttpPatch]
-        public async Task<ActionResult> ModifyPost([FromBody] ModifyPostModel content)
+        public async Task<ActionResult> ModifyPost([FromBody] PostDTO content)
         {
             try
             {
-                Post? target = await _context.Posts.FindAsync(content.Id);
-                target.Content = content.Content;
-                _context.Entry(target).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                Post post = _mapper.Map<Post>(content);
+                await _repository.ModifyPostAsync(post);
                 return NoContent();
             }
-            catch(DBConcurrencyException)
+            catch (DBConcurrencyException)
             {
                 return NotFound();
             }
+            catch (Exception ex) 
+            {
+                return StatusCode(500,"Internal Server error: " + ex.Message);
+            }
         }
-        public record UserModel(string Id);
-        public record PostModel(string Content, string UserId);
-        public record ModifyPostModel(string Content, int Id);
     }
 
 }
