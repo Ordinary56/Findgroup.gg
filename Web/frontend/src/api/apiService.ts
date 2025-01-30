@@ -1,189 +1,91 @@
-const API_BASE_URL = "http://localhost:5000/api";
-
-type Topic = {
-  id: number;
+import axiosInstance from "./axiosInstance";
+type PostDTO = {
+  id?: number; // Optional for creation
   title: string;
-  createdate: string;
-  user_id: number;
-  category_id: number;
+  content: string;
+  // Add other fields as necessary
 };
-type Member = {
-  id: string; // Ez az IdentityUser.Id
-  userName: string; // Ez az IdentityUser.UserName
-  email: string; // Ez az IdentityUser.Email
-  phoneNumber?: string; // Ez az IdentityUser.PhoneNumber (opcionális)
+type Category = {
+  id: number;
+  name: string;
+  description: string;
 };
-
 type ApiUser = {
   id: string;
   userName: string;
   email: string;
-  phoneNumber?: string;
 };
-
-
 export const apiService = {
-  // Token kezelés
-  setToken: (token: string) => {
-    localStorage.setItem("accessToken", token);
-  },
-  getToken: (): string | null => {
-    return localStorage.getItem("accessToken");
-  },
-  setRefreshToken: (token: string) => {
-    localStorage.setItem("refreshToken", token);
-  },
-  getRefreshToken: (): string | null => {
-    return localStorage.getItem("refreshToken");
-  },
+  // ✅ Token kezelés
+  setToken: (token: string) => localStorage.setItem("accessToken", token),
+  getToken: (): string | null => localStorage.getItem("accessToken"),
+  setRefreshToken: (token: string) => localStorage.setItem("refreshToken", token),
+  getRefreshToken: (): string | null => localStorage.getItem("refreshToken"),
   clearTokens: () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
   },
 
-  // Bejelentkezés
+  // ✅ Bejelentkezés
   login: async (username: string, password: string): Promise<void> => {
-    const response = await fetch(`${API_BASE_URL}/Auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Login Failed");
-    }
-
-    const data = await response.json();
+    const { data } = await axiosInstance.post("/Auth/login", { username, password });
     apiService.setToken(data.token);
     apiService.setRefreshToken(data.refreshToken);
   },
 
-  // Regisztráció
-  register: async (username: string, password: string, email?: string): Promise<void> => {
-    const response = await fetch(`${API_BASE_URL}/Auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password, email }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Registration failed");
-    }
-  },
-  // Témák lekérés
-
-  
-  fetchTopicsByCategory: async (categoryId: number): Promise<Topic[]> => {
-    const response = await apiService.fetchWithAuth(
-      `/Topic/topicsByCategory?categoryId=${categoryId}`
-    );
-  
-    if (!response.ok) {
-      throw new Error("An error occurred while retrieving topics.");
-    }
-  
-    return await response.json();
-  },
-  fetchTopicById: async (id: number) => {
+  // ✅ Kijelentkezés (Logout)
+  logout: async (): Promise<void> => {
     try {
-      const response = await fetch(`/api/topics/${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiService.getToken()}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch topic details");
-      }
-
-      return await response.json();
+      await axiosInstance.post("/Auth/logout");
     } catch (error) {
-      console.error("Error in fetchTopicById:", error);
-      throw error;
+      console.error("Logout error:", error);
+    } finally {
+      apiService.clearTokens();
+      window.location.href = "/login"; // Átirányítás bejelentkezési oldalra
     }
   },
-  
-  async fetchMembers(): Promise<Member[]> {
-    const response = await fetch("/api/User"); // Az API végpontja
-    if (!response.ok) {
-      throw new Error("Failed to fetch members");
-    }
 
-    // Adatok típusa ApiUser[], ez biztosítja a map metódus helyes működését
-    const users: ApiUser[] = await response.json();
-
-    return users.map((user) => ({
-      id: user.id,
-      userName: user.userName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-    }));
+  // ✅ Regisztráció
+  register: async (username: string, password: string, email?: string): Promise<void> => {
+    await axiosInstance.post("/Auth/register", { username, password, email });
+  },
+  // ✅ Kategóriák lekérése
+  getCategories: async (): Promise<Category[]> => {
+    const { data } = await axiosInstance.get("/Category");
+    return data;
   },
 
-  // Token frissítés
-  refreshToken: async (): Promise<void> => {
-    const refreshToken = apiService.getRefreshToken();
-    if (!refreshToken) {
-      throw new Error("No refresh token available");
-    }
-
-    const response = await fetch(`${API_BASE_URL}/RefreshToken/refresh`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token: refreshToken }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Token update error");
-    }
-
-    const data = await response.json();
-    apiService.setToken(data.token);
-    apiService.setRefreshToken(data.refreshToken);
+  // ✅ Felhasználói profil lekérése (JAVÍTVA: nincs szóköz a névben)
+  getUserProfile: async (): Promise<ApiUser> => { // Szóköz eltávolítva
+    const { data } = await axiosInstance.get("/Auth/profile");
+    return data;
   },
 
-  // API hívások
-  fetchWithAuth: async (endpoint: string, options: RequestInit = {}): Promise<Response> => {
-    const token = apiService.getToken();
+  /*
+  loginWithGoogle: async (googleToken: string): Promise<void> => {
+    await axiosInstance.post("/Auth/google", { token: googleToken });
+  },
+  */
+   // ✅ Get all posts
+   getPosts: async (): Promise<PostDTO[]> => {
+    const { data } = await axiosInstance.get("/Post");
+    return data;
+  },
 
-    const headers = new Headers(options.headers);
-    if (token) {
-      headers.append("Authorization", `Bearer ${token}`);
-    }
+  // ✅ Get a single post by ID
+  getPost: async (id: number): Promise<PostDTO> => {
+    const { data } = await axiosInstance.get(`/Post/${id}`);
+    return data;
+  },
 
-    let response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      ...options,
-      headers,
-    });
+  // ✅ Create a new post
+  createPost: async (postDTO: PostDTO): Promise<PostDTO> => {
+    const { data } = await axiosInstance.post("/Post", postDTO);
+    return data;
+  },
 
-    // Ha a token lejárt, próbáljuk frissíteni
-    if (response.status === 401) {
-      try {
-        await apiService.refreshToken();
-        const newToken = apiService.getToken();
-
-        // Ismételt kérés az új tokennel
-        headers.set("Authorization", `Bearer ${newToken}`);
-        response = await fetch(`${API_BASE_URL}${endpoint}`, {
-          ...options,
-          headers,
-        });
-      } catch (error) {
-        apiService.clearTokens();
-        console.error(error);
-        throw new Error("Token update failed. Log in again.");
-      }
-    }
-
-    return response;
+  // ✅ Modify an existing post
+  modifyPost: async (postDTO: PostDTO): Promise<void> => {
+    await axiosInstance.patch(`/Post`, postDTO);
   },
 };

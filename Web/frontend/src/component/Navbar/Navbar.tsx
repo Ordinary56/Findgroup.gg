@@ -3,7 +3,12 @@ import { useState } from "react";
 import { ROUTES } from "../../App";
 import styles from "./navbar.module.css";
 import Logo from "../../assets/Logo.png";
+import { apiService } from "../../api/apiService";
 
+
+const handleLogout = () => {
+  apiService.logout();
+};
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 800);
   window.addEventListener("resize", () => {
@@ -24,6 +29,7 @@ const DesktopNavbar = () => {
         <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>
         <Link to={ROUTES.login.path}>{ROUTES.login.title}</Link>
         <Link to={ROUTES.register.path}>{ROUTES.register.title}</Link>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </nav></>
   );
@@ -49,6 +55,7 @@ const MobileNavbar = () => {
         <Link to={ROUTES.register.path} onClick={() => setMenuOpen(false)}>
           {ROUTES.register.title}
         </Link>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </nav>
   );
