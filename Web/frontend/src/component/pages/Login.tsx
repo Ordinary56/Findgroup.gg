@@ -14,11 +14,11 @@ const LoginPage: React.FC = () => {
     setError(null); // Reset error state before attempting login
     try {
       await apiService.login(username, password);
-      alert("Sikeres bejelentkezés!");
+      alert("Login succesful!");
       navigate("/"); // Redirect to the homepage on successful login
     } catch (err) {
-      console.error("Bejelentkezés sikertelen:", err);
-      setError("Bejelentkezés sikertelen! Kérjük, ellenőrizd az adataidat.");
+      console.error("Login failed:", err);
+      setError("Login failed! Please try again.");
     }
   };
 

@@ -34,6 +34,7 @@ const RegisterPage: React.FC = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
+          placeholder="Enter a username"
         />
       </div>
       <div>
@@ -42,6 +43,8 @@ const RegisterPage: React.FC = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
+           placeholder="Enter an email"
         />
       </div>
       <div>
@@ -51,6 +54,7 @@ const RegisterPage: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+           placeholder="Enter a password"
         />
       </div>
       <button type="submit" className={styles.registerButton}>Regisztráció</button>
