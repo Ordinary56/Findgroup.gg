@@ -59,6 +59,7 @@
 /* ---- MOBILE NAVBAR ---- */
 .mobile {
     position: relative;
+    font-family: 'Times New Roman';
 }
 
 /* A hamburger ikon alapállapotban */
@@ -139,7 +140,7 @@
 
 
 /* Menü linkek */
-.mobile .links a {
+.mobile .links a ,  .buttonstyle{
     color: white;
     text-transform: uppercase;
     text-decoration: none;
@@ -147,7 +148,7 @@
     transition: 0.3s;
 }
 
-.mobile .links a:hover {
+.mobile .links a:hover, .buttonstyle:hover {
     background-color: #ac593960;
     border-radius: 20px;
      color: #e7c32f;
