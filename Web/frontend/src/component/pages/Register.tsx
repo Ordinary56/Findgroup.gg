@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { apiService } from "../../api/apiService";
 import styles from "./module.css/register.module.css";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../App";
 
 const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -57,7 +59,10 @@ const RegisterPage: React.FC = () => {
            placeholder="Enter a password"
         />
       </div>
-      <button type="submit" className={styles.registerButton}>Regisztráció</button>
+      <button type="submit" className={styles.registerButton}>Register</button>
+      <div>Already have an account?
+      <Link to={ROUTES.login.path}> Log in!</Link>
+      </div> 
       {success && <p style={{ color: "green" }}>{success}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
     </form></div>

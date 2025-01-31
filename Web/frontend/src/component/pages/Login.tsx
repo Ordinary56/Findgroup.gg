@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiService } from "../../api/apiService";
 import styles from "./module.css/login.module.css";
+import { ROUTES } from "../../App";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");
@@ -51,6 +52,9 @@ const LoginPage: React.FC = () => {
         <button type="submit" className={styles.LoginButton}>
           Login
         </button>
+        <div>Don't have an account?
+      <Link to={ROUTES.register.path}> Register now!</Link>
+      </div>   
         {error && <p className={styles.errorMessage}>{error}</p>}
       </form>
     </div>

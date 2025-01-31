@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import TopicList from "../List/List";
 import { apiService } from "../../api/apiService";
-import styles from "./module.css/home.module.css";
+import homeStyles from "../pages/module.css/home.module.css"
 import clsx from "clsx";
 import CreatorScreenAfterListing from "./CreatorScreenAfterListnig";
 
@@ -42,8 +41,12 @@ const Home: React.FC = () => {
       setLoading(true);
       try {
         const categoryId = categoryMapping[selectedGame];
-        const topicsData = await apiService.fetchTopicsByCategory(categoryId);
-        setTopics(topicsData);
+        if (categoryId) {
+          const topicsData = await apiService.fetchTopicsByCategory(categoryId);
+          setTopics(topicsData);
+        } else {
+          setTopics([]); // Ha nincs megfelelő kategória, ürítsük a listát
+        }
       } catch (error) {
         console.error("Error fetching topics:", error);
       } finally {
@@ -55,9 +58,9 @@ const Home: React.FC = () => {
   }, [selectedGame]);
 
   return (
-    <div className={clsx(styles.container)}>
+    <div className={clsx(homeStyles.container)}>
       <ToggleButtonGroup
-        className={clsx(styles.gamechooser)}
+        className={clsx(homeStyles.gamechooser)}
         value={selectedGame}
         exclusive
         onChange={handleGameChange}
@@ -66,21 +69,16 @@ const Home: React.FC = () => {
           <ToggleButton
             key={game}
             value={game}
-            className={clsx(styles.gamechooserItem)}
+            className={clsx(homeStyles.gamechooserItem)}
           >
             {game}
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
 
-      <TopicList
-        topics={topics}
-        loading={loading}
-        onTopicClick={handleTopicClick}
-      />
+      <TopicList topics={topics} loading={loading} onTopicClick={handleTopicClick} />
       <CreatorScreenAfterListing />
     </div>
-
   );
 };
 

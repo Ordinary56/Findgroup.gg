@@ -13,32 +13,42 @@ type Topic = {
 };
 
 const TopicDetails: React.FC = () => {
-  const { topicId } = useParams<{ topicId: string }>();
+  const { topicId } = useParams<{ topicId?: string }>(); // Biztosítjuk, hogy topicId optional legyen
   const [topic, setTopic] = useState<Topic | null>(null);
-  const [selectedTab, setSelectedTab] = useState<"details" | "members">("details"); // Új állapot a tabok kezelésére
+  const [selectedTab, setSelectedTab] = useState<"details" | "members">("details");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTopicDetails = async () => {
+      if (!topicId) return; // Ha nincs topicId, ne próbáljon fetch-elni
+
+      setLoading(true);
+      setError(null);
+
       try {
-        const topicData = await apiService.fetchTopicById(Number(topicId));
+        const topicData = await apiService.getTopicById(Number(topicId)); // Új API metódus
         setTopic(topicData);
-      } catch (error) {
-        console.error("Error fetching topic details:", error);
+      } catch (err) {
+        setError("Error fetching topic details. Please try again.");
+        console.error("Error fetching topic details:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTopicDetails();
   }, [topicId]);
 
-  if (!topic) {
-    return <p>Loading...</p>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className={styles.error}>{error}</p>;
+  if (!topic) return <p>No topic found.</p>;
 
   return (
     <div>
       <BackToHomeButton />
       <h1>{topic.title}</h1>
-      
+
       <div>
         {/* Gombok, amik váltják a tabokat */}
         <button onClick={() => setSelectedTab("details")}>Details</button>
@@ -48,19 +58,15 @@ const TopicDetails: React.FC = () => {
       {/* A kiválasztott tab alapján jelennek meg a tartalmak */}
       {selectedTab === "details" && (
         <div>
-          <div>
           <div className={styles.tags}></div>
           <div className={styles.description}></div>
-          </div>
         </div>
       )}
 
       {selectedTab === "members" && (
         <div>
-          <div>
           {/* Itt később a tagok listáját lehet megjeleníteni */}
           <p>List of Members (to be implemented)</p>
-          </div>
         </div>
       )}
     </div>

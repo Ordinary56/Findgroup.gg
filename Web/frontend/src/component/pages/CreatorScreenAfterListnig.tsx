@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { apiService } from "../../api/apiService";
-import styles from "./module.css/creatorscreenafterlisting.module.css"
+import styles from "./module.css/creatorscreenafterlisting.module.css";
 import BackToHomeButton from "../Back_To_Home_Button/Back_to_Home";
+import { Member } from "../../api/apiService";
 
-type Member = {
-  id: string;
-  userName: string;
-  email: string;
-  phoneNumber?: string;
-};
+
 
 const CreatorScreenAfterListing: React.FC = () => {
   const [members, setMembers] = useState<Member[]>([]);
@@ -17,13 +13,15 @@ const CreatorScreenAfterListing: React.FC = () => {
 
   useEffect(() => {
     const fetchMembers = async () => {
+      setLoading(true);
+      setError(null);
+
       try {
-        setLoading(true);
-        const data = await apiService.fetchMembers();
+        const data = await apiService.getMembers(); // API hívás az új metódussal
         setMembers(data);
       } catch (err) {
         setError("Failed to fetch members. Please try again.");
-        console.error(err);
+        console.error("Error fetching members:", err);
       } finally {
         setLoading(false);
       }
@@ -32,24 +30,23 @@ const CreatorScreenAfterListing: React.FC = () => {
     fetchMembers();
   }, []);
 
-  if (loading) {
-    return <p>Loading members...</p>;
-  }
-
-  if (error) {
-    return <p className={styles.error}>{error}</p>;
-  }
+  if (loading) return <p>Loading members...</p>;
+  if (error) return <p className={styles.error}>{error}</p>;
 
   return (
     <div>
       <div className={styles.memberContainer}>
-        {members.map((member) => (
-          <div key={member.id} className={styles.memberCard}>
-            <p><strong>{member.userName}</strong></p>
-            <p>Email: {member.email}</p>
-            {member.phoneNumber && <p>Phone: {member.phoneNumber}</p>}
-          </div>
-        ))}
+        {members.length > 0 ? (
+          members.map((member) => (
+            <div key={member.id} className={styles.memberCard}>
+              <p><strong>{member.userName}</strong></p>
+              <p>Email: {member.email}</p>
+              {member.phoneNumber && <p>Phone: {member.phoneNumber}</p>}
+            </div>
+          ))
+        ) : (
+          <p>No members found.</p>
+        )}
       </div>
 
       <div>
