@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "logoutbutton.module.css"
+
 
 const LogoutButton: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -40,7 +40,6 @@ const LogoutButton: React.FC = () => {
       <button
         onClick={handleLogout}
         disabled={loading}
-        className={styles.buttonstyle}
       >
         {loading ? "Logging out..." : "Logout"}
       </button>

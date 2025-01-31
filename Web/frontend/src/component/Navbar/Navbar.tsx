@@ -6,6 +6,7 @@ import Logo from "../../assets/Logo.png";
 import { apiService } from "../../api/apiService";
 
 
+
 const handleLogout = () => {
   apiService.logout();
 };
@@ -29,7 +30,7 @@ const DesktopNavbar = () => {
         <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>
         <Link to={ROUTES.login.path}>{ROUTES.login.title}</Link>
         <Link to={ROUTES.register.path}>{ROUTES.register.title}</Link>
-        <button onClick={handleLogout}>Logout</button>
+        <button className={styles.buttonstyle} onClick={handleLogout}>Logout</button>
       </div>
     </nav></>
   );
