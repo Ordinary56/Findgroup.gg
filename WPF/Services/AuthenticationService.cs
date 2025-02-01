@@ -63,8 +63,10 @@ namespace WPF.Services
                 var tokens = await JsonSerializer.DeserializeAsync<(string token, string refreshToken)>(stream);
                 user.AuthenticationToken = tokens.token;
                 user.RefreshToken = tokens.refreshToken;
-                _storage.SaveData("saved");
+                _storage.SaveData("saved", user.SerializeData());
             }
+            catch { }
+           
         }
     }
 }
