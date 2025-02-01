@@ -66,7 +66,6 @@ namespace WPF.Services
                 _storage.SaveData("saved", user.SerializeData());
             }
             catch { }
-           
         }
     }
 }
