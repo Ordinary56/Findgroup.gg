@@ -8,15 +8,22 @@
     border-radius: 5px;
     background-color: rgba(87, 80, 80, 0.349);
     width: 30%;
-    height: 400px;
-  
+    height: 500px;
+    a{
+        text-decoration: none;
+        color: #fc6621;
+    }
+    a:hover{
+        color: #f7d2c4;
+        text-decoration: underline;
+    }
 }
 label{
     font-size: 20px;
     padding-right: 10px;
 }
 .registerContainer{
-    margin-top: 20vh;
+    margin-top: 15vh;
     display: flex;
     justify-content: center;
 }

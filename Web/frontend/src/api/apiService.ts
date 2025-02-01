@@ -5,6 +5,19 @@ type PostDTO = {
   content: string;
   // Add other fields as necessary
 };
+export type Member = {
+  id: string;
+  userName: string;
+  email: string;
+  phoneNumber?: string;
+};
+type Topic = {
+  id: number;
+  title: string;
+  createdate: string;
+  user_id: number;
+  category_id: number;
+};
 type Category = {
   id: number;
   name: string;
@@ -54,6 +67,23 @@ export const apiService = {
     const { data } = await axiosInstance.get("/Category");
     return data;
   },
+
+ //TODO : Change this to the actual thing that we will use
+
+    // ✅ Témák lekérése adott kategória alapján
+    fetchTopicsByCategory: async (categoryId: number): Promise<Topic[]> => {
+      const { data } = await axiosInstance.get(`/Topic?categoryId=${categoryId}`);
+      return data;
+    },
+    getMembers: async (): Promise<Member[]> => {
+      const { data } = await axiosInstance.get("/User"); 
+      return data;
+    },  getTopicById: async (id: number): Promise<Topic> => {
+      const { data } = await axiosInstance.get(`/Topic/${id}`);
+      return data;
+    },
+    //ENDOFTODO
+
 
   // ✅ Felhasználói profil lekérése (JAVÍTVA: nincs szóköz a névben)
   getUserProfile: async (): Promise<ApiUser> => { // Szóköz eltávolítva

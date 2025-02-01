@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     position: relative;
+    font-family: 'Times New Roman';
     
     >div{
         height: 70px;
@@ -11,7 +12,7 @@
         width: 100%;
         justify-content: center;
     }
-    a {
+    a , .buttonstyle {
         font-size: 25px;
         text-transform: uppercase;
         color: white;
@@ -27,10 +28,22 @@
 }
 .links{
    
-    a:hover{
+    a:hover,.buttonstyle:hover{
         border-bottom: 2px solid white;
+        cursor: pointer;
     }
 }
+
+.buttonstyle{
+    font-family: 'Times New Roman';
+    font-size: 25px;
+    background-color: transparent;
+    border: none;
+}
+
+    
+
+
 .logo{
     position: absolute;
     left: 20px; 
@@ -46,6 +59,7 @@
 /* ---- MOBILE NAVBAR ---- */
 .mobile {
     position: relative;
+    font-family: 'Times New Roman';
 }
 
 /* A hamburger ikon alapállapotban */
@@ -124,8 +138,9 @@
     visibility: visible;
 }
 
+
 /* Menü linkek */
-.mobile .links a {
+.mobile .links a ,  .buttonstyle{
     color: white;
     text-transform: uppercase;
     text-decoration: none;
@@ -133,7 +148,7 @@
     transition: 0.3s;
 }
 
-.mobile .links a:hover {
+.mobile .links a:hover, .buttonstyle:hover {
     background-color: #ac593960;
     border-radius: 20px;
      color: #e7c32f;
