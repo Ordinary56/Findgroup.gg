@@ -21,7 +21,7 @@ public class Program
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
+        }).AddCookie()
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new()
@@ -34,6 +34,10 @@ public class Program
                     ValidAudience = jwtSettings["Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
+            }).AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["Google:ClientId"];
+                options.ClientSecret = builder.Configuration["Google:Secret"];
             });
         builder.Services.AddAuthorization();
         builder.Services.AddScoped<IUserRepository, UserRepository>();

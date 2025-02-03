@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Findgroup_Backend.Models
 {
@@ -6,12 +7,14 @@ namespace Findgroup_Backend.Models
     {
         [Key]
         public Guid Id { get; set; }
-        [Required]
-        public required string Token { get; set; }   
-        [Required]
-        public Guid UserId { get; set; }
+        [Required, MaxLength(200)]
+        public required string TokenHash { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public string? UserId { get; set; }
         public DateTime ExpiresOnUTC { get; set; }
-        public required User User { get; set; }
+        public User? User { get; set; }
+
+        public bool IsRevoked => DateTime.UtcNow >= ExpiresOnUTC;
 
     }
 }
