@@ -8,11 +8,11 @@ using System.Security.Claims;
 
 namespace Findgroup_Backend.Services
 {
-    public class AuthService(SignInManager<User> signInManager, UserManager<User> userManager, ITokenHandler handler) : IAuthService
+    public class AuthService(SignInManager<User> signInManager, UserManager<User> userManager, ITokenService service) : IAuthService
     {
         private readonly SignInManager<User> _signInManager = signInManager;
         private readonly UserManager<User> _userManager = userManager;
-        private readonly ITokenHandler _tokenHandler = handler;
+        private readonly ITokenService _token = service;
         public async Task<AuthResult> LoginUser(LoginDTO credentials)
         {
             var result = await _signInManager.PasswordSignInAsync(credentials.Username, credentials.Password, true, true);
@@ -20,23 +20,16 @@ namespace Findgroup_Backend.Services
             {
                 throw new AuthenticationFailureException($"Failed to Authenticate User");
             }
-            var user = await _userManager.FindByNameAsync(credentials.Username) ?? throw new AuthenticationFailureException("Requested User is null");
-            List<Claim> authClaims = new()
-            {
-                new(ClaimTypes.Name, user.UserName!),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString() ),
-                new(ClaimTypes.NameIdentifier, user.Id)
-            };
-            var roles = await _userManager.GetRolesAsync(user);
-            foreach (string role in roles) authClaims.Add(new(ClaimTypes.Role, role));
-            var token = _tokenHandler.GenerateAccessToken(authClaims);
-            var refreshToken = _tokenHandler.GenerateRefreshToken();
+            var user = await _userManager.FindByNameAsync(credentials.Username) ?? 
+                throw new AuthenticationFailureException("Requested User is null");
+            var token = await _token.GenerateAccessToken(user);
+            var refreshToken = _token.GenerateRefreshToken();
             user.RefreshToken = refreshToken;
             await _userManager.UpdateAsync(user);
             return new AuthResult() 
             {
-                Token = new JwtSecurityTokenHandler().WriteToken(token),
-                RefreshToken = refreshToken
+                Token = token,
+                RefreshToken = refreshToken.TokenHash
             };
         }
 
