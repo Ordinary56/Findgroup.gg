@@ -3,7 +3,7 @@ import BackToHomeButton from "../Back_To_Home_Button/Back_to_Home";
 
 const CreateGroup = () => {
   return (
-     <div>
+     <div className={styles.main}>
       <BackToHomeButton />
       <div className={styles.details_inputs}>
         <form>
@@ -17,17 +17,18 @@ const CreateGroup = () => {
           </select>
         </form>
       </div>
-      <div>
-        <div className={styles.very_basic_details}>
-          <h3></h3>
-          <h3></h3><span></span>
+      <div className={styles.very_basic_details}>
+        <div className={styles.title_and_team_size}>
+          <h1 className={styles.title}>a</h1>
+          <h3 className={styles.creatorname}>b</h3>
+          <span className={styles.team_size}>10</span>
         </div>
         <div className={styles.tags}>
-          <div></div>
+          <div>asd</div>
         </div>
-        <div className={styles.description}></div>
+        <div className={styles.description}>masik</div>
       </div>
-      <button>Create Listing</button>
+      <button className={styles.create_listing}>Create Listing</button>
     </div>
   )
 }

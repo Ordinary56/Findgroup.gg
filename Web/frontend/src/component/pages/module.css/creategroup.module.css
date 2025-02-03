@@ -1,0 +1,55 @@
+.details_inputs {
+    form {
+        margin-top: 15vh;
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+
+        input,
+        select {
+            height: 50px;
+            width: 300px;
+            background-color: #fc6621;
+        }
+    }
+}
+
+.very_basic_details {
+    padding: 10px;
+    position: absolute;
+    right: 100px;
+    bottom: 100px;
+    height: 500px;
+    width: 1000px;
+    background-color: rgba(191, 227, 227, 0.358);
+}
+
+.create_listing {
+    position: absolute;
+    right: 5px;
+    bottom: 55px;
+}
+.title_and_team_size{
+    display: flex; 
+    margin-top: 30px;
+    gap: 10px;
+}
+.title{
+position: absolute;
+top: -25px;
+
+}
+.creatorname,.team_size{
+position: absolute;
+
+}
+.team_size{
+right: 10px;
+}
+.tags{
+    margin-top: 50px;
+}
+.description{
+    margin-top: 20px;
+}
