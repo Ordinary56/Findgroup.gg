@@ -59,22 +59,25 @@ const Home: React.FC = () => {
 
   return (
     <div className={clsx(homeStyles.container)}>
-      <ToggleButtonGroup
-        className={clsx(homeStyles.gamechooser)}
-        value={selectedGame}
-        exclusive
-        onChange={handleGameChange}
-      >
-        {Object.keys(categoryMapping).map((game) => (
-          <ToggleButton
-            key={game}
-            value={game}
-            className={clsx(homeStyles.gamechooserItem)}
-          >
-            {game}
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
+     <ToggleButtonGroup
+      className={clsx(homeStyles.gamechooser)}
+      value={selectedGame}
+      exclusive
+      onChange={handleGameChange}
+    >
+      {Object.keys(categoryMapping).map((game) => (
+        <ToggleButton
+          key={game}
+          value={game}
+          className={clsx(
+            homeStyles.gamechooserItem,
+            selectedGame !== game && homeStyles.untoggled // feltételes osztály
+          )}
+        >
+          {game}
+        </ToggleButton>
+      ))}
+    </ToggleButtonGroup>
 
       <TopicList topics={topics} loading={loading} onTopicClick={handleTopicClick} />
       <CreatorScreenAfterListing />

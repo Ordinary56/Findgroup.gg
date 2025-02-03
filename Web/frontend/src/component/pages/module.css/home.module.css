@@ -9,8 +9,12 @@
 .gamechooserItem {
   padding: 10px !important;
   cursor: pointer !important;
-  background-color: lightgray !important;
+  background-color: #fc6621 !important;
   border-radius: 5px !important;
   transition: border 0.3s ease !important;
-  border: 2px solid white !important;
+  border: 1px solid white !important;
+}
+
+.untoggled {
+  background-color: #936438!important;
 }
