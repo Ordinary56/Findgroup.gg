@@ -59,5 +59,10 @@ namespace Findgroup_Backend.Services
                 ExpiresOnUTC = DateTime.UtcNow.AddDays(7)
             };
         }
+
+        public bool IsTokenExpired(RefreshToken refreshToken)
+        {
+            return refreshToken.IsRevoked == true && refreshToken.ExpiresOnUTC <= DateTime.UtcNow;
+        }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Findgroup_Backend.Data.Repositories
 {
-    public interface ITokenService
+    public interface ITokenRepository
     {
-        public Task<RefreshToken> GetStoredToken(string token, User user);
+        public Task<RefreshToken?> GetStoredToken(string token);
         public IAsyncEnumerable<RefreshToken> GetAllTokens();
         public Task AddToken(RefreshToken token);
-        public Task RemoveToken(RefreshToken token);
+        public void RemoveToken(RefreshToken token);
     }
 }
