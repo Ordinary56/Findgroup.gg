@@ -5,7 +5,6 @@ import Footer from "./component/Footer/Footer";
 import LandingPage from "./component/pages/LandingPage";
 import LoginPage from "./component/pages/Login";
 import Home from "./component/pages/Home";
-import Crew from "./component/pages/Crew";
 import RegisterPage from "./component/pages/Register";
 import CreateButton from "./component/Create_group_button/Create_group_button";
 import CreateGroup from "./component/pages/CreateGroup";
@@ -14,7 +13,6 @@ import TopicDetails from "./component/pages/InspectListing";
 // Routes configuration
 export const ROUTES = {
   homepage: { path: "/", title: "Home" },
-  crew: { path: "/crew", title: "Crew" },
   register: { path: "/register", title: "Register" },
   login: { path: "/login", title: "Login" },
   create: { path: "/create", title: "Create" },
@@ -48,7 +46,6 @@ const AppContent = () => {
           <Route index element={<Home />} />
           <Route path={ROUTES.homepage.path} element={<Home />} />
           <Route path="/topics/:topicId" element={<TopicDetails />} />
-          <Route path={ROUTES.crew.path} element={<Crew />} />
           <Route path={ROUTES.create.path} element={<CreateGroup />} />
         </Route>
 

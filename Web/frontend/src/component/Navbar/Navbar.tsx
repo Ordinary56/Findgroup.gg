@@ -33,7 +33,6 @@ const DesktopNavbar = ({ isAuthenticated, handleLogout }: { isAuthenticated: boo
       </Link>
       <div className={styles.links}>
         <Link to={ROUTES.homepage.path}>{ROUTES.homepage.title}</Link>
-        <Link to={ROUTES.crew.path}>{ROUTES.crew.title}</Link>
 
         {/* 🔹 Csak kijelentkezett állapotban látható */}
         {!isAuthenticated && (
@@ -62,9 +61,7 @@ const MobileNavbar = ({ isAuthenticated, handleLogout }: { isAuthenticated: bool
         <Link to={ROUTES.homepage.path} onClick={() => setMenuOpen(false)}>
           {ROUTES.homepage.title}
         </Link>
-        <Link to={ROUTES.crew.path} onClick={() => setMenuOpen(false)}>
-          {ROUTES.crew.title}
-        </Link>
+       
 
         {/* 🔹 Csak kijelentkezett állapotban látható */}
         {!isAuthenticated && (
