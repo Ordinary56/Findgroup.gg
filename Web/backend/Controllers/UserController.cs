@@ -26,6 +26,14 @@ namespace Findgroup_Backend.Controllers
                 yield return user;
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUserById(string id)
+        {
+            User found = await _userRepository.GetUserById(id);
+            if (found != null) return Ok(found);
+            return NotFound();
+        }
         
         [HttpPatch("{id}")]
         public async Task<ActionResult> ModifyUser([FromRoute] string id, [FromBody] UserDTO modifiedUser)

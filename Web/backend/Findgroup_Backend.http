@@ -10,11 +10,14 @@ Accept: application/json
 
 ###
 
-POST {{Findgroup_Backend_HostAddress}}/api/User
+GET {{Findgroup_Backend_HostAddress}}/api/User
+Accept: application/json
+###
+POST {{Findgroup_Backend_HostAddress}}/api/Auth/register
 Content-Type: application/json
 {
-  "UserName" : "janedoe",
-  "Email" : "janedoe@gmail.com",
+  "Username" : "TestUser",
+  "Email" : "TestUser@gmail.com",
   "Password" : "Passwd123$"
 }
 
@@ -33,7 +36,7 @@ Content-Type: application/json
 
 ###
 
-DELETE {{Findgroup_Backend_HostAddress}}/api/User/125e3616-3af4-44f5-922a-625a37ba80e9
+DELETE {{Findgroup_Backend_HostAddress}}/api/User/2cc162c3-3df8-4a0a-948b-680add05b295
 Content-Type: application/json
 
 ###
@@ -41,12 +44,12 @@ Content-Type: application/json
 POST {{Findgroup_Backend_HostAddress}}/api/Auth/login
 Content-Type: application/json
 {
-  "Username" : "janedoe",
+  "Username" : "TestUser",
   "Password" : "Passwd123$"
 }
 ###
 
 GET {{Findgroup_Backend_HostAddress}}/api/Home/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiamFuZWRvZSIsImp0aSI6Ijc0YzgyZjQ3LTZhYjItNGViYS05ODQxLTExYmIyZWFkZTg2YiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MzQxMzAzNTIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTExMCIsImF1ZCI6ImZnLmdnIn0.G4kONYolLTbGX1OyxmmGmNyMH7bNsslhm4b34cRvgt4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiVGVzdFVzZXIiLCJqdGkiOiI0NWZlMGQ2OC04MjFiLTQ0NzktYjY2OS03OTY5MDY4MzZmNTIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImEzYjcyNTAyLTQ5Y2MtNDUwMy1iZmVlLTFkMGE3YzE5ZWY0NyIsImV4cCI6MTczODc0OTM5NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTEwIiwiYXVkIjoiZmcuZ2cifQ.DLmYg7Mxwdh7yKaogVgAyY4lyq4ogeorIYJ-wAFCKLU
 ###

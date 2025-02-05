@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Findgroup_Backend.Services;
 namespace Findgroup_Backend;
 public class Program
 {
@@ -16,7 +18,12 @@ public class Program
         byte[] key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSecret"]!);
 
         builder.Services.AddControllers();
-        builder.Services.AddDbContext<ApplicationDbContext>();
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            string connectionString = builder.Configuration.GetConnectionString("DevelopmentDB");
+            options.UseSqlite(connectionString);
+            options.EnableSensitiveDataLogging();
+        });
         builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
         builder.Services.AddAuthentication(options =>
         {
@@ -35,15 +42,23 @@ public class Program
                     ValidAudience = jwtSettings["Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
-            }).AddGoogle(options =>
-            {
-                options.ClientId = builder.Configuration["Google:ClientId"];
-                options.ClientSecret = builder.Configuration["Google:Secret"];
             });
         builder.Services.AddAuthorization();
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                policy.AllowAnyHeader()
+                .AllowAnyOrigin()
+                .AllowAnyMethod();
+            });
+        });
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IPostRepository, PostRepository>();
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+        builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+        builder.Services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddAutoMapper(config =>
         {
             config.AddMaps(typeof(Program));
@@ -57,6 +72,7 @@ public class Program
         app.MapControllers();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseCors();
         app.Run();
     }
 }

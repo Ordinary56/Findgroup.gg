@@ -17,14 +17,12 @@ namespace Findgroup_Backend.Controllers;
 public class AuthController(
     IUserRepository repository,
     IAuthService authService,
-    ITokenHandler tokenHandler,
     ILogger<AuthController> logger,
     IMapper mapper
     ) : ControllerBase
 {   
     private readonly IAuthService _auth = authService;
     private readonly ILogger<AuthController> _logger = logger;
-    private readonly ITokenHandler tokenHandler = tokenHandler;
     private readonly IMapper _mapper =  mapper;   
 
     [HttpPost("login")]
@@ -44,9 +42,10 @@ public class AuthController(
     public async Task<ActionResult> RegisterNewUser([FromBody] UserDTO newUser)
     {
         IdentityResult result = await _auth.RegisterUser(newUser);
-        if (result.Succeeded) return CreatedAtAction(nameof(UserController.GetUsers), new {Id = newUser.Id}, newUser);
+        if (result.Succeeded) return StatusCode(201, new {Message = "New User successfully created!", user = newUser});
         return StatusCode(500, "Internal Server error: " + result.Errors);
     }
+
     [Authorize(Roles = "User, Admin")]
     [HttpPost("logout")] 
     public async Task<ActionResult> LogoutUser()
@@ -54,7 +53,10 @@ public class AuthController(
         try
         {
             await _auth.LogoutUser();
-            return Ok();
+            return Ok(new
+            {
+                Message = "Successfully logged out user"
+            });
         }
         catch (Exception ex) 
         {

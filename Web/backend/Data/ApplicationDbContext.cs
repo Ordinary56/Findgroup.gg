@@ -3,18 +3,15 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Findgroup_Backend.Data
 {
-    public partial class ApplicationDbContext(IConfiguration configuration, IWebHostEnvironment env) : IdentityDbContext<User>
+    public partial class ApplicationDbContext : IdentityDbContext<User>
     {
-        private readonly IConfiguration _configuration = configuration;
-        private readonly IWebHostEnvironment _env = env;
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
-
+            
         }
 
-        public DbSet<RefreshToken> RefreshTokens { get; set; } 
+
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Category> Categories { get; set; }

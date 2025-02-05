@@ -1,5 +1,4 @@
-﻿
-using Findgroup_Backend.Models;
+﻿using Findgroup_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
