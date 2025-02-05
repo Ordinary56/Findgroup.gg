@@ -1,9 +1,7 @@
 .desktop{
     display: flex;
     justify-content: center;
-    position: relative;
-    font-family: 'Times New Roman';
-    
+    position: relative;    
     >div{
         height: 70px;
         display: flex;
@@ -35,7 +33,6 @@
 }
 
 .buttonstyle{
-    font-family: 'Times New Roman';
     font-size: 25px;
     background-color: transparent;
     border: none;
@@ -59,7 +56,6 @@
 /* ---- MOBILE NAVBAR ---- */
 .mobile {
     position: relative;
-    font-family: 'Times New Roman';
 }
 
 /* A hamburger ikon alapállapotban */
