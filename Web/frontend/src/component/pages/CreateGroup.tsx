@@ -7,8 +7,8 @@ const CreateGroup = () => {
       <BackToHomeButton />
       <div className={styles.details_inputs}>
         <form>
-          <input type="text"/>
-          <input type="text"/>
+          <input type="text" placeholder="Group Name" />
+          <input type="text" placeholder="Group Description" />
           <select>
             <option value=""></option>
           </select>
