@@ -1,16 +1,23 @@
 .details_inputs {
     form {
         margin-top: 15vh;
-        margin-left: 20px;
+        margin-left: 30px;
         display: flex;
         flex-direction: column;
-        gap: 40px;
+        gap: 50px;
 
         input,
         select {
+            border:none;
+            border-radius: 10px;
+            cursor: pointer;
             height: 50px;
             width: 300px;
             background-color: #fc6621;
+            option{
+                cursor: pointer;
+                background-color: #f07339;
+            }
         }
     }
 }
@@ -18,17 +25,27 @@
 .very_basic_details {
     padding: 10px;
     position: absolute;
-    right: 100px;
-    bottom: 100px;
-    height: 500px;
-    width: 1000px;
-    background-color: rgba(191, 227, 227, 0.358);
+    right:20vh;
+    bottom: 170px;
+    height: 600px;
+    width: 1200px;
+    background-color: rgba(243, 247, 247, 0.144);
 }
 
 .create_listing {
     position: absolute;
-    right: 5px;
-    bottom: 55px;
+    bottom: 100px;
+    right: 50px;
+    padding: 5px; 
+    align-items: center; 
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #fc6621;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+   
 }
 .title_and_team_size{
     display: flex; 
@@ -52,4 +69,10 @@ right: 10px;
 }
 .description{
     margin-top: 20px;
+    min-height: 100px;
+    max-height: 400px;
+}
+.tags,.description{
+    border: 1px solid rgba(0, 0, 0, 0.349);
+    border-radius: 5px;
 }
