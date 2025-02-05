@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Findgroup_Backend.Data;
 using Findgroup_Backend.Data.Repositories;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace Findgroup_Backend.Controllers

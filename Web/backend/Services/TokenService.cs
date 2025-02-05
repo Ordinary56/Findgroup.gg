@@ -15,6 +15,8 @@ namespace Findgroup_Backend.Services
         private readonly IConfiguration _configuration = configuration;
         private readonly UserManager<User> _manager = manager;
 
+        
+
         private static string HashToken(string token)
         {
             var tokenBytes = Encoding.UTF8.GetBytes(token);
@@ -22,12 +24,12 @@ namespace Findgroup_Backend.Services
             return Convert.ToBase64String(hashBytes);
         }
 
+        /// <inheritdoc/>
         public async Task<string> GenerateAccessToken(User user)
         {
-            string jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET") ?? 
-                throw new InvalidOperationException("JWT secret not found");
+            string jwtKey = _configuration["JwtSecret"]!;
             SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(jwtKey));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
             List<Claim> authClaims = [
                 new(ClaimTypes.Name, user.UserName!),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -47,6 +49,7 @@ namespace Findgroup_Backend.Services
 
         }
 
+        /// <inheritdoc/>
         public RefreshToken GenerateRefreshToken()
         {
             byte[] randomBytes = new byte[64];
@@ -60,9 +63,5 @@ namespace Findgroup_Backend.Services
             };
         }
 
-        public bool IsTokenExpired(RefreshToken refreshToken)
-        {
-            return refreshToken.IsRevoked == true && refreshToken.ExpiresOnUTC <= DateTime.UtcNow;
-        }
     }
 }

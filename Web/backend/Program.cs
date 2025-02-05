@@ -11,8 +11,9 @@ public class Program
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        builder.Configuration.AddJsonFile("secrets.json");
         IConfigurationSection jwtSettings = builder.Configuration.GetSection("JwtSettings");
-        byte[] key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new  Exception());
+        byte[] key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSecret"]!);
 
         builder.Services.AddControllers();
         builder.Services.AddDbContext<ApplicationDbContext>();

@@ -9,6 +9,7 @@ namespace Findgroup_Backend.Data.Repositories
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
         protected virtual void Dispose(bool disposing)
         {
@@ -34,11 +35,18 @@ namespace Findgroup_Backend.Data.Repositories
         public async Task AddToken(RefreshToken token)
         {
             await _context.RefreshTokens.AddAsync(token);
+            await Save();
         }
 
-        public void RemoveToken(RefreshToken token)
+        public async void RemoveToken(RefreshToken token)
         {
              _context.RefreshTokens.Remove(token);
+             await Save();
+        }
+
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

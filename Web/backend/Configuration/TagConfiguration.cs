@@ -10,7 +10,8 @@ namespace Findgroup_Backend.Configuration
         public void Configure(EntityTypeBuilder<Tag> builder)
         {
             builder.HasOne(t => t.Post).WithMany(p => p.Tags).HasForeignKey(t => t.PostId).IsRequired(false);
-            builder.HasIndex(t => t.Content).IsUnique(true);
+            // TODO: Seed Data here
+
         }
     }
 }

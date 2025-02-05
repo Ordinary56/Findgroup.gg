@@ -1,5 +1,4 @@
 ﻿using Findgroup_Backend.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 namespace Findgroup_Backend.Data
@@ -10,15 +9,9 @@ namespace Findgroup_Backend.Data
         private readonly IWebHostEnvironment _env = env;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!_env.IsDevelopment())
-            {
-                optionsBuilder.UseMySql(_configuration.GetConnectionString("DefaultConnection"),
-                ServerVersion.AutoDetect(_configuration.GetConnectionString("DefaultConnection")));
-            }
-            else
-            {
-                optionsBuilder.UseInMemoryDatabase(_configuration["ConnectionStrings:DevelopmentDB"]);
-            }
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+
         }
 
         public DbSet<RefreshToken> RefreshTokens { get; set; } 

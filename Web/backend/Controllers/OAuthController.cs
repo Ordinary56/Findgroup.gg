@@ -20,6 +20,7 @@ namespace Findgroup_Backend.Controllers
         [HttpPost("google")]
         public async Task<ActionResult> GoogleSignIn([FromBody] GoogleLoginDTO request)
         {
+            if (request.Token is null || request is null) return BadRequest("Missing token");
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
                 IssuedAtClockTolerance = TimeSpan.FromMinutes(5),
@@ -44,7 +45,7 @@ namespace Findgroup_Backend.Controllers
                         return BadRequest(errors);
                     }
                 }
-                await _manager.AddToRoleAsync(user, "User");
+                if(!await _manager.IsInRoleAsync(user, "User")) await _manager.AddToRoleAsync(user, "User");
                 var jwtToken = await _tokenService.GenerateAccessToken(user);
                 return Ok(new
                 {
@@ -57,9 +58,6 @@ namespace Findgroup_Backend.Controllers
             }
 
         }
-
-        [HttpPost()]
-
 
         [HttpPatch]
         public async Task<ActionResult> AddNewAccount()

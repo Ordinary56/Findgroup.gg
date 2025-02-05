@@ -41,7 +41,7 @@ namespace Findgroup_Backend.Controllers
             RefreshToken? token = await _repo.GetStoredToken(model.Token);
 
             // if the token is not found or the token is expired, Unauthorize
-            if(token is null || _service.IsTokenExpired(token)) return Unauthorized();
+            if(token is null || token.IsRevoked) return Unauthorized();
 
             // Find the target user
             User? targetUser = await _manager.FindByIdAsync(token.UserId!);
