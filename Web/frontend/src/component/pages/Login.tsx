@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
 
     try {
       await apiService.login(username, password);
-      login(username,password); // Bejelentkezés állapot frissítése
+      login(); // Bejelentkezés állapot frissítése
       navigate(ROUTES.homepage.path); // Sikeres login után átirányítás
     } catch (err) {
       console.error("Login failed:", err);

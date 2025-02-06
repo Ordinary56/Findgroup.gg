@@ -1,11 +1,15 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "http://localhost:5110/api";
 
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  headers: { "Content-Type": "application/json" },
-});
+  headers: { 
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin" : "*",
+    "Access-Control-Allow-Methods" : "*"
+  }
+  });
 
 axiosInstance.interceptors.request.use(
   (config) => {

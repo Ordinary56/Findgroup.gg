@@ -39,6 +39,7 @@ const AppContent = () => {
         <Route element={<PublicRoute />}>
           <Route path={ROUTES.login.path} element={<LoginPage />} />
           <Route path={ROUTES.register.path} element={<RegisterPage />} />
+          <Route path="/landingpage" element={<LandingPage />} /> 
         </Route>
 
         {/* Private routes */}
@@ -49,9 +50,9 @@ const AppContent = () => {
           <Route path={ROUTES.create.path} element={<CreateGroup />} />
         </Route>
 
-        {/* New landing page */}
-        <Route path="/landingpage" element={<LandingPage />} /> {/* Landing page */}
-        <Route path="/home" element={<Home />} /> {/* Home page after login */}
+       
+        
+        
       </Routes>
       {/* Display CreateButton only on homepage */}
       {location.pathname === ROUTES.homepage.path && <CreateButton />}

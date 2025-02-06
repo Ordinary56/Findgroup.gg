@@ -3,7 +3,7 @@ import { apiService } from "../../api/apiService";
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: () => void;
   logout: () => void;
 };
 
@@ -18,14 +18,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setIsAuthenticated(!!token);
   }, []);
 
-  const login = async (username: string, password: string) => {
-    try {
-      await apiService.login(username, password);
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
-    }
+  const login = () => {
+    setIsAuthenticated(true);
   };
 
   const logout = () => {

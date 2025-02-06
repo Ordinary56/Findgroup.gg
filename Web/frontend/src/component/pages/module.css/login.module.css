@@ -33,8 +33,9 @@ label{
     border: white 2px solid;
     height: 30px;
     width: 250px;
-    &::placeholder{
+    &:placeholder-shown {
         padding-left: 10px;
+        color: white;
     }
 }
 .LoginButton{
@@ -54,18 +55,32 @@ label{
 }
 @media only screen and (max-width: 800px) {
     .loginContainer{
-        margin-top: 20vh;
+        height: 42vh;
+        display: flex;
+        flex-direction: column wrap;
+        justify-content: center;
+        padding: 2rem;
+        align-items: center;
+    }
+    h1 {
+        text-align: center;
     }
     .loginForm{
-     width: 50%;
+     width: 90%;
     }
     .loginInput, .passwordInput{
     background-color: transparent;
     border-radius: 20px;
+    align-self: center;
     border: white 2px solid;
     height: 30px;
     width: 250px;
+    &::placeholder, &::-webkit-input-placeholder {
+       text-align: center;
     }
-  
+    }
+    .LoginButton {
+        width: max-content;
+    }
 
 }

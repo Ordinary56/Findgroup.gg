@@ -41,7 +41,7 @@ export const apiService = {
 
   // ✅ Bejelentkezés
   login: async (username: string, password: string): Promise<void> => {
-    const { data } = await axiosInstance.post("/Auth/login", { username, password });
+    const { data } = await axiosInstance.post("/Auth/login", { Username:  username, Password: password });
     apiService.setToken(data.token);
     apiService.setRefreshToken(data.refreshToken);
   },
