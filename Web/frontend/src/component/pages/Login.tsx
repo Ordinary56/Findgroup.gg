@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiService } from "../../api/apiService";
+import { useAuth } from "../Auth_Context/AuthContext";
 import styles from "./module.css/login.module.css";
 import { ROUTES } from "../../App";
 
@@ -9,14 +10,16 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { login } = useAuth(); // AuthContext-ből a login függvény
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null); // Reset error state before attempting login
+
     try {
       await apiService.login(username, password);
-      alert("Login succesful!");
-      navigate("/"); // Redirect to the homepage on successful login
+      login(username,password); // Bejelentkezés állapot frissítése
+      navigate(ROUTES.homepage.path); // Sikeres login után átirányítás
     } catch (err) {
       console.error("Login failed:", err);
       setError("Login failed! Please try again.");
@@ -52,9 +55,10 @@ const LoginPage: React.FC = () => {
         <button type="submit" className={styles.LoginButton}>
           Login
         </button>
-        <div>Don't have an account?
-      <Link to={ROUTES.register.path}> Register now!</Link>
-      </div>   
+        <div>
+          Don't have an account?
+          <Link to={ROUTES.register.path}> Register now!</Link>
+        </div>
         {error && <p className={styles.errorMessage}>{error}</p>}
       </form>
     </div>
