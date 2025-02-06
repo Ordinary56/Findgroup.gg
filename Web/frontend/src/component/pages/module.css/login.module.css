@@ -33,9 +33,13 @@ label{
     border: white 2px solid;
     height: 30px;
     width: 250px;
+    text-indent: 10px;
     &:placeholder-shown {
         padding-left: 10px;
         color: white;
+    }
+    &:focus {
+        outline: 0.07rem solid white;
     }
 }
 .LoginButton{
@@ -53,7 +57,42 @@ label{
 .LoginButton:hover{
     background-color: #c26209;
 }
-@media only screen and (max-width: 800px) {
+
+@media screen and (max-width: 1200px) {
+
+    .loginContainer {
+        display: flex;
+
+    }
+    .loginInput, .passwordInput {
+        display:flex;
+        align-self: center;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .loginContainer {
+        display: flex;
+        align-items: center;
+        flex-direction: column wrap;
+       .loginInput, .passwordInput {
+            display: flex;
+            align-self: center;
+            margin: auto;
+        }
+    }
+    .loginForm {
+        width: 60vw;
+    }
+    .LoginButton {
+        width: 80%;
+    }
+
+    
+}
+
+@media only screen and (max-width: 576px) {
     .loginContainer{
         height: 42vh;
         display: flex;
@@ -78,6 +117,7 @@ label{
     &::placeholder, &::-webkit-input-placeholder {
        text-align: center;
     }
+    
     }
     .LoginButton {
         width: max-content;

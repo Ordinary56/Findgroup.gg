@@ -30,7 +30,7 @@ const RegisterPage: React.FC = () => {
     <form onSubmit={handleRegister} className={styles.registerForm}>
     <h1>Register to FindGroup</h1>
       <div>
-        <label>UserName:</label>
+        <label>Username:</label>
         <input className={styles.registerInput}
           type="text"
           value={username}
