@@ -1,5 +1,7 @@
 import styles from "./module.css/creategroup.module.css";
 import BackToHomeButton from "../Back_To_Home_Button/Back_to_Home";
+import { Link } from "react-router-dom"
+import { ROUTES } from "../../App"
 
 const CreateGroup = () => {
   return (<>
@@ -42,7 +44,7 @@ const CreateGroup = () => {
       </div>
 
     </div>
-    <button className={styles.create_listing}>Create Listing</button>
+    <button className={styles.create_listing}> <Link to={ROUTES.aftercreate.path}>Create Listing</Link></button>
   </>
   );
 };

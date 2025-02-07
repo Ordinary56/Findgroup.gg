@@ -47,12 +47,13 @@ const CreatorScreenAfterListing: React.FC = () => {
         ) : (
           <p>No members found.</p>
         )}
+        <div className={styles.Back_to_Home}>
+        <BackToHomeButton/>
+        </div>
       </div>
 
-      <div>
-        <BackToHomeButton />
-      </div>
-      <div>Finish Listing</div>
+
+    
     </div>
   );
 };

@@ -6,7 +6,6 @@ import TopicList from "../List/List";
 import { apiService } from "../../api/apiService";
 import homeStyles from "../pages/module.css/home.module.css"
 import clsx from "clsx";
-import CreatorScreenAfterListing from "./CreatorScreenAfterListnig";
 
 type Topic = {
   id: number;
@@ -80,7 +79,7 @@ const Home: React.FC = () => {
     </ToggleButtonGroup>
 
       <TopicList topics={topics} loading={loading} onTopicClick={handleTopicClick} />
-      <CreatorScreenAfterListing />
+    
     </div>
   );
 };
