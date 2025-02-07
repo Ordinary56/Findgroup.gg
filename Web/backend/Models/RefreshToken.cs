@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Findgroup_Backend.Models
 {
-    [Microsoft.EntityFrameworkCore.Index(nameof(TokenHash), IsUnique = true)]
     ///<summary>Refreh Token model</summary>
     public sealed class RefreshToken
     {
