@@ -11,7 +11,7 @@ namespace Findgroup_Backend.Models
         public int Id { get; set; }
         [Required]
         public string Content { get; set; } = "";
-        [ForeignKey("Post")]
+        [ForeignKey(nameof(Post))]
         public int? PostId { get; set; }
         public Post Post { get; set; } = default!;
 

@@ -7,6 +7,7 @@ using Findgroup_Backend.Models;
 using Findgroup_Backend.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Findgroup_Backend.Services;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 namespace Findgroup_Backend;
 public class Program
 {
@@ -20,8 +21,9 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
-            string connectionString = builder.Configuration.GetConnectionString("DevelopmentDB");
-            options.UseSqlite(connectionString);
+            string connectionString = builder.Configuration.GetConnectionString("DevelopmentDB")!;
+            options.UseSqlite(connectionString).ConfigureWarnings(warnings =>
+            warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
             options.EnableSensitiveDataLogging();
         });
         builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();

@@ -10,5 +10,7 @@ namespace Findgroup_Backend.Models
 
         [Required]
         public string CategoryName { get; set; }
+    
+        public IList<Post> Posts { get; set; }
     }
 }

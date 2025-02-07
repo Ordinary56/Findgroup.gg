@@ -14,16 +14,9 @@ namespace Findgroup_Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(
-    IUserRepository repository,
-    IAuthService authService,
-    ILogger<AuthController> logger,
-    IMapper mapper
-    ) : ControllerBase
-{   
+public class AuthController(IAuthService authService) : ControllerBase
+{
     private readonly IAuthService _auth = authService;
-    private readonly ILogger<AuthController> _logger = logger;
-    private readonly IMapper _mapper =  mapper;   
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDTO model)

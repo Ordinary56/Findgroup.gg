@@ -8,7 +8,8 @@ namespace Findgroup_Backend.Configuration
     {
         public void Configure(EntityTypeBuilder<RefreshToken> builder)
         {
-            builder.HasOne(r => r.User).WithMany().HasForeignKey(r => r.UserId);
+            builder.HasOne(r => r.User).WithOne(user => user.RefreshToken);
+
         }
     }
 }
