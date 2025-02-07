@@ -36,6 +36,8 @@ label{
     text-indent: 10px;
     &:placeholder-shown {
         padding-left: 10px;
+    }
+    &::placeholder {
         color: white;
     }
     &:focus {

@@ -7,7 +7,7 @@ body{
   color: white;
   background-image: linear-gradient(rgba(0, 0, 0, 0.493),rgba(0, 0, 0, 0.295)) , url("./assets/wallpaperflare.com_wallpaper.jpg"); 
   background-repeat: no-repeat;
-  background-size:cover;
+  background-size:cover;  
   height:100vh;
   width: 100%;
 }

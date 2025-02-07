@@ -107,14 +107,19 @@ margin-bottom: 10px;
 }
 
 /* Desktop nézet (min-width: 768px) */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
     /* A fő konténer elrendezése */
     .main {
-        flex-direction: row; /* Tablet/PC nézetben egymás mellé kerüljenek az elemek */
+        padding: auto;
+        display: grid;
+        grid-template-rows: 650px 200px;
+        grid-template-columns: 500px 1fr;
         justify-content: center; /* Középre igazítás */
-        align-items: flex-start;
+        align-items: center;
         height: auto;
         margin-top: 5%;
+        width: 100%;
+        background-color: transparent;
     }
 
     /* Az inputokat tartalmazó rész méretezése */
@@ -122,14 +127,16 @@ margin-bottom: 10px;
         width: 45%; /* Kicsit szélesebb lesz */
         max-width: 500px;
         padding: 20px;
+        justify-self: end;
     }
 
     /* A preview (előnézet) szélesebb lesz */
     .preview {
-        width: 50%;
-        height: auto;
+        width: 80%;
+        height: 100%;
         margin-top: 0;
         padding: 20px;
+        grid-column: 2/ 2;
     }
 
     /* A cím és csapatméret igazítása */
@@ -145,11 +152,23 @@ margin-bottom: 10px;
         padding: 10px;
         font-size: 18px;
     }
+    .details_inputs {
+
+    }
 
     /* Gomb középre igazítása */
     .create_listing {
         width: 300px;
         font-size: 18px;
         margin-top: 20px;
+        grid-row: 2 / 2;
+        grid-column: 2;
+        align-self: flex-start;
+        margin: auto;
+        a {
+            color: white;
+            text-decoration: none;
+            text-align: center;
+        }
     }
 }
