@@ -2,35 +2,49 @@ import styles from "./module.css/creategroup.module.css";
 import BackToHomeButton from "../Back_To_Home_Button/Back_to_Home";
 
 const CreateGroup = () => {
-  return (
-     <div className={styles.main}>
+  return (<>
+    <div className={styles.Back_to_Home}>
       <BackToHomeButton />
-      <div className={styles.details_inputs}>
-        <form>
-          <input type="text" placeholder="Group Name" />
-          <input type="text" placeholder="Group Description" />
-          <select>
-            <option value=""></option>
-          </select>
-          <select>
-            <option value=""></option>
-          </select>
-        </form>
-      </div>
-      <div className={styles.very_basic_details}>
-        <div className={styles.title_and_team_size}>
-          <h1 className={styles.title}>a</h1>
-          <h3 className={styles.creatorname}>b</h3>
-          <span className={styles.team_size}>10</span>
-        </div>
-        <div className={styles.tags}>
-          <div>asd</div>
-        </div>
-        <div className={styles.description}>masik</div>
-      </div>
-      <button className={styles.create_listing}>Create Listing</button>
     </div>
-  )
-}
+    <div className={styles.main}>
 
-export default CreateGroup
+      {/* Az alapvető adatok és az inputok egy konténerbe kerülnek */}
+      <div className={styles.very_basic_details}>
+        <div className={styles.details_inputs}>
+          <form>
+            <input type="text" placeholder="Group Name" />
+            <input type="text" placeholder="Group Description" />
+            <select>
+              <option value="">Select Option</option>
+            </select>
+            <select>
+              <option value="">Select Option</option>
+            </select>
+          </form>
+        </div>
+
+        <div className={styles.preview}>
+
+          <div className={styles.title_wrapper}>
+            <h1 className={styles.title}>Users's game</h1>
+          </div>
+
+          <div className={styles.title_and_team_size}>
+            <h3 className={styles.creatorname}>User</h3>
+            <span className={styles.team_size}>Team size: 20</span>
+          </div>
+
+          <div className={styles.tags}>
+            <div>Competitive</div>
+          </div>
+          <div className={styles.description}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu est eros. Suspendisse vitae tortor id sem tempor rutrum. In tempus ante vel sapien ornare maximus. Nam varius est risus, a ullamcorper tortor consectetur ac. Phasellus sit amet efficitur augue. Mauris ornare arcu vel nisl commodo iaculis. Pellentesque congue justo nec tellus varius commodo. Vestibulum ac volutpat quam. Sed quis purus auctor, scelerisque tortor vel, fermentum ex. Aenean eget turpis finibus, scelerisque nibh vel, pulvinar est. Ut rutrum egestas venenatis. Nullam eu interdum enim, ac aliquet est. In auctor efficitur commodo. Suspendisse potenti. Ut ante orci, dictum in mollis vel.</div>
+        </div>
+      </div>
+
+    </div>
+    <button className={styles.create_listing}>Create Listing</button>
+  </>
+  );
+};
+
+export default CreateGroup;
