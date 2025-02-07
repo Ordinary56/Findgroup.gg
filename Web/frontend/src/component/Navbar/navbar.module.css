@@ -19,7 +19,6 @@
         align-items: center;
         text-decoration: none;
         font-weight: bold;
-        transition: 0.3s ease-in-out;
         align-self: center;
     }
 
@@ -29,10 +28,12 @@
     a:hover,.buttonstyle:hover{
         border-bottom: 2px solid white;
         cursor: pointer;
+        background-color: transparent;
+        color: white;
     }
 }
 
-.buttonstyle{
+.buttonstyle,.mobilebuttonstyle{
     font-size: 25px;
     background-color: transparent;
     border: none;
@@ -106,7 +107,7 @@
 
 /* Mobil menü */
 .mobile .links {
-    height: 240px;
+    max-height: 240px; /* Alapértelmezett magasság */
     gap: 35px;
     font-size: 25px;
     position: absolute;
@@ -123,20 +124,23 @@
     transform: translateY(-10px);
     transition: all 0.3s ease-in-out;
     visibility: hidden;
+    overflow: hidden; /* Ne jelenjen meg a menü túlcsordulása */
 }
 
 /* Megnyitott állapot */
 .mobile .links.open {
-    left:10px;
-    border: 2px solid rgb(218, 211, 211);
+    z-index: 1;
+    left: 10px;
+    border: 3px solid rgb(218, 211, 211);
     opacity: 1;
     transform: translateY(0);
     visibility: visible;
+    max-height: 400px; /* Növelt magasság, ha a menü kinyílik */
 }
 
-
 /* Menü linkek */
-.mobile .links a ,  .buttonstyle{
+.mobile .links a, 
+.mobilebuttonstyle {
     color: white;
     text-transform: uppercase;
     text-decoration: none;
@@ -144,8 +148,10 @@
     transition: 0.3s;
 }
 
-.mobile .links a:hover, .buttonstyle:hover {
+.mobile .links a:hover, 
+.mobilebuttonstyle:hover {
     background-color: #ac593960;
-    border-radius: 20px;
-     color: #e7c32f;
+    color: #e7c32f;
 }
+
+

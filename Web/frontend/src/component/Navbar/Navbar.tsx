@@ -7,10 +7,10 @@ import Logo from "../../assets/Logo.png";
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 800);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
   
   window.addEventListener("resize", () => {
-    setIsMobile(window.innerWidth < 800);
+    setIsMobile(window.innerWidth < 768);
   });
 
   return <>{isMobile ? <MobileNavbar isAuthenticated={isAuthenticated} logout={logout} /> : <DesktopNavbar isAuthenticated={isAuthenticated} logout={logout} />}</>;
@@ -52,7 +52,7 @@ const MobileNavbar: React.FC<{ isAuthenticated: boolean; logout: () => void }> =
             <Link to={ROUTES.register.path} onClick={() => setMenuOpen(false)}>{ROUTES.register.title}</Link>
           </>
         )}
-        {isAuthenticated && <button onClick={logout}>Logout</button>}
+        {isAuthenticated && <button className={styles.mobilebuttonstyle} onClick={logout}>Logout</button>}
       </div>
     </nav>
   );

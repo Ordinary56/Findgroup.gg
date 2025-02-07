@@ -43,7 +43,7 @@ const AppContent = () => {
         </Route>
 
         {/* Private routes */}
-        <Route element={<PublicRoute/>}>
+        <Route element={<PrivateRoute/>}>
           <Route index element={<Home />} />
           <Route path={ROUTES.homepage.path} element={<Home />} />
           <Route path="/topics/:topicId" element={<TopicDetails />} />
