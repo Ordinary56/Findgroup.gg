@@ -81,8 +81,8 @@
 .title_and_team_size {
     display: flex;
     margin-left: 5px;
-    gap: 65%;
     margin-bottom: 40px;
+    justify-content: space-between;
 }
 .description,.tags{
     margin-left: 5px;
@@ -93,11 +93,13 @@
 margin-bottom: 10px;
 }
 .description {
-    word-wrap: break-word; /* Ha a hosszú szavakat is törni kell */
-    overflow-wrap: break-word; /* Alternatív megoldás a hosszú szövegekre */
-    white-space: normal; /* Biztosítja, hogy ne egy sorban maradjon */
-    overflow-y: auto; /* Görgetés, ha túl hosszú a szöveg */
-    max-height: 200px; /* Beállítható egy max magasság */
+    resize: none;
+    width: 100%;
+    height: 50%;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: transparent;
 }
 
 
