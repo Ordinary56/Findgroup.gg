@@ -3,24 +3,25 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 100vw;
     padding-top: 20px;
-    background-color: #ababab56;
-    height: 700px;
+    background-color: transparent;
+    height: 100vh;
+    overflow: scroll;
     margin-top: 20%;
 }
 
-.Back_to_Home{
- display: flex;
- align-self: flex-start;
- justify-content: center;
+.Back_to_Home {
+    display: flex;
+    align-self: flex-start;
+    justify-content: center;
 }
 
 
 /* Az adatok és az inputok egy konténerbe kerülnek */
 .very_basic_details {
     width: 100%;
-    max-width: 400px;   
+    max-width: 400px;
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -30,7 +31,8 @@
 
 /* Az inputok a konténeren belül */
 .details_inputs {
-    width: 100%;
+    width: 75vw;
+
 }
 
 .details_inputs form {
@@ -49,126 +51,174 @@
 }
 
 .create_listing {
-    display: block; /* Biztosítja, hogy margin működjön */
-    margin: 10px auto 0 auto; /* Felül 10px, középre igazítva */
+    display: block;
+    /* Biztosítja, hogy margin működjön */
+    margin: 10px auto 5% auto;
+    /* Felül 10px, középre igazítva */
     padding: 12px 20px;
     font-size: 16px;
     width: 250px;
     border: none;
     border-radius: 5px;
-    color: white;
     cursor: pointer;
     background-color: #fc6621;
     transition: background-color 0.3s ease;
+    a {
+        color: white;
+        text-decoration: none;
+        text-align: center;
+    }
+    align-self: flex-end;
 }
 
 .create_listing:hover {
     background-color: #c26209;
 }
-.preview{
+
+.preview {
     margin-top: 10%;
-    height:400px;
-    width: 100%;
+    height: 3rem;
+    width: 95%;
+    flex: 3;
     background-color: rgba(243, 247, 247, 0.144);
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
 }
-.title_wrapper {
-    text-align: center;  /* Ha középre akarod igazítani */
-    margin-bottom: 20px; /* Távolság a következő elemtől */
 
+.title_wrapper {
+    text-align: center;
+    /* Ha középre akarod igazítani */
+    margin-bottom: 20px;
+    /* Távolság a következő elemtől */
 }
 
 .title_and_team_size {
     display: flex;
     margin-left: 5px;
-    gap: 65%;
+<<<<<<< Updated upstream
     margin-bottom: 40px;
+    justify-content: space-between;
+=======
+    justify-content: space-between;
+    margin-bottom: 20px;
+>>>>>>> Stashed changes
 }
-.description,.tags{
+
+.description,
+.tags {
     margin-left: 5px;
     border: 1px solid rgba(0, 0, 0, 0.349);
     border-radius: 5px;
+    width: inherit;
+    border-width: fit-content;
+    width: 95%;
 }
-.tags{
-margin-bottom: 10px;
+
+.tags {
+    margin-bottom: 10px;
+    align-self: center;
 }
+
 .description {
-    word-wrap: break-word; /* Ha a hosszú szavakat is törni kell */
-    overflow-wrap: break-word; /* Alternatív megoldás a hosszú szövegekre */
-    white-space: normal; /* Biztosítja, hogy ne egy sorban maradjon */
-    overflow-y: auto; /* Görgetés, ha túl hosszú a szöveg */
-    max-height: 200px; /* Beállítható egy max magasság */
+<<<<<<< Updated upstream
+    resize: none;
+    width: 100%;
+    height: 50%;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: transparent;
+=======
+    height: 50%;
+    resize: none;
+    background-color: transparent;
+    word-wrap: break-word;
+    padding: 1%;
+    border-radius: 10px;
+    align-self: center;
+    justify-self: center;
+>>>>>>> Stashed changes
 }
 
 
-.description,.tags,.title_and_team_size{
+.description,
+.tags,
+.title_and_team_size {
     color: #ffff;
-    
+
 }
 
 /* Desktop nézet (min-width: 768px) */
 @media screen and (min-width: 992px) {
+
     /* A fő konténer elrendezése */
     .main {
         padding: auto;
         display: grid;
-        grid-template-rows: 650px 200px;
-        grid-template-columns: 500px 1fr;
-        justify-content: center; /* Középre igazítás */
+        grid-template-rows: 650px 1fr;
+        grid-template-columns: 200px 1fr;
+        justify-content: center;
+        /* Középre igazítás */
         align-items: center;
         height: auto;
-        margin-top: 5%;
-        width: 100%;
+        margin-top: 50px;
+        width: 100vw;
+        overflow: hidden;
         background-color: transparent;
     }
 
     /* Az inputokat tartalmazó rész méretezése */
     .very_basic_details {
-        width: 45%; /* Kicsit szélesebb lesz */
+        width: 100%;
+        /* Kicsit szélesebb lesz */
         max-width: 500px;
         padding: 20px;
-        justify-self: end;
     }
 
     /* A preview (előnézet) szélesebb lesz */
     .preview {
-        width: 80%;
+        width: 90%;
+        align-self: center;
+        justify-self: center;
         height: 100%;
         margin-top: 0;
-        padding: 20px;
-        grid-column: 2/ 2;
+        padding: 1%;
+        grid-column: 2 / 2;
     }
 
     /* A cím és csapatméret igazítása */
     .title_and_team_size {
+        display: flex;
         flex-direction: row;
-        gap: 20px;
+        justify-content: space-between;
+        width: 100%;
         margin-bottom: 20px;
     }
 
     /* Leírás és tagek szélesebb megjelenése */
-    .description, .tags {
+    .description,
+    .tags {
         margin-left: 0;
-        padding: 10px;
+        padding: 2%;
         font-size: 18px;
+        width: initial;
+        border-width: 1px;
+        width: 95%;
     }
+
     .details_inputs {
-
+        width: 100%;
+        align-self: center;
+        background-color: transparent;
     }
-
     /* Gomb középre igazítása */
     .create_listing {
         width: 300px;
         font-size: 18px;
-        margin-top: 20px;
-        grid-row: 2 / 2;
         grid-column: 2;
-        align-self: flex-start;
-        margin: auto;
-        a {
-            color: white;
-            text-decoration: none;
-            text-align: center;
-        }
+        display: flex;
+        justify-content: center;
+        margin-bottom: 5%;
     }
 }
