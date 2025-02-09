@@ -1,5 +1,5 @@
 :earth_africa: Elérhető nyelvek / Available languages:  
-[:flag_gb: English](ENGLISHREADME.md)
+[:flag_gb: English](docs/ENGLISHREADME.md)
 
 # Findgroup.gg
 Csapatkereső (Looking For Goup) alkalmazás
