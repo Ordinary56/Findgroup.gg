@@ -6,7 +6,7 @@ namespace Findgroup_Backend.Configuration
 {
     public sealed class GroupConfiguration : IEntityTypeConfiguration<Group>
     {
-        public void Configure(EntityTypeBuilder<Group> builder) 
+        public void Configure(EntityTypeBuilder<Group> builder)
         {
             builder.HasMany(group => group.Users).WithMany(user => user.JoinedGroups)
                 .UsingEntity<Dictionary<string, object>>("UserGroup",

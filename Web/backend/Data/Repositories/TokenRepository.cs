@@ -40,8 +40,8 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async void RemoveToken(RefreshToken token)
         {
-             _context.RefreshTokens.Remove(token);
-             await Save();
+            _context.RefreshTokens.Remove(token);
+            await Save();
         }
 
         public async Task Save()

@@ -2,6 +2,10 @@
 {
     public sealed record PostDTO
     {
-        public string Id { get; init; }
+        public int? Id { get; init; }
+        public required string Title { get; init; }
+        public required string Content { get; init; }
+        public int MemberSize { get; init; }
+
     }
 }

@@ -24,9 +24,20 @@ public class AuthController(IAuthService authService) : ControllerBase
         try
         {
             var result = await _auth.LoginUser(model);
-            return Ok(result);
+            var cookieOptions = new CookieOptions()
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7),
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+            };
+            Response.Cookies.Append("refreshToken", result.RefreshToken, cookieOptions);
+            return Ok(new
+            {
+                AccessToken = result.Token
+            });
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             return StatusCode(500, ex.Message);
         }
@@ -35,12 +46,12 @@ public class AuthController(IAuthService authService) : ControllerBase
     public async Task<ActionResult> RegisterNewUser([FromBody] UserDTO newUser)
     {
         IdentityResult result = await _auth.RegisterUser(newUser);
-        if (result.Succeeded) return StatusCode(201, new {Message = "New User successfully created!", user = newUser});
+        if (result.Succeeded) return StatusCode(201, new { Message = "New User successfully created!", user = newUser });
         return StatusCode(500, "Internal Server error: " + result.Errors);
     }
 
     [Authorize(Roles = "User, Admin")]
-    [HttpPost("logout")] 
+    [HttpPost("logout")]
     public async Task<ActionResult> LogoutUser()
     {
         try
@@ -51,12 +62,12 @@ public class AuthController(IAuthService authService) : ControllerBase
                 Message = "Successfully logged out user"
             });
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             return BadRequest(ex.Message);
         }
 
     }
- 
+
 
 }

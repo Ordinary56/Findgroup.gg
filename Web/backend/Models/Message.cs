@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Findgroup_Backend.Models
 {
@@ -11,13 +12,14 @@ namespace Findgroup_Backend.Models
         [Required]
         public int UserId { get; set; }
 
-        [Required]
-        public int RoomId { get; set; }
+        [ForeignKey(nameof(Group))]
+        public int GroupId { get; set; }
 
-        [Required]
-        public string Content { get; set; } = "";
+        
+        public required string Content { get; set; } = "";
 
-        public User User { get; set; }
+        public User User { get; set; } = default!;
 
+        public Group Group { get; set; } = default!;
     }
 }

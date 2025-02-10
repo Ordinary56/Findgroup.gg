@@ -9,7 +9,7 @@ namespace Findgroup_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public sealed class OAuthController(IConfiguration configuration, 
+    public sealed class OAuthController(IConfiguration configuration,
         UserManager<User> manager,
         ITokenService service) : ControllerBase
     {
@@ -45,14 +45,14 @@ namespace Findgroup_Backend.Controllers
                         return BadRequest(errors);
                     }
                 }
-                if(!await _manager.IsInRoleAsync(user, "User")) await _manager.AddToRoleAsync(user, "User");
+                if (!await _manager.IsInRoleAsync(user, "User")) await _manager.AddToRoleAsync(user, "User");
                 var jwtToken = await _tokenService.GenerateAccessToken(user);
                 return Ok(new
                 {
                     Token = jwtToken
                 });
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return StatusCode(500, "Internal Server Error: " + ex.Message);
             }

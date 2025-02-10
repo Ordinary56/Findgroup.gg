@@ -1,12 +1,13 @@
 ﻿using Findgroup_Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using System.CodeDom;
 using System.Runtime.InteropServices;
 
 namespace Findgroup_Backend.Data.Repositories
 {
     public class GroupRepository(ApplicationDbContext context) : IGroupRepository, IDisposable
     {
-        private  bool _disposed = false;
+        private bool _disposed = false;
         private readonly ApplicationDbContext _context = context;
         public void Dispose()
         {
@@ -33,11 +34,16 @@ namespace Findgroup_Backend.Data.Repositories
             return await _context.Groups.FindAsync(id);
         }
 
-        public async Task CreateNewGroup(string Name, int memberLimit, User Creator)
+        public async Task CreateNewGroup(string Name, string description, int memberLimit, User Creator)
         {
+            if (_context.Entry(Creator).State == EntityState.Detached)
+            {
+                _context.Attach(Creator);
+            }
             Group newGroup = new()
             {
                 GroupName = Name,
+                Description = description,
                 MemberLimit = memberLimit,
             };
             newGroup.Users = new List<User>()
@@ -47,37 +53,55 @@ namespace Findgroup_Backend.Data.Repositories
             newGroup.Users.Add(Creator);
             Creator.JoinedGroups.Add(newGroup);
             await _context.Groups.AddAsync(newGroup);
+            await Save();
         }
 
         public async Task JoinGroup(Group targetGroup, User newMember)
         {
+            // fail safe
+            if (_context.Entry(newMember).State == EntityState.Detached)
+            {
+                _context.Attach(newMember);
+            }
+            if (_context.Entry(targetGroup).State == EntityState.Detached)
+            {
+                _context.Attach(targetGroup);
+            }
 
-            try
-            {
-                targetGroup.Users.Add(newMember);
-                await Save();
-            }
-            catch (Exception ex) 
-            {
-                throw;
-            }
+            if (targetGroup.Users.Count + 1 > targetGroup.MemberLimit)
+                throw new InvalidOperationException("Can't add more users to this");
+            targetGroup.Users.Add(newMember);
+            newMember.JoinedGroups.Add(targetGroup);
+            await Save();
+
         }
 
         public async Task DeleteGroup(string name)
         {
             ArgumentException.ThrowIfNullOrEmpty(name);
-            Group? target = await _context.Groups.FirstOrDefaultAsync(x => x.GroupName == name);
-            if (target is null) throw new InvalidOperationException("Target group not found");
+            Group? target = await _context.Groups.FirstOrDefaultAsync(x => x.GroupName == name) ??
+                throw new InvalidOperationException("Target group not found");
             _context.Groups.Remove(target);
             await Save();
-        } 
-        public Task UpdateGroup(Group group)
-        {
-            throw new NotImplementedException();
         }
         public async Task Save()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task LeaveGroup(Group targetGroup, User targetUser)
+        {
+            if (_context.Entry(targetUser).State == EntityState.Detached)
+            {
+                _context.Attach(targetUser);
+            }
+            if (_context.Entry(targetGroup).State != EntityState.Detached)
+            {
+                _context.Attach(targetGroup);
+            }
+            targetGroup.Users.Remove(targetUser);
+            targetUser.JoinedGroups.Remove(targetGroup);
+            await Save();
         }
     }
 }

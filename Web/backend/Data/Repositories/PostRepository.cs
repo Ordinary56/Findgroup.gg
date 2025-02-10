@@ -23,7 +23,7 @@ namespace Findgroup_Backend.Data.Repositories
             await Save();
         }
 
-        
+
         public async Task<Post> GetPostById(int id)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(id);
@@ -51,7 +51,7 @@ namespace Findgroup_Backend.Data.Repositories
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing) 
+        protected virtual void Dispose(bool disposing)
         {
             if (_disposed) return;
             if (disposing)

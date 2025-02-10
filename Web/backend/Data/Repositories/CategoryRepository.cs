@@ -10,7 +10,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async Task CreateNewCategory(Category newCategory)
         {
-            if (await _context.Categories.AnyAsync(c => c.CategoryName == newCategory.CategoryName)) 
+            if (await _context.Categories.AnyAsync(c => c.CategoryName == newCategory.CategoryName))
             {
                 throw new InvalidOperationException("This category already exists!");
             }
@@ -20,7 +20,7 @@ namespace Findgroup_Backend.Data.Repositories
         public async Task DeleteCategory(int id)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(id);
-            Category target = await _context.Categories.FindAsync(id) ?? 
+            Category target = await _context.Categories.FindAsync(id) ??
                 throw new KeyNotFoundException($"Category with id={id} not found");
             _context.Categories.Remove(target);
         }
@@ -50,8 +50,8 @@ namespace Findgroup_Backend.Data.Repositories
         public void Dispose()
         {
 
-                Dispose(true);
-                GC.SuppressFinalize(this);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected void Dispose(bool disposing)

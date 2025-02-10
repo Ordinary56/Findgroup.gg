@@ -9,16 +9,16 @@ namespace Findgroup_Backend.Models
         public int Id { get; set; }
         [Required]
         public required string Content { get; set; }
-        public DateTime CreatedDate { get; set; } 
+        public DateTime CreatedDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public bool IsActive { get; set; } = true;
 
         public string? UserId { get; set; }
 
         public int? CategoryId { get; set; }
-        public User? User { get; set; } 
+        public User? User { get; set; }
         public Category? Category { get; set; }
-        
+
 
 
     }

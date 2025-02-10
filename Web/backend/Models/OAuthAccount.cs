@@ -12,7 +12,7 @@ namespace Findgroup_Backend.Models
         [Required]
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
-        public DateTime? TokenExpiry {  get; set; }
+        public DateTime? TokenExpiry { get; set; }
 
 
         [ForeignKey("User")]

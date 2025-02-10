@@ -16,8 +16,8 @@ namespace Findgroup_Backend.Configuration
                 IsActive = true,
                 Content = "Hiii :3. needs some friends in league. I don't have friends irl :c (ranked solo/duo)",
                 CategoryId = 1,
-                CreatedDate = new DateTime(2025,01,02),
-                UpdateDate = new DateTime(1,1,1),
+                CreatedDate = new DateTime(2025, 01, 02),
+                UpdateDate = new DateTime(1, 1, 1),
                 UserId = "Test"
             },
             new Post
@@ -26,8 +26,8 @@ namespace Findgroup_Backend.Configuration
                 IsActive = true,
                 Content = "Needs a team in Apex for shits and giggles.",
                 CategoryId = 3,
-                CreatedDate = new DateTime(2025,01,02),
-                UpdateDate = new DateTime(1,1,1),
+                CreatedDate = new DateTime(2025, 01, 02),
+                UpdateDate = new DateTime(1, 1, 1),
                 UserId = "Test"
             },
             new Post
@@ -36,8 +36,8 @@ namespace Findgroup_Backend.Configuration
                 IsActive = true,
                 Content = "I want 2 people in DMG matchmaking (CS2).",
                 CategoryId = 4,
-                CreatedDate = new DateTime(2025,01,02),
-                UpdateDate = new DateTime(1,1,1),
+                CreatedDate = new DateTime(2025, 01, 02),
+                UpdateDate = new DateTime(1, 1, 1),
                 UserId = "Test",
             });
         }

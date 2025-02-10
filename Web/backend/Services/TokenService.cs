@@ -15,7 +15,7 @@ namespace Findgroup_Backend.Services
         private readonly IConfiguration _configuration = configuration;
         private readonly UserManager<User> _manager = manager;
 
-        
+
 
         private static string HashToken(string token)
         {

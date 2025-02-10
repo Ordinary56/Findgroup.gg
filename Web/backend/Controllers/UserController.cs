@@ -21,7 +21,7 @@ namespace Findgroup_Backend.Controllers
         // [Authorize(Roles = "Admin")]
         public async IAsyncEnumerable<User> GetUsers()
         {
-            await foreach( User user in _userRepository.GetUsers())
+            await foreach (User user in _userRepository.GetUsers())
             {
                 yield return user;
             }
@@ -34,16 +34,16 @@ namespace Findgroup_Backend.Controllers
             if (found != null) return Ok(found);
             return NotFound();
         }
-        
+
         [HttpPatch("{id}")]
         public async Task<ActionResult> ModifyUser([FromRoute] string id, [FromBody] UserDTO modifiedUser)
         {
-            if (id != modifiedUser.Id) 
+            if (id != modifiedUser.Id)
             {
                 return BadRequest("User Id mismatch");
             }
             try
-            { 
+            {
                 User _mappedDTO = _mapper.Map<User>(modifiedUser);
                 await _userRepository.UpdateUser(_mappedDTO);
                 return NoContent();
@@ -52,7 +52,7 @@ namespace Findgroup_Backend.Controllers
             {
                 return NotFound("User not found");
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return StatusCode(500, "Internal Server Error" + ex.Message);
             }
@@ -69,7 +69,7 @@ namespace Findgroup_Backend.Controllers
             {
                 return NotFound("Request user was not found");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, "Internal Server Error: " + ex.Message);
             }
