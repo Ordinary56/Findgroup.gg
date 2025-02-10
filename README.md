@@ -32,27 +32,37 @@ Az alkalmazás/oldal főbb funkciói röviden:
 - Ha ezután eldöntötte hogy csatlakozik akkor rányom a csatlakozás gombra.
 
 # Telepítés
+1. Klónozd le a repot
+`git clone https://github.com/Ordinary56/Findgroup.gg.git`
+2. A `Web/` mappában lesz a frontend és a backend mappa
 Ezeket a parancsokat terminálban kell kiadni.
 - [Backend](#backend)
 - [Frontend](#frontend)
 
-### Backend 
-(Feltételezük hogy a backend mappa van megnyitva.)
+## Backend 
+
+### Forrásból
+1. Migráld az adatbázist.
 ```
 dotnet tool install --global dotnet-ef
 dotnet-ef migrations add <neve>
 dotnet-ef database update
 ```
-### Frontend
-(Feltételezük hogy a frontend mappa van megnyitva.)
+2. Fordíts le a programot.
+`dotnet build`
+3. Futtasd a programot.
+
+## Frontend
+
+### Forrásból
+1. Telepítsd a függőségeket az `npm install` parancsal.\
+Ha nem jönne le az összes függőség akkor ezeket is futtasd le:
 ```
-npm install
 npm install @mui/material @emotion/react @emotion/styled
 npm install clsx
 npm install axios
 ```
-
-
+2. Futtasd le a programot az `npm run dev` paranccsal
 
 # Adatbázis
 ![Adatabázis diagramm](assets/VIZSGAREMEK.png)
