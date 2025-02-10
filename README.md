@@ -29,7 +29,11 @@ Az alkalmazás/oldal főbb funkciói röviden:
 ### Csoport létrehozása
 - A felhasználó rákattint a **Create a group** gombra
 - Ezután egy olyan képernyő fogadja ahol látja a csapat rövid leírását és tagjait annak.
-- Ha ezután eldöntötte hogy csatlakozik akkor rányom a csatlakozás gombra.
+- Ha a csoport létrehozója úgy dönt hogy lezárja a jelentkezést a csapatba akkor megnyomja az erre megfelelő gombot.
+- Ha **TÖRÖLNI** szeretné a csapatot akkor az annak megfelelő gombot nyomja meg.
+
+Ha a felhasználó egy csoport része akkor eltud kezdeni szövegesen beszélgetni a tagokkal.\
+Ha rákattint egy felhasználóra akkor annak megjelenik a profilja amelyen megtekintheti a csatlakoztatott alkalmazások mint például a steames fiókuk. Ha rákattint az egyik csatlakoztatott alkalmazásra akkor vágólapra másolja a csatlakoztatott alkalmazáshoz tartozó nevét az adott profil tulajdonosának.
 
 # Telepítés
 1. Klónozd le a repot
