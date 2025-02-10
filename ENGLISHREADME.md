@@ -1,5 +1,5 @@
 🌍: Elérhető nyelvek / Available languages:  
-[🇬🇧:English](docs/ENGLISHREADME.md)\
+[🇬🇧:English](ENGLISHREADME.md)\
 [🇭🇺:Magyar](README.md)
 
 # Findgroup.gg
