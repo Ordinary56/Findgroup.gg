@@ -28,7 +28,7 @@ Az alkalmazás/oldal főbb funkciói röviden:
 
 ### Csoport létrehozása
 - A felhasználó rákattint a **Create a group** gombra
-- Ezután egy olyan képernyő fogadja ahol látja a csapat rövid leírását és tagjait annak.
+- Ezután egy olyan képernyő fogadja ahol beállíthatja a csoport tulajdonságait és annak leírását.
 - Ha a csoport létrehozója úgy dönt hogy lezárja a jelentkezést a csapatba akkor megnyomja az erre megfelelő gombot.
 - Ha **TÖRÖLNI** szeretné a csapatot akkor az annak megfelelő gombot nyomja meg.
 
@@ -39,7 +39,8 @@ Ha rákattint egy felhasználóra akkor annak megjelenik a profilja amelyen megt
 1. Klónozd le a repot
 `git clone https://github.com/Ordinary56/Findgroup.gg.git`
 2. A `Web/` mappában lesz a frontend és a backend mappa
-Ezeket a parancsokat terminálban kell kiadni.
+> [!IMPORTANT]
+> Ezeket a parancsokat terminálban kell kiadni.
 - [Backend](#backend)
 - [Frontend](#frontend)
 
@@ -60,7 +61,8 @@ dotnet-ef database update
 
 ### Forrásból
 1. Telepítsd a függőségeket az `npm install` parancsal.\
-Ha nem jönne le az összes függőség akkor ezeket is futtasd le:
+> [!NOTE]
+> Ha nem jönne le az összes függőség akkor ezeket is futtasd le:
 ```
 npm install @mui/material @emotion/react @emotion/styled
 npm install clsx
