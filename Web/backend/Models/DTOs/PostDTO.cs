@@ -6,6 +6,7 @@
         public required string Title { get; init; }
         public required string Content { get; init; }
         public int MemberSize { get; init; }
+        public int? CategoryId { get; init; }
 
     }
 }

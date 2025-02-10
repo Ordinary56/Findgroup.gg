@@ -1,4 +1,5 @@
 ﻿using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Findgroup_Backend.Data.Repositories
@@ -33,7 +34,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         public IAsyncEnumerable<Post> GetPosts()
         {
-            return _context.Posts.AsAsyncEnumerable();
+            return _context.Posts.Include(p => p.Category).Include(p => p.User).AsAsyncEnumerable();
         }
 
         public async Task ModifyPostAsync(Post post)

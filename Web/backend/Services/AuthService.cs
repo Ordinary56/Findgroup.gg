@@ -50,6 +50,7 @@ namespace Findgroup_Backend.Services
         {
             User mappedUser = _mapper.Map<User>(newUser);
             var result = await _userManager.CreateAsync(mappedUser, newUser.Password!);
+            await _userManager.AddToRoleAsync(mappedUser, "User");
             return result;
         }
         public async Task LogoutUser()

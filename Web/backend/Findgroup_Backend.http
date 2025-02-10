@@ -16,8 +16,8 @@ Accept: application/json
 POST {{Findgroup_Backend_HostAddress}}/api/Auth/register
 Content-Type: application/json
 {
-  "Username" : "TestUser",
-  "Email" : "TestUser@gmail.com",
+  "Username" : "TestUser1",
+  "Email" : "TestUser1@gmail.com",
   "Password" : "Passwd123$"
 }
 
@@ -44,7 +44,7 @@ Content-Type: application/json
 POST {{Findgroup_Backend_HostAddress}}/api/Auth/login
 Content-Type: application/json
 {
-  "Username" : "TestUser",
+  "Username" : "TestUser1",
   "Password" : "Passwd123$"
 }
 ###
@@ -53,3 +53,17 @@ GET {{Findgroup_Backend_HostAddress}}/api/Home/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiVGVzdFVzZXIiLCJqdGkiOiI0NWZlMGQ2OC04MjFiLTQ0NzktYjY2OS03OTY5MDY4MzZmNTIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImEzYjcyNTAyLTQ5Y2MtNDUwMy1iZmVlLTFkMGE3YzE5ZWY0NyIsImV4cCI6MTczODc0OTM5NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTEwIiwiYXVkIjoiZmcuZ2cifQ.DLmYg7Mxwdh7yKaogVgAyY4lyq4ogeorIYJ-wAFCKLU
 ###
+
+POST {{Findgroup_Backend_HostAddress}}/api/Post 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiVGVzdFVzZXIiLCJqdGkiOiJhZjEzNGViOC02MDljLTRmZjctOTFlMy00MjIwZWQ0Yjg4YzIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjZkZGVlNGQ5LTY0ODAtNDI4NS05ZTMyLTBmMmRhODM2ODAyMyIsImV4cCI6MTczOTE5MDIwMywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTEwIiwiYXVkIjoiZmcuZ2cifQ.MaIqMSgp20RpaPh48VdbzAgFkmtV71PUf6IDTbvgTeQ
+{
+  "Title": "My first post!!",
+  "Content" : "Need some ppl in league btw",
+  "CategoryId" : 1,
+}
+###
+
+GET {{Findgroup_Backend_HostAddress}}/api/Post 
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiVGVzdFVzZXIxIiwianRpIjoiNmJjMTlmZGYtZTE1ZS00MTAyLTk1NzUtNzU0YTAzYTQ1NWQyIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiJiZWUyMzE0NS03OTFmLTQwODItOTRmNS1jNjdjNDNlMjEzM2EiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzM5MTkzMzMwLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxMTAiLCJhdWQiOiJmZy5nZyJ9.4Zt8HRfWULn815U36S8cd5ukBkChfK8bl4BuEgGhVYY

@@ -9,7 +9,7 @@ namespace Findgroup_Backend.Configuration
         public void Configure(EntityTypeBuilder<Post> builder)
         {
             builder.HasOne(post => post.User).WithMany(user => user.Posts).HasForeignKey(post => post.UserId).IsRequired(false);
-            builder.HasOne(post => post.Category).WithMany(user => user.Posts).HasForeignKey(post => post.CategoryId).IsRequired(false);
+            builder.HasOne(post => post.Category).WithMany().HasForeignKey(post => post.CategoryId).IsRequired(false);
             builder.HasData(new Post
             {
                 Id = 1,

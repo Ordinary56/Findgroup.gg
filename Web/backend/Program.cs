@@ -8,10 +8,11 @@ using Findgroup_Backend.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Findgroup_Backend.Services;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Findgroup_Backend.Data.Seeders;
 namespace Findgroup_Backend;
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
         builder.Configuration.AddJsonFile("secrets.json");
@@ -55,6 +56,7 @@ public class Program
                 .AllowAnyMethod();
             });
         });
+        
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IPostRepository, PostRepository>();
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -66,6 +68,10 @@ public class Program
             config.AddMaps(typeof(Program));
         });
         var app = builder.Build();
+        using var scope = app.Services.CreateScope();
+        var services = scope.ServiceProvider;
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await RoleSeeder.SeedRolesAsync(roleManager);
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
