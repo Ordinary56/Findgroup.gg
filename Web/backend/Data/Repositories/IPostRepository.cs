@@ -1,4 +1,5 @@
 ﻿using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs;
 namespace Findgroup_Backend.Data.Repositories
 {
     public interface IPostRepository : IDisposable

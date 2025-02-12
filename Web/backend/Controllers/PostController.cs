@@ -67,9 +67,9 @@ namespace Findgroup_Backend.Controllers
             {
                 return NotFound();
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                return StatusCode(500,"Internal Server error: " + ex.Message);
+                return StatusCode(500, "Internal Server error: " + ex.Message);
             }
         }
     }

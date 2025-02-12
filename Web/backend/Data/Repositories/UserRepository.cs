@@ -15,7 +15,7 @@ namespace Findgroup_Backend.Data.Repositories
             ArgumentNullException.ThrowIfNull(newUser);
             var result = await _manager.CreateAsync(newUser, password);
             if (result.Succeeded) return;
-            var errors = string.Join(',',result.Errors);
+            var errors = string.Join(',', result.Errors);
             throw new Exception(errors);
         }
 
@@ -33,10 +33,10 @@ namespace Findgroup_Backend.Data.Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception();
         }
-        
+
         public IAsyncEnumerable<User> GetUsers()
         {
-           return _context.Users.AsAsyncEnumerable();
+            return _context.Users.AsAsyncEnumerable();
         }
 
         public async Task Save()
@@ -52,7 +52,7 @@ namespace Findgroup_Backend.Data.Repositories
             target.PhoneNumber = updatedUser.PhoneNumber;
             target.Email = updatedUser.Email;
             await Save();
-            
+
         }
         public void Dispose()
         {

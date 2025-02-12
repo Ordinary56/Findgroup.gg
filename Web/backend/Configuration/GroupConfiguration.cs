@@ -6,7 +6,7 @@ namespace Findgroup_Backend.Configuration
 {
     public sealed class GroupConfiguration : IEntityTypeConfiguration<Group>
     {
-        public void Configure(EntityTypeBuilder<Group> builder) 
+        public void Configure(EntityTypeBuilder<Group> builder)
         {
             builder.HasMany(group => group.Users).WithMany(user => user.JoinedGroups)
                 .UsingEntity<Dictionary<string, object>>("UserGroup",
@@ -14,6 +14,15 @@ namespace Findgroup_Backend.Configuration
                 j => j.HasOne<Group>().WithMany().HasForeignKey("GroupId"));
             builder.Property(group => group.GroupName).IsRequired(true);
             builder.Property(group => group.MemberLimit).HasDefaultValue(1);
+            Guid testId = Guid.NewGuid();
+            builder.HasData(new Group
+            {
+                Id = testId,
+                GroupName = "League Team",
+                MemberLimit = 5,
+                Description = "A team for league",
+
+            });
         }
     }
 }

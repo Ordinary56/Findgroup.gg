@@ -8,10 +8,14 @@ using Findgroup_Backend.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Findgroup_Backend.Services;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Findgroup_Backend.Data.Seeders;
+using Microsoft.AspNetCore.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 namespace Findgroup_Backend;
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
         builder.Configuration.AddJsonFile("secrets.json");
@@ -55,18 +59,28 @@ public class Program
                 .AllowAnyMethod();
             });
         });
+        
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IPostRepository, PostRepository>();
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
         builder.Services.AddScoped<ITokenRepository, TokenRepository>();
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<IGroupRepository, GroupRepository>();
         builder.Services.AddAutoMapper(config =>
         {
             config.AddMaps(typeof(Program));
         });
+        builder.Services.Configure<JsonOptions>(options =>
+        {
+            options.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        });
         var app = builder.Build();
-        if(app.Environment.IsDevelopment())
+        using var scope = app.Services.CreateScope();
+        var services = scope.ServiceProvider;
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        await RoleSeeder.SeedRolesAsync(roleManager);
+        if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
