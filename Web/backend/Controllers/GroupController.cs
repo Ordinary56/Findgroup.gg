@@ -53,7 +53,7 @@ namespace Findgroup_Backend.Controllers
             });
         }
 
-        [HttpPost("/join")]
+        [HttpPost("join")]
         public async Task<ActionResult> JoinGroup([FromQuery] Guid groupId, [FromQuery] string userId)
         {
             if (groupId == Guid.Empty || string.IsNullOrEmpty(userId))

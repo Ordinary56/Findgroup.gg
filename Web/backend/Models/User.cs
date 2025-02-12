@@ -12,6 +12,7 @@ namespace Findgroup_Backend.Models
         public IList<Post> Posts { get; set; } = [];
         public IList<OAuthAccount> OAuthAccounts { get; set; } = [];
 
+        [JsonIgnore]
         public IList<Group> JoinedGroups { get; set; } = [];
 
     }

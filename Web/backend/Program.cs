@@ -66,6 +66,7 @@ public class Program
         builder.Services.AddScoped<ITokenRepository, TokenRepository>();
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<IGroupRepository, GroupRepository>();
         builder.Services.AddAutoMapper(config =>
         {
             config.AddMaps(typeof(Program));
