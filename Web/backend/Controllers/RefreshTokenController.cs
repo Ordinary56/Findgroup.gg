@@ -66,6 +66,7 @@ namespace Findgroup_Backend.Controllers
             // add the newly generated token to the database
             await _repo.AddToken(newRefreshToken);
 
+            targetUser.RefreshToken = token;
             // prepare the cookie options
             var cookieOptions = new CookieOptions()
             {

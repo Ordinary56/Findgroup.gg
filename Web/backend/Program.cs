@@ -55,8 +55,9 @@ public class Program
             options.AddDefaultPolicy(policy =>
             {
                 policy.AllowAnyHeader()
-                .AllowAnyOrigin()
-                .AllowAnyMethod();
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyMethod()
+                .AllowCredentials();
             });
         });
         

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { apiService } from "../../api/apiService";
+import { tokenService } from "../../api/tokenService";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -14,7 +15,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     // Ellenőrizzük, hogy van-e token a localStorage-ban
-    const token = apiService.getToken();
+    const token = tokenService.getToken();
     setIsAuthenticated(!!token);
   }, []);
 

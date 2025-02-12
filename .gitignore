@@ -441,3 +441,9 @@ storybook-static/
 # dotenv environment variable files
 .env
 .env.*.local
+
+# build
+build/**
+dist/
+*.exe
+*.db
