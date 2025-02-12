@@ -6,10 +6,10 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    navigate("/login"); // Navigálás a login oldalra
+    navigate("/login"); 
   };
   const handleRegisterClick = () => {
-    navigate("/register"); // Navigálás a login oldalra
+    navigate("/register"); 
   };
 
   return (

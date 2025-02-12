@@ -40,13 +40,7 @@ export const apiService = {
     return data;
   },
 
- //TODO : Change this to the actual thing that we will use
-   
-    //ENDOFTODO
-
-
-
-   // ✅ Get all posts
+  // ✅ Get all posts
    getPosts: async (): Promise<Post> => {
     const { data } = await axiosInstance.get("/Post");
     return data;
