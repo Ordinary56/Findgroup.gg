@@ -1,15 +1,9 @@
-﻿using AutoMapper;
-using Findgroup_Backend.Data.Repositories;
-using Findgroup_Backend.Helpers;
-using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
+﻿using Findgroup_Backend.Models.DTOs;
 using Findgroup_Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+
 namespace Findgroup_Backend.Controllers;
 
 [ApiController]

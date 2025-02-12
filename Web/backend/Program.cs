@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Findgroup_Backend.Services;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Findgroup_Backend.Data.Seeders;
+using Microsoft.AspNetCore.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 namespace Findgroup_Backend;
 public class Program
 {
@@ -66,6 +69,10 @@ public class Program
         builder.Services.AddAutoMapper(config =>
         {
             config.AddMaps(typeof(Program));
+        });
+        builder.Services.Configure<JsonOptions>(options =>
+        {
+            options.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
         });
         var app = builder.Build();
         using var scope = app.Services.CreateScope();

@@ -8,10 +8,11 @@ namespace Findgroup_Backend.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        
+        public required string Title { get; set; }
+
         public required string Content { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public bool IsActive { get; set; } = true;
 
         public string? UserId { get; set; }

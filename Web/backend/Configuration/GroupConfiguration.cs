@@ -14,6 +14,13 @@ namespace Findgroup_Backend.Configuration
                 j => j.HasOne<Group>().WithMany().HasForeignKey("GroupId"));
             builder.Property(group => group.GroupName).IsRequired(true);
             builder.Property(group => group.MemberLimit).HasDefaultValue(1);
+            builder.HasData(new Group
+            {
+                GroupName = "League Team",
+                MemberLimit = 5,
+                Description = "A team for league",
+
+            });
         }
     }
 }

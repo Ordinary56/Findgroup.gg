@@ -26,7 +26,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         public IAsyncEnumerable<Group> GetGroups()
         {
-            return _context.Groups.AsAsyncEnumerable();
+            return _context.Groups.Include(g => g.Users).AsAsyncEnumerable();
         }
 
         public async Task<Group?> GetGroupById(Guid id)

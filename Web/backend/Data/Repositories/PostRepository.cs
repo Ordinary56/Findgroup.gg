@@ -1,6 +1,8 @@
 ﻿using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Bcpg;
+using Org.BouncyCastle.Tls;
 
 namespace Findgroup_Backend.Data.Repositories
 {
@@ -42,7 +44,6 @@ namespace Findgroup_Backend.Data.Repositories
             Post target = await _context.Posts.FindAsync(post.Id) ?? throw new Exception();
             target.Content = post.Content;
             target.IsActive = post.IsActive;
-            target.UpdateDate = DateTime.Now;
             await Save();
         }
         public async Task Save() => await _context.SaveChangesAsync();
