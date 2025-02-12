@@ -16,6 +16,9 @@
     align-self: flex-start;
     justify-content: center;
 }
+.create_listing_button{
+    margin-bottom: 50px;
+}
 
 
 /* Az adatok és az inputok egy konténerbe kerülnek */
@@ -32,7 +35,6 @@
 /* Az inputok a konténeren belül */
 .details_inputs {
     width: 75vw;
-
 }
 
 .details_inputs form {
@@ -124,6 +126,9 @@
     border-radius: 10px;
     align-self: center;
     justify-self: center;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 
@@ -141,7 +146,7 @@
     .main {
         padding: auto;
         display: grid;
-        grid-template-rows: 650px 1fr;
+        grid-template-rows: 550px 1fr;
         grid-template-columns: 200px 1fr;
         justify-content: center;
         /* Középre igazítás */
@@ -152,7 +157,11 @@
         overflow: hidden;
         background-color: transparent;
     }
-
+    .Back_to_Home {
+        display: flex;
+        align-self: flex-start;
+        justify-content:start;
+    }
     /* Az inputokat tartalmazó rész méretezése */
     .very_basic_details {
         width: 100%;
@@ -180,7 +189,11 @@
         width: 100%;
         margin-bottom: 20px;
     }
-
+    .create_listing_button{
+        width: 300px;
+        float: right;
+        margin-right: 2%;
+    }
     /* Leírás és tagek szélesebb megjelenése */
     .description,
     .tags {
