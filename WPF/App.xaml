@@ -5,11 +5,19 @@
              xmlns:viewmodel="clr-namespace:WPF.MVVM.ViewModel"
              xmlns:local="clr-namespace:WPF">
     <Application.Resources>
+        
         <DataTemplate  DataType="{x:Type viewmodel:MainViewModel}">
             <view:MainView/>
         </DataTemplate>
         <DataTemplate  DataType="{x:Type viewmodel:DashboardViewModel}">
             <view:DashboardView/>
         </DataTemplate>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Template.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

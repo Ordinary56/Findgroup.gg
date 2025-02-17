@@ -21,10 +21,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Username:"/>
-        <TextBox  Grid.Column="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="Password:"/>
-        <PasswordBox Grid.Column="1" Grid.Row="1"  x:Name="txtPassword" PasswordChar="*" KeyDown="txtPassword_KeyDown" />
-        <Button Command="{Binding AuthenticateCommand}" Grid.Row="3" Grid.Column="1" Margin="10" Content="Login"/>
+        <Label Grid.Column="0" Grid.Row="0" Content="Username:"/>
+        <TextBox  Grid.Column="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource TextBoxStyle}"/>
+        <Label Grid.Column="0" Grid.Row="1" Content="Password:"/>
+        <PasswordBox Grid.Column="1" Grid.Row="1"  x:Name="txtPassword" PasswordChar="*" Style="{StaticResource PasswordBoxStyle}"/>
+        <Button Command="{Binding AuthenticateCommand}" Grid.Row="3" Grid.Column="1" Margin="10" Content="Login" Style="{StaticResource ButtonStyle}"/>
     </Grid>
 </UserControl>
