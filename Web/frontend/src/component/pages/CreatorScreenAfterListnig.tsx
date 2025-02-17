@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { apiService } from "../../api/apiService";
 import styles from "./module.css/creatorscreenafterlisting.module.css";
 import BackToHomeButton from "../Back_To_Home_Button/Back_to_Home";
-import { Member } from "../../api/apiService";
-
-
+import { User } from "../../api/Models/User";
 
 const CreatorScreenAfterListing: React.FC = () => {
-  const [members, setMembers] = useState<Member[]>([]);
+  const [members, setMembers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +15,7 @@ const CreatorScreenAfterListing: React.FC = () => {
       setError(null);
 
       try {
-        const data = await apiService.getMembers(); // API hívás az új metódussal
+        const data = await apiService.getMembers(1); // API hívás az új metódussal
         setMembers(data);
       } catch (err) {
         setError("Failed to fetch members. Please try again.");

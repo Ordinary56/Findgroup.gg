@@ -1,4 +1,3 @@
-import { useState } from "react";
 import axiosInstance from "./axiosInstance";
 import { GroupDTO } from "./DTOs/GroupDTO";
 import { PostDTO } from "./DTOs/PostDTO";
@@ -41,8 +40,8 @@ export const apiService = {
   },
 
   // ✅ Get all posts
-   getPosts: async (): Promise<Post> => {
-    const { data } = await axiosInstance.get("/Post");
+   getPosts: async (): Promise<Post[]> => {
+    const data : Post[] = await axiosInstance.get("/Post");
     return data;
   },
 
@@ -68,4 +67,8 @@ export const apiService = {
   modifyPost: async (postDTO: PostDTO): Promise<void> => {
     await axiosInstance.patch(`/Post`, postDTO);
   },
+  getMembers : async(groupId : number) : Promise<User[]> => {
+    const users : User[] = await axiosInstance.get(`/Group/${groupId}/members`);
+    return users;
+  }
 };
