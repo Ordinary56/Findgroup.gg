@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="700" Background="#b2b2b2">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="400">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="300">
 
 
         <Grid.ColumnDefinitions>
@@ -19,7 +19,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="Username:"/>
@@ -27,7 +26,5 @@
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Password:"/>
         <PasswordBox Grid.Column="1" Grid.Row="1"  x:Name="txtPassword" PasswordChar="*" KeyDown="txtPassword_KeyDown" />
         <Button Command="{Binding AuthenticateCommand}" Grid.Row="3" Grid.Column="1" Margin="10" Content="Login"/>
-        <TextBlock Text="No account? Register!" Grid.Row="4" Grid.ColumnSpan="2" />
-
     </Grid>
 </UserControl>
