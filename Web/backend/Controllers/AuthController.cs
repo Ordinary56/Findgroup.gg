@@ -26,9 +26,13 @@ public class AuthController(IAuthService authService) : ControllerBase
                 SameSite = SameSiteMode.Strict,
             };
             Response.Cookies.Append("refreshToken", result.RefreshToken, cookieOptions);
+            Response.Cookies.Append("accessToken", result.Token, cookieOptions with
+            {
+                Expires = DateTime.UtcNow.AddMinutes(15),
+            });
             return Ok(new
             {
-                AccessToken = result.Token
+                message = "Login successfull"
             });
         }
         catch (Exception ex)

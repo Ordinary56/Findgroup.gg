@@ -15,15 +15,15 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null); // Reset error state before attempting login
-
-    try {
-      await apiService.login(username, password);
-      login(); // Bejelentkezés állapot frissítése
-      navigate(ROUTES.homepage.path); // Sikeres login után átirányítás
-    } catch (err) {
-      console.error("Login failed:", err);
+    const res = await apiService.login(username, password);
+    if (res.status != 200) {
+      console.error("Login failed:", res);
       setError("Login failed! Please try again.");
+      return;
     }
+    login(); // Bejelentkezés állapot frissítése
+    setError("");
+    navigate(ROUTES.homepage.path); // Sikeres login után átirányítás
   };
 
   return (

@@ -8,12 +8,13 @@ import { Post } from "./Models/Post";
 import { User } from "./Models/User";
 import { tokenService } from "./tokenService";
 import { Group } from "./Models/Group";
+import { AxiosResponse } from "axios";
 export const apiService = {
 
   // ✅ Bejelentkezés
-  login: async (username: string, password: string): Promise<void> => {
-    const { data } = await axiosInstance.post("/Auth/login", { Username: username, Password: password });
-    tokenService.setToken(data.accessToken);
+  login: async (username: string, password: string): Promise<AxiosResponse> => {
+    const  data : AxiosResponse  = await axiosInstance.post("/Auth/login", { Username: username, Password: password });
+    return data
   },
 
   // ✅ Kijelentkezés (Logout)
@@ -23,7 +24,6 @@ export const apiService = {
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
-      tokenService.clearTokens()
       window.location.href = "/login"; // Átirányítás bejelentkezési oldalra
     }
   },

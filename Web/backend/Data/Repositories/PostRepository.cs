@@ -13,7 +13,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async Task CreateNewPost(Post newPost)
         {
-            if (await _context.Posts.AnyAsync(p => p.Id == newPost.Id)) throw new Exception();
+            
             await _context.AddAsync(newPost);
             await Save();
         }

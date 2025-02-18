@@ -24,7 +24,7 @@ namespace Findgroup_Backend.Controllers
             var settings = new GoogleJsonWebSignature.ValidationSettings()
             {
                 IssuedAtClockTolerance = TimeSpan.FromMinutes(5),
-                Audience = [_config["Google:ClientId"]]
+                Audience = [_config["Google:Audience"]],
             };
             try
             {
