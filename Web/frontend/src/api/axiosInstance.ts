@@ -39,11 +39,8 @@ axiosInstance.interceptors.response.use(
       try {
         const refreshToken = Cookies.get("refreshToken")
         if (!refreshToken) throw new Error("No refresh token available");
-
         const { data } = await axios.post(`${API_BASE_URL}/RefreshToken/refresh`);
-        
-
-        originalRequest.headers.Authorization = `Bearer ${data.token}`;
+        originalRequest.headers.withCredentials = true;
         return axiosInstance(originalRequest);
       } catch {
         console.error("Token refresh failed, logging out.");

@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { apiService } from "../../api/apiService";
 import { tokenService } from "../../api/tokenService";
+import axiosInstance from "../../api/axiosInstance";
+import { AxiosResponse } from "axios";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -14,9 +16,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    // Ellenőrizzük, hogy van-e token a localStorage-ban
-    const token = tokenService.getToken();
-    setIsAuthenticated(!!token);
+    // TODO: rework authentication check
+    const checkValidation = async() => {
+      const {data} : AxiosResponse = await axiosInstance.get("/Auth/validate-token");
+      setIsAuthenticated(data.Valid);
+    }
+    checkValidation();
   }, []);
 
   const login = () => {
