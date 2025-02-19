@@ -84,7 +84,4 @@ export const apiService = {
     const res = await axiosInstance.post("/Group/join?")
     return res;
   },
-
-
-  
 };
