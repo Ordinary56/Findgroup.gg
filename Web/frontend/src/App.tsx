@@ -8,8 +8,8 @@ import Home from "./component/pages/Home";
 import RegisterPage from "./component/pages/Register";
 import CreateButton from "./component/Create_group_button/Create_group_button";
 import CreateGroup from "./component/pages/CreateGroup";
-import TopicDetails from "./component/pages/InspectListing";
 import CreatorScreenAfterListing from "./component/pages/CreatorScreenAfterListnig";
+import Post from "./component/pages/Post";
 
 // Routes configuration
 export const ROUTES = {
@@ -18,7 +18,8 @@ export const ROUTES = {
   login: { path: "/login", title: "Login" },
   create: { path: "/create", title: "Create" },
   landingpage:{ path: "/landingpage", title: "LandingPage" },
-  aftercreate:{path:"/aftercreate", title:"CreatorScreenAfterListing"}
+  aftercreate:{path:"/aftercreate", title:"CreatorScreenAfterListing"},
+  post: {path : "/post", title : "View Post"}
 };
 
 const PublicRoute: React.FC = () => {
@@ -48,9 +49,9 @@ const AppContent = () => {
         <Route element={<PrivateRoute/>}>
           <Route index element={<Home />} />
           <Route path={ROUTES.homepage.path} element={<Home />} />
-          <Route path="/topics/:topicId" element={<TopicDetails />} />
           <Route path={ROUTES.create.path} element={<CreateGroup />} />
           <Route path={ROUTES.aftercreate.path} element={< CreatorScreenAfterListing/>} />
+          <Route path={ROUTES.post.path} element={<Post/>} />
         </Route>
 
        

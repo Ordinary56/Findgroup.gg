@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
     e.preventDefault();
     setError(null); // Reset error state before attempting login
     const res = await apiService.login(username, password);
-    if (res.status != 200) {
+    if (res.status !== 200) {
       console.error("Login failed:", res);
       setError("Login failed! Please try again.");
       return;
@@ -55,6 +55,7 @@ const LoginPage: React.FC = () => {
         <button type="submit" className={styles.LoginButton}>
           Login
         </button>
+        <p>{error}</p>
         <div>
           Don't have an account?
           <Link to={ROUTES.register.path}> Register now!</Link>

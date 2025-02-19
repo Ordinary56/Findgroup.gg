@@ -25,12 +25,9 @@ const Home: React.FC = () => {
 
   return (
     <div className={clsx(homeStyles.container)}>
-     // TODO: rework ToggleButton so that it make this POS less clustered
+     {/* TODO: rework ToggleButton so that it make this POS less clustered*/}
     
-      <Suspense fallback={<div>Loading...</div>}>
-        <PostList postPromise={apiService.getPosts()}/>
-      </Suspense>
-    
+      <PostList/>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { apiService } from "./apiService";
 import { tokenService } from "./tokenService";
+import Cookies from "js-cookie";
+
 
 const API_BASE_URL = "http://localhost:5110/api";
 
@@ -8,7 +10,7 @@ const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: { 
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin" : "*",
+    "Access-Control-Allow-Origin" : "http://localhost:5173",
     "Access-Control-Allow-Methods" : "*",
     "Access-Control-Allow-Credentials" : true
   }
@@ -17,6 +19,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = tokenService.getToken();
+    console.log(token);
     if (token !== undefined) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -34,7 +37,7 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const refreshToken = localStorage.getItem("refreshToken");
+        const refreshToken = Cookies.get("refreshToken")
         if (!refreshToken) throw new Error("No refresh token available");
 
         const { data } = await axios.post(`${API_BASE_URL}/RefreshToken/refresh`);
