@@ -12,6 +12,8 @@ using Findgroup_Backend.Data.Seeders;
 using Microsoft.AspNetCore.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 namespace Findgroup_Backend;
 public class Program
 {
@@ -23,6 +25,7 @@ public class Program
         byte[] key = Encoding.UTF8.GetBytes(builder.Configuration["JwtSecret"]!);
 
         builder.Services.AddControllers();
+        #region DBContext
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
             string connectionString = builder.Configuration.GetConnectionString("DevelopmentDB")!;
@@ -30,11 +33,17 @@ public class Program
             warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
             options.EnableSensitiveDataLogging();
         });
+        #endregion
+
+        #region Identity Roles
         builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+        #endregion
+
+        #region Authentication (JWT/Google)
         builder.Services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
         }).AddCookie()
             .AddJwtBearer(options =>
             {
@@ -48,18 +57,30 @@ public class Program
                     ValidAudience = jwtSettings["Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
+            }).AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["Google:ClientId"]!;
+                options.ClaimsIssuer = "https://accounts.google.com";
+                options.ClientSecret = "MY_SECRET"; // placeholder secret
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
         builder.Services.AddAuthorization();
+        #endregion
+
+        #region Cors Policy
         builder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(policy =>
             {
                 policy.AllowAnyHeader()
-                .AllowAnyOrigin()
-                .AllowAnyMethod();
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyMethod()
+                .AllowCredentials();
             });
         });
-        
+        #endregion
+
+        #region Repositories
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IPostRepository, PostRepository>();
         builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
@@ -67,10 +88,15 @@ public class Program
         builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+        #endregion
+
+        #region AutoMapper
         builder.Services.AddAutoMapper(config =>
         {
             config.AddMaps(typeof(Program));
         });
+        #endregion
+
         builder.Services.Configure<JsonOptions>(options =>
         {
             options.SerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;

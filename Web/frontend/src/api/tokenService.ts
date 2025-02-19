@@ -1,7 +1,5 @@
-import { useState } from "react"
+import Cookies from "js-cookie";
 
-const [accessToken, setAccessToken] = useState("");
 export const tokenService = {
-    getToken : () : string => accessToken,
-    setToken: (token: string) => setAccessToken(token)
+    getToken: (): string | undefined => Cookies.get("accessToken"),
 }

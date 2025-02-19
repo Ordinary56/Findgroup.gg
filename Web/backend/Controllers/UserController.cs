@@ -3,6 +3,7 @@ using Findgroup_Backend.Data;
 using Findgroup_Backend.Data.Repositories;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,17 @@ namespace Findgroup_Backend.Controllers
             {
                 yield return user;
             }
+        }
+        
+        [HttpGet("me")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            var accessToken = Request.Cookies["accessToken"];
+            if (string.IsNullOrEmpty(accessToken)) return Unauthorized(new
+            {
+                Message = "No access token provided"
+            });
+            
         }
 
         [HttpGet("{id}")]

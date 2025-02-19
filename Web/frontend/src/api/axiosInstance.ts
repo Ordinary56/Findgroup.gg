@@ -10,14 +10,14 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin" : "*",
     "Access-Control-Allow-Methods" : "*",
-    "Access-Control-Allow-Credentials" : "true"
+    "Access-Control-Allow-Credentials" : true
   }
   });
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = tokenService.getToken();
-    if (token) {
+    if (token !== undefined) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     config.withCredentials = true
