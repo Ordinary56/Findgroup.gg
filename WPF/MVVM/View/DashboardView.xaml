@@ -5,8 +5,115 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF.MVVM.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1080" d:DesignWidth="1920" Background="#2b2b2b">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
     <Grid>
-            
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Oldalsáv gombokkal -->
+        <Border Grid.RowSpan="2" Background="#7c7c7c" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Dashboard" Style="{StaticResource TextBlockStyle}" Margin="0 0 0 20"/>
+                <Button Content="Export as CSV" Style="{StaticResource ButtonStyle}" Margin="0 20 0 10"/>
+                <Button Content="Logout" Style="{StaticResource ButtonStyle}"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal"  Height="100">
+            <Button Content="Lista 1"  Command="{Binding ShowFirstListCommand}" Style="{StaticResource ButtonStyle}" Margin="0 0 0 10"/>
+        <Button Content="Lista 2"  Command="{Binding ShowSecondListCommand}" Style="{StaticResource ButtonStyle}" Margin="0 0 0 10"/>
+        <Button Content="Lista 3"  Command="{Binding ShowThirdListCommand}" Style="{StaticResource ButtonStyle}" Margin="0 0 0 10"/>
+        </StackPanel>
+        
+        <!-- Tartalom: 3 ListView váltogatva -->
+        <Grid Grid.Column="1" Grid.Row="3" Margin="10">
+            <!-- Első ListView -->
+            <ListView Visibility="{Binding IsFirstListVisible, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Stretch">
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                        <GridViewColumn Header="Első Lista" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="17" Foreground="Salmon"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Actions" Width="180">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                                        <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
+                                        <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Második ListView -->
+            <ListView Visibility="{Binding IsSecondListVisible, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Stretch">
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                        <GridViewColumn Header="Második Lista" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Description}" FontWeight="Bold" FontSize="17" Foreground="LightGreen"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Actions" Width="180">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                                        <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
+                                        <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Harmadik ListView -->
+            <ListView Visibility="{Binding IsThirdListVisible, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Stretch">
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                        <GridViewColumn Header="Harmadik Lista" Width="200">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Details}" FontWeight="Bold" FontSize="17" Foreground="LightBlue"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Actions" Width="180">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                                        <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
+                                        <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
     </Grid>
 </UserControl>
