@@ -1,11 +1,5 @@
-import axios from "axios";
-import { apiService } from "./apiService";
-import { tokenService } from "./tokenService";
-import Cookies from "js-cookie";
-
-
+import axios, { AxiosResponse } from "axios";
 const API_BASE_URL = "http://localhost:5110/api";
-
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: { 
@@ -18,11 +12,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = tokenService.getToken();
-    console.log(token);
-    if (token !== undefined) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
     config.withCredentials = true
     return config;
   },
@@ -37,15 +26,12 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const refreshToken = Cookies.get("refreshToken")
-        if (!refreshToken) throw new Error("No refresh token available");
-        const { data } = await axios.post(`${API_BASE_URL}/RefreshToken/refresh`);
+        const { data } : AxiosResponse = await axios.post(`${API_BASE_URL}/RefreshToken/refresh`);
         originalRequest.headers.withCredentials = true;
         return axiosInstance(originalRequest);
       } catch {
         console.error("Token refresh failed, logging out.");
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        await axios.post("/logout");
         window.location.href = "/login";
       }
     }
