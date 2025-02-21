@@ -3,14 +3,47 @@ using Findgroup_Backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 namespace Findgroup_Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(IAuthService authService, IConfiguration config) : ControllerBase
 {
     private readonly IAuthService _auth = authService;
+    private readonly IConfiguration _config = config;
+
+    [Authorize]
+    [HttpGet("validate-token")]
+    public async Task<IActionResult> ValidateToken()
+    {
+        string token = Request.Cookies["accessToken"]!;
+        string key = _config["JwtSecret"]!;
+        if (string.IsNullOrEmpty(token)) return Unauthorized(new
+        {
+            Valid = false
+        });
+        TokenValidationParameters validationParams = new()
+        {
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = _config["JwtSettings:Issuer"],
+            ValidAudience = _config["JwtSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var result = await tokenHandler.ValidateTokenAsync(token, validationParams);
+        return Ok(new
+        {
+            Valid = result.IsValid
+        });
+        
+    }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDTO model)
@@ -26,10 +59,7 @@ public class AuthController(IAuthService authService) : ControllerBase
                 SameSite = SameSiteMode.Strict,
             };
             Response.Cookies.Append("refreshToken", result.RefreshToken, cookieOptions);
-            Response.Cookies.Append("accessToken", result.Token, cookieOptions with
-            {
-                Expires = DateTime.UtcNow.AddMinutes(15),
-            });
+            Response.Cookies.Append("accessToken", result.Token, cookieOptions);
             return Ok(new
             {
                 message = "Login successfull"

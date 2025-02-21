@@ -42,9 +42,9 @@ public class Program
         #region Authentication (JWT/Google)
         builder.Services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-        }).AddCookie()
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new()
@@ -57,12 +57,20 @@ public class Program
                     ValidAudience = jwtSettings["Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
+                options.Events = new JwtBearerEvents()
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["accessToken"];
+                        return Task.CompletedTask;
+                    }
+                };
             }).AddGoogle(options =>
             {
                 options.ClientId = builder.Configuration["Google:ClientId"]!;
                 options.ClaimsIssuer = "https://accounts.google.com";
                 options.ClientSecret = "MY_SECRET"; // placeholder secret
-                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
             });
         builder.Services.AddAuthorization();
         #endregion

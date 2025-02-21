@@ -32,7 +32,8 @@ namespace Findgroup_Backend.Controllers
         [HttpGet("me")]
         public IActionResult GetUserInfo()
         {
-            var claims = User.Claims.ToDictionary()
+            var claims = User.Claims.ToDictionary(c => c.Type, c => c.Value);
+            return Ok(claims);
             
         }
 
