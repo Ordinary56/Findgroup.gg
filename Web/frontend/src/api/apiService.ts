@@ -30,6 +30,12 @@ export const apiService = {
   register: async (username: string, password: string, email?: string): Promise<void> => {
     await axiosInstance.post("/Auth/register", { username, password, email });
   },
+
+  getUser : async (id : string) => {
+    const {data, status} : AxiosResponse<User> = await axiosInstance.get(`/User/${id}`);
+    return data;
+  }
+
   getCategories: async (): Promise<Category[]> => {
     const { data } = await axiosInstance.get("/Category");
     return data;
