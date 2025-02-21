@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Findgroup_Backend.Models
 {
@@ -10,7 +9,10 @@ namespace Findgroup_Backend.Models
         public required string GroupName { get; set; }
         public required string Description { get; set; }
         public required int MemberLimit { get; set; } = 1;
+
+        public int PostId { get; init; }
         public IList<User> Users { get; set; } = [];
         public User? Creator => Users.FirstOrDefault();
+        public Post? Post { get; set; }
     }
 }

@@ -21,7 +21,7 @@ namespace Findgroup_Backend.Configuration
                 GroupName = "League Team",
                 MemberLimit = 5,
                 Description = "A team for league",
-
+                PostId = 1
             });
         }
     }
