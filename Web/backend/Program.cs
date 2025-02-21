@@ -14,6 +14,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Findgroup_Backend.Data.Repositories.Interfaces;
 namespace Findgroup_Backend;
 public class Program
 {
@@ -65,12 +66,6 @@ public class Program
                         return Task.CompletedTask;
                     }
                 };
-            }).AddGoogle(options =>
-            {
-                options.ClientId = builder.Configuration["Google:ClientId"]!;
-                options.ClaimsIssuer = "https://accounts.google.com";
-                options.ClientSecret = "MY_SECRET"; // placeholder secret
-                options.SignInScheme = JwtBearerDefaults.AuthenticationScheme;
             });
         builder.Services.AddAuthorization();
         #endregion

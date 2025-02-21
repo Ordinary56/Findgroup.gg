@@ -2,8 +2,11 @@
 using Findgroup_Backend.Models.DTOs;
 using Findgroup_Backend.Services;
 using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Pqc.Crypto.Lms;
 
 namespace Findgroup_Backend.Controllers
 {
@@ -13,11 +16,11 @@ namespace Findgroup_Backend.Controllers
         UserManager<User> manager,
         ITokenService service) : ControllerBase
     {
-        // TODO: implement OAuth controller
+        
         private readonly IConfiguration _config = configuration;
         private readonly UserManager<User> _manager = manager;
         private readonly ITokenService _tokenService = service;
-        [HttpPost("google")]
+        [HttpPost("google-register")]
         public async Task<ActionResult> GoogleSignIn([FromBody] GoogleLoginDTO request)
         {
             if (request.Token is null || request is null) return BadRequest("Missing token");
@@ -36,7 +39,6 @@ namespace Findgroup_Backend.Controllers
                     {
                         UserName = payload.FamilyName ?? payload.GivenName ?? payload.Email,
                         Email = payload.Email,
-
                     };
                     var result = await _manager.CreateAsync(user);
                     if (!result.Succeeded)
@@ -47,9 +49,13 @@ namespace Findgroup_Backend.Controllers
                 }
                 if (!await _manager.IsInRoleAsync(user, "User")) await _manager.AddToRoleAsync(user, "User");
                 var jwtToken = await _tokenService.GenerateAccessToken(user);
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshToken = refreshToken;
+                Response.Cookies.Append("accessToken", jwtToken);
+                Response.Cookies.Append("refreshToken", refreshToken.TokenHash);
                 return Ok(new
                 {
-                    Token = jwtToken
+                    Message = "Succesful google login"
                 });
             }
             catch (Exception ex)
@@ -57,6 +63,18 @@ namespace Findgroup_Backend.Controllers
                 return StatusCode(500, "Internal Server Error: " + ex.Message);
             }
 
+        }
+
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin()
+        {
+            var googleAuth = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+            if(!googleAuth.Succeeded)
+            {
+                return Unauthorized();
+            }
+
+            return Ok();
         }
 
         [HttpPatch]

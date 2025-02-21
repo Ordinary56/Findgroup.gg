@@ -1,4 +1,4 @@
-﻿using Findgroup_Backend.Data.Repositories;
+﻿using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs;
 using Findgroup_Backend.Services;

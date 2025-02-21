@@ -1,4 +1,5 @@
-﻿using Findgroup_Backend.Models;
+﻿using Findgroup_Backend.Data.Repositories.Interfaces;
+using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Bcpg;
@@ -36,7 +37,9 @@ namespace Findgroup_Backend.Data.Repositories
 
         public IAsyncEnumerable<Post> GetPosts()
         {
-            return _context.Posts.Include(p => p.Category).Include(p => p.User).AsAsyncEnumerable();
+            return _context.Posts.Include(p => p.Category)
+                .Include(p => p.User)
+                .Include(p => p.Group).AsAsyncEnumerable();
         }
 
         public async Task ModifyPostAsync(Post post)

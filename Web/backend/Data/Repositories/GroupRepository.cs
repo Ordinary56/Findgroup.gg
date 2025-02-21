@@ -1,4 +1,5 @@
-﻿using Findgroup_Backend.Models;
+﻿using Findgroup_Backend.Data.Repositories.Interfaces;
+using Findgroup_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using System.CodeDom;
 using System.Runtime.InteropServices;
@@ -26,7 +27,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         public IAsyncEnumerable<Group> GetGroups()
         {
-            return _context.Groups.Include(g => g.Users).AsAsyncEnumerable();
+            return _context.Groups.Include(g => g.Users).Include(g => g.Post).AsAsyncEnumerable();
         }
 
         public async Task<Group?> GetGroupById(Guid id)
@@ -95,10 +96,12 @@ namespace Findgroup_Backend.Data.Repositories
             {
                 _context.Attach(targetUser);
             }
-            if (_context.Entry(targetGroup).State != EntityState.Detached)
+            if (_context.Entry(targetGroup).State == EntityState.Detached)
             {
                 _context.Attach(targetGroup);
             }
+            await _context.Entry(targetUser).Collection(u => u.JoinedGroups).LoadAsync();
+            await _context.Entry(targetGroup).Collection(u => u.Users).LoadAsync();
             targetGroup.Users.Remove(targetUser);
             targetUser.JoinedGroups.Remove(targetGroup);
             await Save();

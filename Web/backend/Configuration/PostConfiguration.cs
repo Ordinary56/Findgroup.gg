@@ -10,7 +10,7 @@ namespace Findgroup_Backend.Configuration
         {
             builder.HasOne(post => post.User).WithMany(user => user.Posts).HasForeignKey(post => post.UserId).IsRequired(false);
             builder.HasOne(post => post.Category).WithMany().HasForeignKey(post => post.CategoryId).IsRequired(false);
-            builder.HasOne(post => post.Group).WithOne(group => group.Post).HasForeignKey("GroupId");
+            builder.HasOne(post => post.Group).WithOne().HasForeignKey<Post>(post => post.GroupId).IsRequired(false);
             builder.HasData(new Post
             {
                 Id = 1,

@@ -1,6 +1,6 @@
 ﻿using Findgroup_Backend.Models;
 
-namespace Findgroup_Backend.Data.Repositories
+namespace Findgroup_Backend.Data.Repositories.Interfaces
 {
     public interface ICategoryRepository : IDisposable
     {

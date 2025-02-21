@@ -1,4 +1,4 @@
-﻿using Findgroup_Backend.Data.Repositories;
+﻿using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,9 +54,9 @@ namespace Findgroup_Backend.Controllers
         }
 
         [HttpPost("join")]
-        public async Task<ActionResult> JoinGroup([FromQuery] Guid groupId, [FromQuery] string userId)
+        public async Task<ActionResult> JoinGroup([FromQuery] string groupId, [FromQuery] string userId)
         {
-            if (groupId == Guid.Empty || string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(groupId))
             {
                 return BadRequest(new
                 {
@@ -65,10 +65,17 @@ namespace Findgroup_Backend.Controllers
                     UserId = userId
                 });
             }
+            if(!Guid.TryParse(groupId, out Guid result))
+            {
+                return BadRequest(new
+                {
+                    Message = "Invalid GroupId"
+                });
+            }
             try
             {
                 User newMember = await _userRepository.GetUserById(userId);
-                Group? group = await _groupRepository.GetGroupById(groupId);
+                Group? group = await _groupRepository.GetGroupById(result);
                 if (group is null || newMember is null) return BadRequest("Invalid request");
                 await _groupRepository.JoinGroup(group, newMember);
                 return Ok($"User: {newMember.UserName} successfully joined to group (Id) : {group.Id}");
