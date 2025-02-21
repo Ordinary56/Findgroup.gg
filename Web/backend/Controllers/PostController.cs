@@ -23,7 +23,7 @@ namespace Findgroup_Backend.Controllers
                 yield return post;
             }
         }
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetPost(int id)
         {
             try

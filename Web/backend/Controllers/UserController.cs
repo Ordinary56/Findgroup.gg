@@ -27,15 +27,12 @@ namespace Findgroup_Backend.Controllers
                 yield return user;
             }
         }
-        
+
+        [Authorize]
         [HttpGet("me")]
-        public async Task<IActionResult> GetUserInfo()
+        public IActionResult GetUserInfo()
         {
-            var accessToken = Request.Cookies["accessToken"];
-            if (string.IsNullOrEmpty(accessToken)) return Unauthorized(new
-            {
-                Message = "No access token provided"
-            });
+            var claims = User.Claims.ToDictionary()
             
         }
 
