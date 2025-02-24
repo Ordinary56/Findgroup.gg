@@ -9,11 +9,10 @@ namespace Findgroup_Backend.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+        public required string UserId { get; set; }
 
         [ForeignKey(nameof(Group))]
-        public int GroupId { get; set; }
+        public Guid GroupId { get; set; }
 
         
         public required string Content { get; set; } = "";

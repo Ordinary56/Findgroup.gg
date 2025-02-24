@@ -22,7 +22,7 @@ const LoginPage: React.FC = () => {
       return;
     }
     login(); // Bejelentkezés állapot frissítése
-    setError("");
+    setError("There was an error during the login attempt");
     navigate(ROUTES.homepage.path); // Sikeres login után átirányítás
   };
 

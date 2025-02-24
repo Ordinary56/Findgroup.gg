@@ -32,9 +32,9 @@ export const apiService = {
   },
 
   getUser : async (id : string) => {
-    const {data, status} : AxiosResponse<User> = await axiosInstance.get(`/User/${id}`);
+    const {data} : AxiosResponse<User> = await axiosInstance.get(`/User/${id}`);
     return data;
-  }
+  },
 
   getCategories: async (): Promise<Category[]> => {
     const { data } = await axiosInstance.get("/Category");

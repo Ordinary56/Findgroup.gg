@@ -24,7 +24,7 @@ const Post = () => {
             <>
             <h1>{post.title}</h1>
             <h2>{post.content}</h2>
-
+            <h3>Created by {creator?.userName || "USER NOT FOUND"}</h3>
             </>
         ) : (
             <div>error</div>

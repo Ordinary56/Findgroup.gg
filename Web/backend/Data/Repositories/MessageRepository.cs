@@ -1,5 +1,6 @@
 ﻿using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Findgroup_Backend.Data.Repositories
 {
@@ -7,19 +8,21 @@ namespace Findgroup_Backend.Data.Repositories
     {
         private readonly ApplicationDbContext _context;
         private bool disposed;
-        public Task AddNewMessage(Message message)
+        public async Task AddNewMessage(Message message)
         {
-            throw new NotImplementedException();
+            await _context.Messages.AddAsync(message);
+            await Save();
         }
 
-        public Task<Message> ModifyMessage(Message message)
+        public async Task<Message> ModifyMessage(Message oldMessage, Message newMessage)
         {
-            throw new NotImplementedException();
+            await _context.Messages.FindAsync(oldMessage);
         }
 
-        public Task RemoveMessage(Message message)
+        public async Task RemoveMessage(Message message)
         {
-            throw new NotImplementedException();
+            _context.Messages.Remove(message);
+            await Save();
         }
         public void Dispose() 
         {
@@ -38,13 +41,9 @@ namespace Findgroup_Backend.Data.Repositories
 
         public IAsyncEnumerable<Message> GetMessages()
         {
-            throw new NotImplementedException();
+            return _context.Messages.Include(m => m.User).Include(m => m.Group).AsAsyncEnumerable();
         }
 
-        public IAsyncEnumerator<Message> GetGroupMessages(Guid groupId)
-        {
-            throw new NotImplementedException();
-        }
         public async Task Save()
         {
             await _context.SaveChangesAsync();  

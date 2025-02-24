@@ -10,6 +10,7 @@ import CreateButton from "./component/Create_group_button/Create_group_button";
 import CreateGroup from "./component/pages/CreateGroup";
 import CreatorScreenAfterListing from "./component/pages/CreatorScreenAfterListnig";
 import Post from "./component/pages/Post";
+import Group from "./component/pages/Group";
 
 // Routes configuration
 export const ROUTES = {
@@ -19,7 +20,8 @@ export const ROUTES = {
   create: { path: "/create", title: "Create" },
   landingpage:{ path: "/landingpage", title: "LandingPage" },
   aftercreate:{path:"/aftercreate", title:"CreatorScreenAfterListing"},
-  post: {path : "/post", title : "View Post"}
+  post: {path : "/post", title : "View Post"},
+  group : {path : "/group/:groupId", title: "Group"}
 };
 
 const PublicRoute: React.FC = () => {
@@ -52,6 +54,7 @@ const AppContent = () => {
           <Route path={ROUTES.create.path} element={<CreateGroup />} />
           <Route path={ROUTES.aftercreate.path} element={< CreatorScreenAfterListing/>} />
           <Route path={ROUTES.post.path} element={<Post/>} />
+          <Route path={ROUTES.group.path} element={<Group/>}/>
         </Route>
 
        
