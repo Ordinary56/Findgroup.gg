@@ -2,7 +2,11 @@ import styles from "./PostList.module.css"
 import { Link } from "react-router-dom";
 import UsePosts from "../../hooks/usePosts";
 // TODO: Work on this component further
-const PostList = () => {
+interface PostListProps {
+    selectedGame: string;
+  }
+  
+  const PostList: React.FC<PostListProps> = ({ selectedGame }) => {
     const {posts, loading, error} = UsePosts();
     console.log(posts);
     if(loading) return <div>Loading...</div>

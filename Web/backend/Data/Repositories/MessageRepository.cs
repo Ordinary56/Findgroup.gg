@@ -16,7 +16,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async Task<Message> ModifyMessage(Message oldMessage, Message newMessage)
         {
-            await _context.Messages.FindAsync(oldMessage);
+            throw new NotImplementedException();
         }
 
         public async Task RemoveMessage(Message message)
