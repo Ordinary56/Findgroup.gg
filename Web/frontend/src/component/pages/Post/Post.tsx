@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom"
-import { Post as PostModel } from "../../api/Models/Post";
-import { apiService } from "../../api/apiService";
-import { User } from "../../api/Models/User";
+import { Post as PostModel } from "../../../api/Models/Post";
+import { apiService } from "../../../api/apiService";
+import { User } from "../../../api/Models/User";
+import styles from "./post.module.css"
 
 const Post = () => {
     const location = useLocation();
