@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { apiService } from "../../../api/apiService";
-import styles from "./module.css/register.module.css";
+import styles from "./register.module.css";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../App";
 

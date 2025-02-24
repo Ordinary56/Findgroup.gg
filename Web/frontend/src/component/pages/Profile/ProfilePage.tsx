@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./module.css/profile.module.css";
+import styles from "./profile.module.css";
 import { useParams, Link } from "react-router-dom";
 import { User } from "../../../api/Models/User";
 import { ROUTES } from "../../../App";

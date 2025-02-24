@@ -6,7 +6,6 @@ import { Post } from "./Models/Post";
 import { User } from "./Models/User";
 import { Group } from "./Models/Group";
 import { AxiosResponse } from "axios";
-import Cookies from "js-cookie";
 export const apiService = {
 
   login: async (username: string, password: string): Promise<AxiosResponse> => {

@@ -4,7 +4,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import TopicList from "../../List/List";
 import { apiService } from "../../../api/apiService";
-import homeStyles from "../pages/module.css/home.module.css"
+import homeStyles from "./home.module.css"
 import clsx from "clsx";
 import PostList from "../../PostList/PostList";
 import { dividerClasses } from "@mui/material";
