@@ -1,7 +1,7 @@
 import { Route, BrowserRouter as Router, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
 import { useAuth, AuthProvider } from "./component/Auth_Context/AuthContext"; // Authentication logic
 import Navbar from "./component/Navbar/Navbar";
-import Footer from "./component/Footer/Footer";
+
 import LandingPage from "./component/pages/Landing_Page/LandingPage";
 import LoginPage from "./component/pages/Login/Login";
 import Home from "./component/pages/Home/Home";
@@ -63,7 +63,7 @@ const AppContent = () => {
       </Routes>
       {/* Display CreateButton only on homepage */}
       {location.pathname === ROUTES.homepage.path && <CreateButton />}
-      <Footer />
+
     </>
   );
 };
