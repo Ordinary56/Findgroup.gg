@@ -3,6 +3,7 @@ import BackToHomeButton from "../../Back_To_Home_Button/Back_to_Home";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../App";
 import { useState } from "react";
+//TODO : Rework this component
 
 const CreateGroup = () => {
   const [postName, setPostName] = useState<string>("User's game");

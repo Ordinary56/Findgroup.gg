@@ -7,6 +7,8 @@ import pfp from "../../../public/Thepic.png";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 
+//TODO Work on this component
+
 type UserDetailsPageProps = {
   users: User[];
 };
