@@ -17,11 +17,14 @@ namespace Findgroup_Backend.Data.Repositories
         public async Task<Message> ModifyMessage(Message oldMessage, Message newMessage)
         {
             throw new NotImplementedException();
+
         }
 
-        public async Task RemoveMessage(Message message)
+        public async Task RemoveMessage(int id)
         {
-            _context.Messages.Remove(message);
+            Message? target = await _context.Messages.FirstOrDefaultAsync(x => x.Id == id);
+            if (target == null) return;
+            _context.Messages.Remove(target);
             await Save();
         }
         public void Dispose() 
