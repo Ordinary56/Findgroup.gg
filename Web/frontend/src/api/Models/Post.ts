@@ -5,5 +5,6 @@ export type Post = {
     title : string, 
     content: string,
     category : Category
-
+    createdDate : string,
+    userId : string,
 }

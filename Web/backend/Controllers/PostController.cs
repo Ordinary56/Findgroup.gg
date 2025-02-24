@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Findgroup_Backend.Data.Repositories;
+using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +23,7 @@ namespace Findgroup_Backend.Controllers
                 yield return post;
             }
         }
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetPost(int id)
         {
             try

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styles from "./module.css/profile.module.css";
 import { useParams, Link } from "react-router-dom";
-import { User } from "../../api/Models/User";
-import { ROUTES } from "../../App";
+import { User } from "../../../api/Models/User";
+import { ROUTES } from "../../../App";
 import pfp from "../../../public/Thepic.png";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";

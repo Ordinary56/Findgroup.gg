@@ -18,9 +18,11 @@ namespace Findgroup_Backend.Models
         public string? UserId { get; set; }
 
         public int? CategoryId { get; set; }
+        public Guid? GroupId { get; set; }
         public User? User { get; set; }
         public Category? Category { get; set; }
 
+        public Group? Group { get; set; }
 
 
     }

@@ -2,14 +2,15 @@ import { Route, BrowserRouter as Router, Routes, useLocation, Navigate, Outlet }
 import { useAuth, AuthProvider } from "./component/Auth_Context/AuthContext"; // Authentication logic
 import Navbar from "./component/Navbar/Navbar";
 import Footer from "./component/Footer/Footer";
-import LandingPage from "./component/pages/LandingPage";
-import LoginPage from "./component/pages/Login";
-import Home from "./component/pages/Home";
-import RegisterPage from "./component/pages/Register";
+import LandingPage from "./component/pages/Landing_Page/LandingPage";
+import LoginPage from "./component/pages/Login/Login";
+import Home from "./component/pages/Home/Home";
+import RegisterPage from "./component/pages/Register/Register";
 import CreateButton from "./component/Create_group_button/Create_group_button";
-import CreateGroup from "./component/pages/CreateGroup";
-import TopicDetails from "./component/pages/InspectListing";
-import CreatorScreenAfterListing from "./component/pages/CreatorScreenAfterListnig";
+import CreateGroup from "./component/pages/Group_Creation/CreateGroup";
+import CreatorScreenAfterListing from "./component/pages/After_Creation/CreatorScreenAfterListnig";
+import Post from "./component/pages/Post/Post";
+import Group from "./component/pages/Group/Group";
 
 // Routes configuration
 export const ROUTES = {
@@ -18,7 +19,9 @@ export const ROUTES = {
   login: { path: "/login", title: "Login" },
   create: { path: "/create", title: "Create" },
   landingpage:{ path: "/landingpage", title: "LandingPage" },
-  aftercreate:{path:"/aftercreate", title:"CreatorScreenAfterListing"}
+  aftercreate:{path:"/aftercreate", title:"CreatorScreenAfterListing"},
+  post: {path : "/post", title : "View Post"},
+  group : {path : "/group/:groupId", title: "Group"}
 };
 
 const PublicRoute: React.FC = () => {
@@ -48,9 +51,10 @@ const AppContent = () => {
         <Route element={<PrivateRoute/>}>
           <Route index element={<Home />} />
           <Route path={ROUTES.homepage.path} element={<Home />} />
-          <Route path="/topics/:topicId" element={<TopicDetails />} />
           <Route path={ROUTES.create.path} element={<CreateGroup />} />
           <Route path={ROUTES.aftercreate.path} element={< CreatorScreenAfterListing/>} />
+          <Route path={ROUTES.post.path} element={<Post/>} />
+          <Route path={ROUTES.group.path} element={<Group/>}/>
         </Route>
 
        

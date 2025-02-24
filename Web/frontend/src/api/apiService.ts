@@ -1,26 +1,25 @@
 import axiosInstance from "./axiosInstance";
-import Cookies from "js-cookie"
-import { useState } from "react";
 import { GroupDTO } from "./DTOs/GroupDTO";
 import { PostDTO } from "./DTOs/PostDTO";
 import { Category } from "./Models/Category";
 import { Post } from "./Models/Post";
 import { User } from "./Models/User";
-import { tokenService } from "./tokenService";
 import { Group } from "./Models/Group";
 import { AxiosResponse } from "axios";
+import Cookies from "js-cookie";
 export const apiService = {
 
-  // ✅ Bejelentkezés
   login: async (username: string, password: string): Promise<AxiosResponse> => {
     const  data : AxiosResponse  = await axiosInstance.post("/Auth/login", { Username: username, Password: password });
+    console.log(data);
     return data
   },
 
-  // ✅ Kijelentkezés (Logout)
   logout: async (): Promise<void> => {
     try {
       await axiosInstance.post("/Auth/logout");
+      Cookies.remove("accessToken");
+      Cookies.remove("refreshToken");
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
@@ -28,11 +27,15 @@ export const apiService = {
     }
   },
 
-  // ✅ Regisztráció
   register: async (username: string, password: string, email?: string): Promise<void> => {
     await axiosInstance.post("/Auth/register", { username, password, email });
   },
-  // ✅ Kategóriák lekérése
+
+  getUser : async (id : string) => {
+    const {data} : AxiosResponse<User> = await axiosInstance.get(`/User/${id}`);
+    return data;
+  },
+
   getCategories: async (): Promise<Category[]> => {
     const { data } = await axiosInstance.get("/Category");
     return data;
@@ -40,14 +43,14 @@ export const apiService = {
 
   //  Get all posts
   getPosts: async (): Promise<Post[]> => {
-    const posts : Post[] = await axiosInstance.get("/Post");
-    return posts;
+    const {data} : AxiosResponse<Post[]> = await axiosInstance.get("/Post");
+    return data;
   },
 
   // Get a single post by ID
   getPost: async (id: number): Promise<Post> => {
-    const post : Post  = await axiosInstance.get(`/Post/${id}`);
-    return post;
+    const {data} : AxiosResponse<Post>   = await axiosInstance.get(`/Post/${id}`);
+    return data;
   },
 
   //  Create a new post
@@ -59,8 +62,8 @@ export const apiService = {
   modifyPost: async (postDTO: PostDTO): Promise<void> => {
     await axiosInstance.patch(`/Post`, postDTO);
   },
-  deletePost: async () : Promise<any> => {
-    await axiosInstance.delete("/Post/");
+  deletePost: async (id : number) : Promise<any> => {
+    await axiosInstance.delete(`/Post/${id}`);
   },
 
   getGroups: async (): Promise<Group[]> => {

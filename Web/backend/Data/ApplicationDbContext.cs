@@ -27,5 +27,6 @@ namespace Findgroup_Backend.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

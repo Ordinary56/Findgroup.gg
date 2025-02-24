@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Data;
-using Findgroup_Backend.Data.Repositories;
+using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -27,15 +27,13 @@ namespace Findgroup_Backend.Controllers
                 yield return user;
             }
         }
-        
+
+        [Authorize(Roles = "User")]
         [HttpGet("me")]
-        public async Task<IActionResult> GetUserInfo()
+        public IActionResult GetUserInfo()
         {
-            var accessToken = Request.Cookies["accessToken"];
-            if (string.IsNullOrEmpty(accessToken)) return Unauthorized(new
-            {
-                Message = "No access token provided"
-            });
+            var claims = User.Claims.ToDictionary(c => c.Type, c => c.Value);
+            return Ok(claims);
             
         }
 

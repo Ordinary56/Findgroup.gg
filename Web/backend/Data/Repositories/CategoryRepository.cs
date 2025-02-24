@@ -1,4 +1,5 @@
-﻿using Findgroup_Backend.Models;
+﻿using Findgroup_Backend.Data.Repositories.Interfaces;
+using Findgroup_Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Findgroup_Backend.Data.Repositories
