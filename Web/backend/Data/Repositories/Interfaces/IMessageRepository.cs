@@ -8,7 +8,7 @@ namespace Findgroup_Backend.Data.Repositories.Interfaces
 
         public Task AddNewMessage(Message message);
 
-        public Task RemoveMessage(Message message);
+        public Task RemoveMessage(int id);
 
         public Task<Message> ModifyMessage(Message oldMessage, Message newMessage);
 
