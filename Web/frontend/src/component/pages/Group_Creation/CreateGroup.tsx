@@ -1,4 +1,4 @@
-import styles from "./module.css/creategroup.module.css";
+import styles from "./creategroup.module.css";
 import BackToHomeButton from "../../Back_To_Home_Button/Back_to_Home";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../../App";

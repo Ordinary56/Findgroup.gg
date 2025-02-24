@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { apiService } from "../../../api/apiService";
-import styles from "./module.css/creatorscreenafterlisting.module.css";
+import styles from "./creatorscreenafterlisting.module.css";
 import BackToHomeButton from "../../Back_To_Home_Button/Back_to_Home";
 import { User } from "../../../api/Models/User";
 
