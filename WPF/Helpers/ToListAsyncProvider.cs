@@ -8,8 +8,5 @@ using System.Threading.Tasks;
 
 namespace WPF.Helpers
 {
-    public static ValueTask<IList<TSource>> ToListAsync<TSource>(this IAsyncEnumerable<TSource>? source)
-    {
-        //
-    }
+   
 }

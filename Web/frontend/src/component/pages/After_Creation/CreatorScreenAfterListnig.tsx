@@ -4,6 +4,8 @@ import styles from "./creatorscreenafterlisting.module.css";
 import BackToHomeButton from "../../Back_To_Home_Button/Back_to_Home";
 import { User } from "../../../api/Models/User";
 
+//TODO : Rework this component
+
 const CreatorScreenAfterListing: React.FC = () => {
   const [members, setMembers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);

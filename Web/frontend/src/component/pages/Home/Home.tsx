@@ -1,33 +1,54 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import TopicList from "../../List/List";
-import { apiService } from "../../../api/apiService";
-import homeStyles from "./home.module.css"
 import clsx from "clsx";
 import PostList from "../../PostList/PostList";
-import { dividerClasses } from "@mui/material";
+import homeStyles from "./home.module.css";
 
-// TODO: Rework this component
+const games = [
+  "League of Legends",
+  "Valorant",
+  "Counter-Strike 2",
+  "Dota 2",
+];
+
 const Home: React.FC = () => {
-  const [selectedGame, setSelectedGame] = useState<string>("League of legends");
+  const [selectedGame, setSelectedGame] = useState<string>(games[0]);
   const navigate = useNavigate();
 
-  const handleGameChange = async (
+  const handleGameChange = (
     event: React.MouseEvent<HTMLElement>,
-    newGame: string
+    newGame: string | null
   ) => {
     if (newGame) setSelectedGame(newGame);
   };
 
-
-
   return (
-    <div className={clsx(homeStyles.container)}>
-     {/* TODO: rework ToggleButton so that it make this POS less clustered*/}
-    
-      <PostList/>
+    <div className={homeStyles.container}>
+      <ToggleButtonGroup
+        value={selectedGame}
+        exclusive
+        onChange={handleGameChange}
+        className={homeStyles.gamechooser}
+      >
+        {games.map((game) => (
+          <ToggleButton
+            key={game}
+            value={game}
+            className={clsx(
+              homeStyles.gamechooserItem,
+              selectedGame !== game && homeStyles.untoggled
+            )}
+          >
+            {game}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+      <div className={homeStyles.postListWrapper}>
+        <h2 className={homeStyles.selectedGameTitle}>{selectedGame} Posts</h2>
+        <PostList selectedGame={selectedGame} />
+      </div>
     </div>
   );
 };

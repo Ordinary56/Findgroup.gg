@@ -5,7 +5,7 @@
              xmlns:viewmodel="clr-namespace:WPF.MVVM.ViewModel"
              xmlns:local="clr-namespace:WPF">
     <Application.Resources>
-        
+
         <DataTemplate  DataType="{x:Type viewmodel:MainViewModel}">
             <view:MainView/>
         </DataTemplate>

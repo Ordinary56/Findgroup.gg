@@ -5,26 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF.MVVM.View" xmlns:viewmodel="clr-namespace:WPF.MVVM.ViewModel" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="700" Background="#b2b2b2">
+             d:DesignHeight="450" d:DesignWidth="700" Background="#2b2b2b">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="150" Width="300">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="200" Width="400">
 
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+         
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Content="Username:"/>
-        <TextBox  Grid.Column="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource TextBoxStyle}"/>
-        <Label Grid.Column="0" Grid.Row="1" Content="Password:"/>
-        <PasswordBox Grid.Column="1" Grid.Row="1"  x:Name="txtPassword" PasswordChar="*" Style="{StaticResource PasswordBoxStyle}"/>
-        <Button Command="{Binding AuthenticateCommand}" Grid.Row="3" Grid.Column="1" Margin="10" Content="Login" Style="{StaticResource ButtonStyle}"/>
+        <Label  Grid.Row="0" Content="Username:" Style="{StaticResource LabelStyle}"/>
+        <TextBox Grid.Row="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource TextBoxStyle}"/>
+        <Label Grid.Row="2" Content="Password:" Style="{StaticResource LabelStyle}"/>
+        <PasswordBox Grid.Column="1" Grid.Row="3"  x:Name="txtPassword" PasswordChar="*" Style="{StaticResource PasswordBoxStyle}"/>
+        <Button Command="{Binding AuthenticateCommand}" Grid.Row="4" Content="Login" Style="{StaticResource ButtonStyle}"/>
     </Grid>
 </UserControl>

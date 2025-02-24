@@ -6,17 +6,21 @@
     <Style TargetType="Button" x:Key="ButtonStyle">
 
         <Setter Property="Foreground" Value="WhiteSmoke" />
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="#fc6621" />
         <Setter Property="Padding" Value="5" />
+        <Setter Property="Margin" Value="0,10,0,0"/>
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Width" Value="100"/>
         <Setter Property="FontSize" Value="17"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Width" Value="150"/>
         <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="WhiteSmoke" BorderThickness="1" CornerRadius="5">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="5">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
                     </Border>
                 </ControlTemplate>
@@ -36,28 +40,55 @@
     <!--#region TEXTBOX STYLE -->
 
     <Style TargetType="TextBox" x:Key="TextBoxStyle">
-
         <Setter Property="Margin" Value="5"/>
         <Setter Property="FontFamily" Value="Arial"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="MinWidth" Value="100"/>
         <Setter Property="Height" Value="25"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="5">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+
     <!--#endregion-->
 
     <!--#region PASSWORDBOX STYLE -->
-
     <Style TargetType="PasswordBox" x:Key="PasswordBoxStyle">
-
         <Setter Property="Margin" Value="5"/>
         <Setter Property="FontFamily" Value="Arial"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="MinWidth" Value="100"/>
         <Setter Property="Height" Value="25"/>
-
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="5">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                  Margin="0"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+
     <!--#endregion-->
 
     <!--#region LABEL STYLE -->
@@ -66,11 +97,129 @@
 
         <Setter Property="Foreground" Value="WhiteSmoke" />
         <Setter Property="Margin" Value="7"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontFamily" Value="Arial"/>
         <Setter Property="FontSize" Value="17.5"/>
 
     </Style>
     <!--#endregion-->
+    
+    <!--#region TEXTBLOCK STYLE -->
+
+    <Style TargetType="TextBlock" x:Key="TextBlockStyle">
+
+        <Setter Property="Foreground" Value="AntiqueWhite" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Width" Value="304"/>
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Margin" Value="-30"/>
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="TextDecorations" Value="Underline"/>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="LightSkyBlue"/>
+                <Setter Property="TextDecorations" Value="Underline"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--#endregion-->
+
+    <!--#region GRIDVIEW STYLE -->
+
+    <Style TargetType="GridViewColumnHeader" x:Key="GridViewColumnHeaderStyle">
+
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="MinWidth" Value="100"/>
+        <Setter Property="Foreground" Value="Black"/>
+
+    </Style>
+    <!--#endregion-->
+
+    <!--#region LISTVIEW STYLE -->
+
+    <!-- it just works (dunno how tho) -->
+
+    <Style TargetType="ListView">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <!-- Row for the header -->
+                            <RowDefinition Height="Auto" />
+                            <!-- Row for the list content -->
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Border x:Name="Bd" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            Background="Black" 
+                            Padding="1"
+                            SnapsToDevicePixels="true"
+                            Opacity="0.5"
+                            Grid.RowSpan="2">
+                        </Border>
+
+                        <!-- GridView header row presenter should be in the first row -->
+                        <GridViewHeaderRowPresenter 
+                        Margin="0,0,0,1" 
+                        Columns="{Binding Path=View.Columns, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                        ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}" 
+                        Grid.Row="0" />
+
+                        <!-- ScrollViewer with content in the second row -->
+                        <ScrollViewer Focusable="false" 
+                                  Padding="{TemplateBinding Padding}" 
+                                  Margin="{TemplateBinding BorderThickness}" 
+                                  Grid.Row="1">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--#endregion-->
+    
+    <!--#region ALTERNATE BUTTON STYLE -->
+
+    <Style TargetType="Button" x:Key="AlternateButtonStyle">
+
+        <Setter Property="Foreground" Value="WhiteSmoke" />
+        <Setter Property="Background" Value="DimGray" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="100"/>
+        <Setter Property="FontSize" Value="17"/>
+        <Setter Property="FontFamily" Value="Arial"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="WhiteSmoke" BorderThickness="2" CornerRadius="5">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="DarkGoldenrod"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+    <!--#endregion-->
+
 </ResourceDictionary>
