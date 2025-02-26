@@ -1,5 +1,6 @@
 ﻿using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Findgroup_Backend.Controllers
@@ -52,8 +53,7 @@ namespace Findgroup_Backend.Controllers
                 MemberLimit = memberLimit
             });
         }
-
-        [HttpPost("join")]
+        [HttpPost("join"), Authorize]
         public async Task<ActionResult> JoinGroup([FromQuery] string groupId, [FromQuery] string userId)
         {
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(groupId))
@@ -86,7 +86,7 @@ namespace Findgroup_Backend.Controllers
             }
         }
 
-        [HttpPost("leave")]
+        [HttpPost("leave"), Authorize]
         public async Task<ActionResult> LeaveGroup([FromQuery] Guid groupId, string userId)
         {
             Group? target = await _groupRepository.GetGroupById(groupId);
@@ -99,7 +99,7 @@ namespace Findgroup_Backend.Controllers
             });
         }
 
-        [HttpDelete("{name}")]
+        [HttpDelete("{name}"), Authorize]
         public async Task<ActionResult> DeleteGroup(string name)
         {
             if (string.IsNullOrEmpty(name))

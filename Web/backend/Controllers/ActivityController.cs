@@ -12,9 +12,9 @@ namespace Findgroup_Backend.Controllers
 
         // TODO: this is the endpoint that should be called when uploading the activity
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadCurrentActivity()
+        public async Task<IActionResult> UploadCurrentActivity([FromQuery] string userId, [FromBody])
         {
-            throw new NotImplementedException();
+            
         }
 
         [HttpPatch("set")]

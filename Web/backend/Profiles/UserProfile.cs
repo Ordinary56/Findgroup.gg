@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
+using Findgroup_Backend.Models.DTOs.OutputDTOs;
 
 namespace Findgroup_Backend.Profiles
 {
@@ -9,7 +9,10 @@ namespace Findgroup_Backend.Profiles
         public UserProfile()
         {
             CreateMap<UserDTO, User>();
-            CreateMap<User, UserDTO>();
+            CreateMap<User, UserDTO>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email));
         }
     }
 }

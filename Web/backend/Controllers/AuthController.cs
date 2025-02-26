@@ -1,5 +1,5 @@
-﻿using Findgroup_Backend.Models.DTOs;
-using Findgroup_Backend.Services;
+﻿using Findgroup_Backend.Models.DTOs.InputDTOs;
+using Findgroup_Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -71,7 +71,7 @@ public class AuthController(IAuthService authService, IConfiguration config) : C
         }
     }
     [HttpPost("register")]
-    public async Task<ActionResult> RegisterNewUser([FromBody] UserDTO newUser)
+    public async Task<ActionResult> RegisterNewUser([FromBody] RegisterUserDTO newUser)
     {
         IdentityResult result = await _auth.RegisterUser(newUser);
         if (result.Succeeded) return StatusCode(201, new { Message = "New User successfully created!", user = newUser });

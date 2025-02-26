@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
+using Findgroup_Backend.Models.DTOs.InputDTOs;
+using Findgroup_Backend.Models.DTOs.OutputDTOs;
 
 namespace Findgroup_Backend.Profiles
 {
@@ -10,6 +11,7 @@ namespace Findgroup_Backend.Profiles
         {
             CreateMap<PostDTO, Post>();
             CreateMap<Post, PostDTO>();
+            CreateMap<Post, RegisterPostDTO>();
         }
     }
 }

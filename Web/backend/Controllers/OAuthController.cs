@@ -1,6 +1,6 @@
 ﻿using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
-using Findgroup_Backend.Services;
+using Findgroup_Backend.Models.DTOs.InputDTOs;
+using Findgroup_Backend.Services.Interfaces;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -14,12 +14,14 @@ namespace Findgroup_Backend.Controllers
     [ApiController]
     public sealed class OAuthController(IConfiguration configuration,
         UserManager<User> manager,
-        ITokenService service) : ControllerBase
+        ITokenService service,
+        SignInManager<User> signInManager) : ControllerBase
     {
         
         private readonly IConfiguration _config = configuration;
         private readonly UserManager<User> _manager = manager;
         private readonly ITokenService _tokenService = service;
+        private readonly SignInManager<User> _signInManager = signInManager;
         [HttpPost("google-register")]
         public async Task<ActionResult> GoogleSignIn([FromBody] GoogleLoginDTO request)
         {
@@ -65,16 +67,12 @@ namespace Findgroup_Backend.Controllers
 
         }
 
-        [HttpPost("google-login")]
-        public async Task<IActionResult> GoogleLogin()
+        [HttpPost()]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
-            var googleAuth = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-            if(!googleAuth.Succeeded)
-            {
-                return Unauthorized();
-            }
-
-            return Ok();
+            var redirectUrl = Url.Action("ExternalLoginCallback", "OAuth", new {returnUrl});
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
         }
 
         [HttpPatch]

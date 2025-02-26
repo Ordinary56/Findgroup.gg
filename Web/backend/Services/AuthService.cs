@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
+using Findgroup_Backend.Models.DTOs.InputDTOs;
+using Findgroup_Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
@@ -45,7 +46,7 @@ namespace Findgroup_Backend.Services
             };
         }
 
-        public async Task<IdentityResult> RegisterUser(UserDTO newUser)
+        public async Task<IdentityResult> RegisterUser(RegisterUserDTO newUser)
         {
             User mappedUser = _mapper.Map<User>(newUser);
             var result = await _userManager.CreateAsync(mappedUser, newUser.Password!);

@@ -1,14 +1,23 @@
 import asyncio
 import psutil
 import aiohttp
+import sys
 import json
-
 BASE_URL = "http://localhost:5110/api"
+userId = sys.argv[1]
+
+def registerUrlScheme() -> None:
+    pass
 
 def list_processes() -> list[str]:
     '''
-        Lists all current running processes
-        Returns: a list of process names
+    Description
+    -----------
+    Lists all current running processes
+
+    Returns 
+    -------
+    a list of process names
     '''
     processes: list[str] = []
     for pid in psutil.pids():
@@ -24,7 +33,7 @@ async def send_processes_to_backend(processes: list[str]):
     # Create session
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.post(BASE_URL + "/Activity", json={"processes": processes}) as resp:
+            async with session.post(BASE_URL + "/Activity/" + userId , json=json.dumps(processes)) as resp:
                 if resp.status == 200:
                     # Send data
                     print("Successfully sent process list to the backend.")

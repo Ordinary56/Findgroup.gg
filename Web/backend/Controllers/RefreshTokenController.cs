@@ -1,7 +1,7 @@
 ﻿using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs;
-using Findgroup_Backend.Services;
+using Findgroup_Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

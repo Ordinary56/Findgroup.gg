@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
+using Findgroup_Backend.Models.DTOs.OutputDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Findgroup_Backend.Controllers
