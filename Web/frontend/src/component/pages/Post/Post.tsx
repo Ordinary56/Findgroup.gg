@@ -46,10 +46,20 @@ const Post = () => {
       setIsJoining(false);
     }
   };
+  const handleRevisit = async () => {
+    if (!post) return;
+    navigate(`/group/${post.group.id}`);
+  };
 
   return (
     <>
       <BackToHomeButton />
+      <Button
+           variant="contained"
+            color="primary"
+            onClick={handleRevisit}>
+            Go to this group
+          </Button>
       {post ? (
         <div className={styles.container}>
           <h1>{post.title}</h1>
@@ -69,6 +79,7 @@ const Post = () => {
           >
             {isJoining ? "Joining..." : "Join Group"}
           </Button>
+         
           
         </div>
       ) : (
