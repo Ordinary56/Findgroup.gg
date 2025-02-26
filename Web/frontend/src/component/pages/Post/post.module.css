@@ -1,0 +1,14 @@
+.container{
+display:flex;    
+flex-direction: column;
+align-items: center;
+background:rgba(250, 250, 250, 0.411); 
+}
+.creatorAndLimit{
+    display: flex;
+    margin-top: 2%;
+}
+.Content{
+    overflow-y: auto;
+    max-width: 50%;
+}

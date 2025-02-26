@@ -5,6 +5,6 @@ export type Group = {
     groupName: string,
     description: string,
     memberLimit: number,
-    users: Array<User>,
+    users: User[],
     creator: User | undefined | null | ""
 }

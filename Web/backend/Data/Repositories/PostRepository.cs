@@ -31,7 +31,10 @@ namespace Findgroup_Backend.Data.Repositories
         public async Task<Post> GetPostById(int id)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(id);
-            Post target = await _context.FindAsync<Post>(id) ?? throw new Exception();
+            Post target = await _context.Posts
+                .Include(p => p.User)
+                .Include(p => p.Group)
+                .FirstAsync(p => p.Id == id) ?? throw new Exception();
             return target;
         }
 

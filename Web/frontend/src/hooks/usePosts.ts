@@ -4,7 +4,7 @@ import { Post } from "../api/Models/Post";
 import { AxiosError } from "axios";
 
 
-const UsePosts = () => {
+const UsePosts = (selectedGame:string) => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<AxiosError | undefined>();
@@ -21,7 +21,7 @@ const UsePosts = () => {
             }
         }
         fetchPosts();
-    }, []);
+    }, [selectedGame]);
     return {posts, loading, error}
 }
 export default UsePosts;

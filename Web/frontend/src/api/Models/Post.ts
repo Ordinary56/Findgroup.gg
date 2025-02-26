@@ -1,4 +1,5 @@
 import { Category } from "./Category"
+import { Group } from "./Group"
 
 export type Post = {
     id: number
@@ -7,4 +8,5 @@ export type Post = {
     category : Category
     createdDate : string,
     userId : string,
+    group:Group,
 }
