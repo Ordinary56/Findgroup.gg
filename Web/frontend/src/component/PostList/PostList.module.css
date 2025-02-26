@@ -5,6 +5,7 @@
     align-items: center;
     list-style-type: none;
     gap: 1rem;
+    overflow-y: auto;
 }
 
 .container-item {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Post as PostModel } from "../../../api/Models/Post";
 import { apiService } from "../../../api/apiService";
 import { User } from "../../../api/Models/User";
@@ -9,7 +9,7 @@ import { Button } from "@mui/material"; // MUI Button importálása
 
 const Post = () => {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const [post, setPost] = useState<PostModel>();
   const [creator, setCreator] = useState<User>();
@@ -38,6 +38,7 @@ const Post = () => {
       console.log(userInfo)
       const response = await apiService.joinGroup(post.group.id, userInfo["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
       console.log("Joined group:", response.data);
+      navigate(`/group/${post.group.id}`);
    
     } catch (error) {
       console.error("Error joining group:", error);
@@ -54,9 +55,9 @@ const Post = () => {
           <h1>{post.title}</h1>
           <div className={styles.creatorAndLimit}>
             <h3>Created by {creator?.userName || "USER NOT FOUND"}</h3>
-            <h4>Member Limit: {post.group.memberLimit}</h4>
+            <h4>Member Limit: {post.group?.memberLimit || "NULL"}</h4>
           </div>
-          <h4>{post.group.users.join(", ") || "No members U fckin moron"}</h4>
+          <h4>{post.group?.users.join(", ") || "No members U fckin moron"}</h4>
           <div className={styles.Content}>
             <h2>{post.content}</h2>
           </div>
