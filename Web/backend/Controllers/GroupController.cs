@@ -1,5 +1,7 @@
 ﻿using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs.Input;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Findgroup_Backend.Controllers
@@ -33,27 +35,26 @@ namespace Findgroup_Backend.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult> CreateNewGroup([FromQuery] string name, [FromQuery] string description, [FromQuery] int memberLimit, [FromQuery] string userId)
+        public async Task<ActionResult> CreateNewGroup([FromBody] CreateGroupDTO dto)
         {
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(dto.GroupName) || string.IsNullOrEmpty(dto.UserId))
             {
                 return BadRequest("Invalid parameters for name and userId");
             }
-            if (memberLimit <= 0)
+            if (dto.MemberLimit <= 0)
             {
                 return BadRequest("memberLimit can't be 0 or negative");
             }
-            User creator = await _userRepository.GetUserById(userId);
-            await _groupRepository.CreateNewGroup(name, description, memberLimit, creator);
+            User creator = await _userRepository.GetUserById(dto.UserId);
+            await _groupRepository.CreateNewGroup(dto, creator);
             return StatusCode(201, new
             {
                 Message = "New group successfully created!",
-                GroupName = name,
-                MemberLimit = memberLimit
+                dto.GroupName,
+                dto.MemberLimit
             });
         }
-
-        [HttpPost("join")]
+        [HttpPost("join"), Authorize]
         public async Task<ActionResult> JoinGroup([FromQuery] string groupId, [FromQuery] string userId)
         {
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(groupId))
@@ -86,7 +87,7 @@ namespace Findgroup_Backend.Controllers
             }
         }
 
-        [HttpPost("leave")]
+        [HttpPost("leave"), Authorize]
         public async Task<ActionResult> LeaveGroup([FromQuery] Guid groupId, string userId)
         {
             Group? target = await _groupRepository.GetGroupById(groupId);
@@ -99,7 +100,7 @@ namespace Findgroup_Backend.Controllers
             });
         }
 
-        [HttpDelete("{name}")]
+        [HttpDelete("{name}"), Authorize]
         public async Task<ActionResult> DeleteGroup(string name)
         {
             if (string.IsNullOrEmpty(name))

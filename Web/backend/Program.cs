@@ -15,6 +15,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Findgroup_Backend.Data.Repositories.Interfaces;
+using Findgroup_Backend.Services.Interfaces;
 namespace Findgroup_Backend;
 public class Program
 {
@@ -83,6 +84,13 @@ public class Program
         });
         #endregion
 
+        #region AutoMapper
+        builder.Services.AddAutoMapper(config =>
+        {
+            config.AddMaps(typeof(Program));
+        });
+        #endregion
+
         #region Repositories
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IPostRepository, PostRepository>();
@@ -93,12 +101,6 @@ public class Program
         builder.Services.AddScoped<IGroupRepository, GroupRepository>();
         #endregion
 
-        #region AutoMapper
-        builder.Services.AddAutoMapper(config =>
-        {
-            config.AddMaps(typeof(Program));
-        });
-        #endregion
 
         builder.Services.Configure<JsonOptions>(options =>
         {

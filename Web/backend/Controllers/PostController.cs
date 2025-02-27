@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
+using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -28,8 +28,9 @@ namespace Findgroup_Backend.Controllers
         {
             try
             {
-                Post post = await _repository.GetPostById(id);
-                return Ok(post);
+                Post? post = await _repository.GetPostById(id);
+                
+                return post == null ? NotFound() : Ok(post);
             }
             catch (Exception ex)
             {

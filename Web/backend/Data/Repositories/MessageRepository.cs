@@ -8,16 +8,24 @@ namespace Findgroup_Backend.Data.Repositories
     {
         private readonly ApplicationDbContext _context;
         private bool disposed;
+        public MessageRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public async Task AddNewMessage(Message message)
         {
             await _context.Messages.AddAsync(message);
             await Save();
         }
 
-        public async Task<Message> ModifyMessage(Message oldMessage, Message newMessage)
+        public async Task ModifyMessage(Message newMessage)
         {
-            throw new NotImplementedException();
-
+            Message? oldOne = await _context.Messages.FirstOrDefaultAsync(m => m.Id == newMessage.Id);
+            if (oldOne != null) 
+            {
+                _context.Entry(oldOne).CurrentValues.SetValues(newMessage);
+                await Save();   
+            }
         }
 
         public async Task RemoveMessage(int id)

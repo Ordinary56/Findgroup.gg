@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
-using Findgroup_Backend.Data;
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
+using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Security.Policy;
 
 namespace Findgroup_Backend.Controllers
 {
@@ -32,9 +28,8 @@ namespace Findgroup_Backend.Controllers
         [HttpGet("me")]
         public IActionResult GetUserInfo()
         {
-            var claims = User.Claims.ToDictionary(c => c.Type, c => c.Value);
+            var claims = User.Claims.ToDictionary(c => c.Type.Split('/')[^1], c => c.Value);
             return Ok(claims);
-            
         }
 
         [HttpGet("{id}")]
