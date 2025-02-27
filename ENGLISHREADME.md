@@ -60,7 +60,7 @@ dotnet-ef database update
 ## Frontend
 
 ### From source
-1. Install the dependencies with the `npm install` command.\
+1. Install the dependencies with the `npm install` command.
 > [!NOTE]
 > If all the dependencies are not downloaded, run these as well:
 ```

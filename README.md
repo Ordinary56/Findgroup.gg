@@ -60,7 +60,7 @@ dotnet-ef database update
 ## Frontend
 
 ### Forrásból
-1. Telepítsd a függőségeket az `npm install` parancsal.\
+1. Telepítsd a függőségeket az `npm install` parancsal.
 > [!NOTE]
 > Ha nem jönne le az összes függőség akkor ezeket is futtasd le:
 ```

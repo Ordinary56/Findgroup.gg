@@ -4,6 +4,9 @@
   align-items: center !important;
   padding: 20px !important;
   gap: 10px !important;
+  overflow-x:auto !important;
+  overflow-y: hidden !important;
+  scroll-behavior: smooth !important; 
 }
   
 .gamechooserItem {
@@ -13,8 +16,15 @@
   border-radius: 5px !important;
   transition: border 0.3s ease !important;
   border: 1px solid white !important;
+  flex-shrink: 0 !important;
 }
 
 .untoggled {
   background-color: #363534!important;
+}
+@media only screen and (max-width: 992px) {
+  .gamechooserItem {
+    width: fit-content;
+    white-space: nowrap;
+  }
 }
