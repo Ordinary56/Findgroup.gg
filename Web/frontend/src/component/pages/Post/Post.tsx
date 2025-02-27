@@ -64,10 +64,10 @@ const Post = () => {
         <div className={styles.container}>
           <h1>{post.title}</h1>
           <div className={styles.creatorAndLimit}>
-            <h3>Created by {creator?.userName || "USER NOT FOUND"}</h3>
+            <h4>Created by {creator?.userName || "USER NOT FOUND"}</h4>
             <h4>Member Limit: {post.group?.memberLimit || "NULL"}</h4>
           </div>
-          <h4>{post.group?.users.join(", ") || "No members U fckin moron"}</h4>
+          <h4>{post.group?.users.join(", ") || "No members found in this group"}</h4>
           <div className={styles.Content}>
             <h2>{post.content}</h2>
           </div>

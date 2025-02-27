@@ -102,8 +102,7 @@
     justify-content: space-between;
 }
 
-.description,
-.tags {
+.description{
     margin-left: 5px;
     border: 1px solid rgba(0, 0, 0, 0.349);
     border-radius: 5px;
@@ -112,10 +111,7 @@
     width: 95%;
 }
 
-.tags {
-    margin-bottom: 10px;
-    align-self: center;
-}
+
 
 .description {
     height: 50%;
@@ -133,7 +129,6 @@
 
 
 .description,
-.tags,
 .title_and_team_size {
     color: #ffff;
 
@@ -195,8 +190,8 @@
         margin-right: 2%;
     }
     /* Leírás és tagek szélesebb megjelenése */
-    .description,
-    .tags {
+    .description
+    {
         margin-left: 0;
         padding: 2%;
         font-size: 18px;
