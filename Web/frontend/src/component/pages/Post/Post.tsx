@@ -36,7 +36,7 @@ const Post = () => {
       const userInfo = await apiService.getUserInfo();
 
       console.log(userInfo)
-      const response = await apiService.joinGroup(post.group.id, userInfo["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
+      const response = await apiService.joinGroup(post.group.id, userInfo["nameidentifier"]);
       console.log("Joined group:", response.data);
       navigate(`/group/${post.group.id}`);
    
