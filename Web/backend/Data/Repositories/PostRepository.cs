@@ -1,17 +1,21 @@
-﻿using Findgroup_Backend.Data.Repositories.Interfaces;
+﻿using AutoMapper;
+using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Bcpg;
-using Org.BouncyCastle.Tls;
 
 namespace Findgroup_Backend.Data.Repositories
 {
-    public class PostRepository(ApplicationDbContext context) : IPostRepository, IDisposable
+    public class PostRepository : IPostRepository, IDisposable
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context;
+        private readonly Mapper _mapper;
         private bool _disposed = false;
 
+        public PostRepository(ApplicationDbContext context, Mapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
         public async Task CreateNewPost(Post newPost)
         {
             
@@ -22,9 +26,12 @@ namespace Findgroup_Backend.Data.Repositories
         public async Task DeletePostAsync(int id)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(id);
-            Post target = await _context.Posts.FindAsync(id) ?? throw new Exception();
-            _context.Posts.Remove(target);
-            await Save();
+            Post? targetPost = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+            if (targetPost != null)
+            {
+                _context.Posts.Remove(targetPost);
+                await Save();
+            }
         }
 
 
@@ -35,7 +42,6 @@ namespace Findgroup_Backend.Data.Repositories
                 .Include(p => p.User)
                 .Include(p => p.Group)
                 .FirstOrDefaultAsync(p => p.Id == id);
-            return target;
         }
 
         public IAsyncEnumerable<Post> GetPosts()
@@ -47,10 +53,12 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async Task ModifyPostAsync(Post post)
         {
-            Post target = await _context.Posts.FindAsync(post.Id) ?? throw new Exception();
-            target.Content = post.Content;
-            target.IsActive = post.IsActive;
-            await Save();
+            Post? target = await _context.Posts.FirstOrDefaultAsync(p => p.Id == post.Id);
+            if (target != null)
+            {
+                _context.Entry(target).CurrentValues.SetValues(post);
+                await Save();
+            }
         }
         public async Task Save() => await _context.SaveChangesAsync();
         public void Dispose()
