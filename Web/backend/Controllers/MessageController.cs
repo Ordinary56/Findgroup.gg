@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs.OutputDTOs;
+using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 namespace Findgroup_Backend.Controllers
 {
 
@@ -87,7 +88,7 @@ namespace Findgroup_Backend.Controllers
             {
                 Message = "Group does not exist"
             });
-            Message messageToBeRemoved = group.Messages.FirstOrDefault(x => x.Id == message.Id);
+            Message? messageToBeRemoved = group.Messages.FirstOrDefault(x => x.Id == message.Id);
             group.Messages.Remove(messageToBeRemoved);
             await _repository.RemoveMessage(messageToBeRemoved.Id);
             return NoContent();

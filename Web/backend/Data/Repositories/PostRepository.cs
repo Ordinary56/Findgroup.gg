@@ -8,10 +8,10 @@ namespace Findgroup_Backend.Data.Repositories
     public class PostRepository : IPostRepository, IDisposable
     {
         private readonly ApplicationDbContext _context;
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
         private bool _disposed = false;
 
-        public PostRepository(ApplicationDbContext context, Mapper mapper)
+        public PostRepository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -42,6 +42,7 @@ namespace Findgroup_Backend.Data.Repositories
                 .Include(p => p.User)
                 .Include(p => p.Group)
                 .FirstOrDefaultAsync(p => p.Id == id);
+            return target;
         }
 
         public IAsyncEnumerable<Post> GetPosts()

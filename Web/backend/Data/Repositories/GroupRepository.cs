@@ -1,5 +1,6 @@
 ﻿using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs.Input;
 using Microsoft.EntityFrameworkCore;
 using System.CodeDom;
 using System.Runtime.InteropServices;
@@ -35,7 +36,7 @@ namespace Findgroup_Backend.Data.Repositories
             return await _context.Groups.FindAsync(id);
         }
 
-        public async Task CreateNewGroup(string Name, string description, int memberLimit, User Creator)
+        public async Task CreateNewGroup(CreateGroupDTO dto,  User Creator)
         {
             if (_context.Entry(Creator).State == EntityState.Detached)
             {
@@ -43,9 +44,10 @@ namespace Findgroup_Backend.Data.Repositories
             }
             Group newGroup = new()
             {
-                GroupName = Name,
-                Description = description,
-                MemberLimit = memberLimit,
+                GroupName = dto.GroupName,
+                Description = dto.Description,
+                MemberLimit = dto.MemberLimit,
+                Post = await _context.Posts.FindAsync(dto.PostId)
             };
             newGroup.Users = new List<User>()
             {

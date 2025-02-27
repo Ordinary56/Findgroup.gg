@@ -1,4 +1,4 @@
-﻿using Findgroup_Backend.Models.DTOs.InputDTOs;
+﻿using Findgroup_Backend.Models.DTOs.Input;
 using Findgroup_Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

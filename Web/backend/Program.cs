@@ -84,6 +84,13 @@ public class Program
         });
         #endregion
 
+        #region AutoMapper
+        builder.Services.AddAutoMapper(config =>
+        {
+            config.AddMaps(typeof(Program));
+        });
+        #endregion
+
         #region Repositories
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IPostRepository, PostRepository>();
@@ -94,12 +101,6 @@ public class Program
         builder.Services.AddScoped<IGroupRepository, GroupRepository>();
         #endregion
 
-        #region AutoMapper
-        builder.Services.AddAutoMapper(config =>
-        {
-            config.AddMaps(typeof(Program));
-        });
-        #endregion
 
         builder.Services.Configure<JsonOptions>(options =>
         {
