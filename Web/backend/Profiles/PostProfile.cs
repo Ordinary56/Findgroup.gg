@@ -12,6 +12,7 @@ namespace Findgroup_Backend.Profiles
             CreateMap<PostDTO, Post>();
             CreateMap<Post, PostDTO>();
             CreateMap<Post, RegisterPostDTO>();
+            CreateMap<RegisterPostDTO, Post>();
         }
     }
 }

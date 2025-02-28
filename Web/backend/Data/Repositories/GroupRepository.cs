@@ -44,6 +44,7 @@ namespace Findgroup_Backend.Data.Repositories
             }
             Group newGroup = new()
             {
+                Id = dto.Id,
                 GroupName = dto.GroupName,
                 Description = dto.Description,
                 MemberLimit = dto.MemberLimit,

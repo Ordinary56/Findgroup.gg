@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs.Input;
 using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ namespace Findgroup_Backend.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> CreateNewPost([FromBody] PostDTO postDTO)
+        public async Task<ActionResult> CreateNewPost([FromBody] RegisterPostDTO postDTO)
         {
             try
             {

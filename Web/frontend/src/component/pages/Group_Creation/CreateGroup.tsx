@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { apiService } from "../../../api/apiService";
 import { GroupDTO } from "../../../api/DTOs/GroupDTO";
 import { PostDTO } from "../../../api/DTOs/PostDTO";
+import {Guid} from "js-guid";
+import axiosInstance from "../../../api/axiosInstance";
 //TODO Fix this POS WHEN WE HAVE THE WILL FOR IT!!!!!!!!!!!!!!!!!!
 
 const CreateGroup = () => {
@@ -34,11 +36,16 @@ const CreateGroup = () => {
       alert("Please fill in all fields.");
       return;
     }
-  
+    const id : Guid = Guid.newGuid();
     try {
+      const userInfo = await apiService.getUserInfo();
       const postDTO: PostDTO = {
         title: postName,
-        content: groupDesc
+        content: groupDesc,
+        createdDate : new Date(),
+        userId : userInfo["nameidentifier"],
+        categoryId : 1,
+        groupId : id.toString()
       };
   
       const postResponse = await apiService.createPost(postDTO);
@@ -49,11 +56,14 @@ const CreateGroup = () => {
       console.log("Post created:", postResponse);
   
       const groupDTO: GroupDTO = {
-        name: postName,
+        id : id.toString(),
+        groupName: postName,
         description: groupDesc,
-        memberSize: memberLimit
+        memberLimit: memberLimit,
+        postId : 8,
+        userId : userInfo["nameidentifier"]
       };
-  
+      
       const groupResponse = await apiService.createGroup(groupDTO);
       const createdGroup = groupResponse.data;
   

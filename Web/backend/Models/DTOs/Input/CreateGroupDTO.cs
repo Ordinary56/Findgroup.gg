@@ -4,6 +4,7 @@ namespace Findgroup_Backend.Models.DTOs.Input
 {
     public sealed record CreateGroupDTO
     {
+        public Guid Id { get; init; }
         public required string GroupName { get; init; }
         public required string Description { get; init; }
         public required int MemberLimit { get; init; }

@@ -34,7 +34,7 @@ export const apiService = {
     return data;
   },
   getUserInfo : async() : Promise<AxiosResponse<any, any>> => {
-    const {data} = await axiosInstance.get("/User/me");
+    const {data} : AxiosResponse = await axiosInstance.get("/User/me");
     return data;
   },
 

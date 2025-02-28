@@ -4,9 +4,10 @@
     {
         public required string Title { get; init; }
         public required string Content { get; init; }
-        public DateTime CreatedDate { get; init; }
+        public DateTime? CreatedDate { get; init; } = DateTime.UtcNow;
         public required string UserId { get; init; }
         public int CategoryId { get; init; }
+        public Guid GroupId { get; init; }
 
     }
 }

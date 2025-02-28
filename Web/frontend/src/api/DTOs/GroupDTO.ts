@@ -1,7 +1,10 @@
+import {Guid} from "js-guid";
 export type GroupDTO = {
-    id?: number,
-    name: string,
+    id?: number | Guid | string,
+    groupName: string,
     description: string,
-    memberSize? : number,
+    memberLimit? : number,
+    postId: number,
+    userId: number,
     
 }
