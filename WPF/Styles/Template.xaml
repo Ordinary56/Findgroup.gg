@@ -54,6 +54,8 @@
                         BorderBrush="{TemplateBinding BorderBrush}" 
                         BorderThickness="{TemplateBinding BorderThickness}" 
                         CornerRadius="5">
+                        <ScrollViewer x:Name="PART_ContentHost"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        </ScrollViewer>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

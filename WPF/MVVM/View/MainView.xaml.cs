@@ -29,7 +29,7 @@ namespace WPF.MVVM.View
         {
             if (DataContext != null) 
             {
-                ((dynamic)DataContext).Password = ((PasswordBox)sender).SecurePassword; 
+                ((dynamic)DataContext).Password = ((PasswordBox)sender).Password; 
             }
         }
     }

@@ -6,11 +6,9 @@
              xmlns:local="clr-namespace:WPF.MVVM.View"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920" Background="#2b2b2b">
-
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
-
     <Grid>
 
         <Grid.ColumnDefinitions>

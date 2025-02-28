@@ -11,6 +11,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using WPF.MVVM.Model;
+using WPF.MVVM.Model.DTOs.Input;
+using WPF.MVVM.Model.DTOs.Output;
 
 namespace WPF.Repositories
 {
@@ -26,17 +28,16 @@ namespace WPF.Repositories
         }
 
 
-        public async IAsyncEnumerable<User> GetUsers()
+        public async IAsyncEnumerable<UserDTO> GetUsers()
         {
             var result = await _client.GetAsync(_client.BaseAddress);
             result.EnsureSuccessStatusCode();
             var stream = await result.Content.ReadAsStreamAsync();
-            IAsyncEnumerable<User> values = await JsonSerializer.DeserializeAsync<IAsyncEnumerable<User>>(stream) ?? throw new Exception("the stream returned null");
-            await foreach (User user in values) yield return user;
-
+            IAsyncEnumerable<UserDTO> values = await JsonSerializer.DeserializeAsync<IAsyncEnumerable<UserDTO>>(stream) ?? throw new Exception("the stream returned null");
+            await foreach (UserDTO user in values) yield return user;
         }
 
-        public async Task DeleteUser(User user)
+        public async Task DeleteUser(UserDTO user)
         {
             try
             {
@@ -49,7 +50,7 @@ namespace WPF.Repositories
             }
         }
 
-        public async Task ModifyUser(User modifiedUser)
+        public async Task ModifyUser(RegisterNewUserDTO modifiedUser)
         {
             try
             {
@@ -57,7 +58,7 @@ namespace WPF.Repositories
                 {
                     Content = JsonContent.Create(new
                     {
-                        Username = modifiedUser.Username,
+                        Username = modifiedUser.UserName,
                         Password = modifiedUser.Password,
                         Email = modifiedUser.Email
                     })
@@ -72,13 +73,13 @@ namespace WPF.Repositories
             }
         }
 
-        public async Task CreateNew(User newUser)
+        public async Task CreateNew(RegisterNewUserDTO newUser)
         {
             using HttpRequestMessage message = new(HttpMethod.Get, _client.BaseAddress)
             {
                 Content = JsonContent.Create(new
                 {
-                    newUser.Username,
+                    newUser.UserName,
                     newUser.Password,
                     newUser.Email
                 })

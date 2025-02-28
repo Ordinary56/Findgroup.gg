@@ -8,6 +8,7 @@ using System.Security;
 using WPF.Core;
 using WPF.MVVM.Model;
 using WPF.Services;
+using WPF.Services.Interfaces;
 
 namespace WPF.MVVM.ViewModel
 {
@@ -21,7 +22,7 @@ namespace WPF.MVVM.ViewModel
         private string username = "";
 
         [ObservableProperty]
-        private SecureString password = new();
+        private string password = "";
 
         [ObservableProperty]
         private bool isAuthenticated = false;
@@ -39,10 +40,10 @@ namespace WPF.MVVM.ViewModel
 
         private async Task AuthenticateAsync()
         {
-            User user = new()
+            AdminUser user = new()
             {
-                Username = Username ?? string.Empty,
-                Password = Password.ToString() ?? string.Empty
+                UserName = Username ?? string.Empty,
+                Password = Password ?? string.Empty
             };
             bool res = await _authenticationService.Authenticate(user);
             IsAuthenticated = res;
