@@ -110,7 +110,8 @@ public class Program
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-        await RoleSeeder.SeedRolesAsync(roleManager);
+        var userManager = services.GetRequiredService<UserManager<User>>();
+        await RoleSeeder.SeedRolesAsync(roleManager, userManager);
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
