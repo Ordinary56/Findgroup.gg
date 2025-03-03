@@ -26,7 +26,7 @@
         <Label  Grid.Row="0" Content="Username:" Style="{StaticResource LabelStyle}"/>
         <TextBox Grid.Row="1" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource TextBoxStyle}"/>
         <Label Grid.Row="2" Content="Password:" Style="{StaticResource LabelStyle}"/>
-        <PasswordBox Grid.Column="1" Grid.Row="3"  x:Name="txtPassword" PasswordChar="*" Style="{StaticResource PasswordBoxStyle}"/>
+        <PasswordBox Grid.Column="1" Grid.Row="3"  x:Name="txtPassword" PasswordChar="*" Style="{StaticResource PasswordBoxStyle}" PasswordChanged="PasswordBox_PasswordChanged"/>
         <Button Command="{Binding AuthenticateCommand}" Grid.Row="4" Content="Login" Style="{StaticResource ButtonStyle}"/>
-    </Grid>
+    </Grid> 
 </UserControl>

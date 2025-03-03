@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -13,35 +14,39 @@ using System.Threading.Tasks;
 using WPF.Extensions;
 using WPF.Helpers;
 using WPF.MVVM.Model;
+using WPF.Services.Interfaces;
 
 namespace WPF.Services
 {
-    public interface IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
-        // Logs in the user
-        public Task<bool> Authenticate(User user);
-        // Updates the User's refresh token
-        public Task Refresh(User user);
-    }
-    public class AuthenticationService(HttpClient httpClient, ILogger<AuthenticationService> logger, IStorageHelper storage, IConfiguration config) : IAuthenticationService
-    {
-        private readonly HttpClient _httpClient = httpClient;
-        private readonly ILogger<AuthenticationService> _logger = logger;
-        private readonly IStorageHelper _storage = storage;
-        private readonly IConfiguration _config = config;
-        private Uri AuthUri = new(config["ApiUrl"] + "/Auth");
-        private Uri RefreshUri = new(config["ApiUrl"] + "/refresh");
-        public async Task<bool> Authenticate(User user)
+        #region Fields
+        private readonly HttpClient _client;
+        private readonly ILogger<AuthenticationService> _logger;
+        private readonly IStorageHelper _storage;
+        #endregion
+
+        public AuthenticationService( HttpClient client, 
+            ILogger<AuthenticationService> logger, 
+            IStorageHelper helper)
         {
-            var response = await _httpClient.PostAsJsonAsync(AuthUri,user);
+            _client = client;
+            _logger = logger;
+            _storage = helper;
+        }
+        public async Task<bool> Authenticate(AdminUser user)
+        {
+            var credientials = new
+            {
+                Username = user.UserName,
+                Password = user.Password
+            };
+            using var response = await _client.PostAsJsonAsync(_client.BaseAddress + "/Auth/login", credientials);
+            _logger.LogInformation("Attempting to login admin with {UserName} {Password}", user.UserName, user.Password);
             try
             {
                 response.EnsureSuccessStatusCode();
                 var stream = await response.Content.ReadAsStreamAsync();
-                var tokens = await JsonSerializer.DeserializeAsync<(string token, string validTo, string refreshToken)>(stream);
-                user.AuthenticationToken = tokens.token;
-                user.RefreshToken = tokens.refreshToken;
-                _storage.SaveData("saved/data.txt", user.SerializeData());
                 return true;
             }
 
@@ -51,21 +56,6 @@ namespace WPF.Services
                 return false;
             }
 
-        }
-
-        public async Task Refresh(User user)
-        {
-            var response = await _httpClient.PostAsJsonAsync(RefreshUri, user);
-            try
-            {
-                response.EnsureSuccessStatusCode();
-                var stream = await response.Content.ReadAsStreamAsync();
-                var tokens = await JsonSerializer.DeserializeAsync<(string token, string refreshToken)>(stream);
-                user.AuthenticationToken = tokens.token;
-                user.RefreshToken = tokens.refreshToken;
-                _storage.SaveData("saved", user.SerializeData());
-            }
-            catch { }
         }
     }
 }

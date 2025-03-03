@@ -1,14 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using WPF.Core;
+using WPF.Services.Interfaces;
 
 namespace WPF.Services
 {
-    public interface INavigationService
-    {
-        public ViewModelBase CurrentViewModel { get; set; }
-        public void MoveTo<T>() where T : ViewModelBase;
-
-    }
+    
     public class NavigationService(Func<Type, ViewModelBase>  factory) : ObservableObject, INavigationService
     {
         readonly Func<Type, ViewModelBase> _factory = factory;

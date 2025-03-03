@@ -3,9 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:view="clr-namespace:WPF.MVVM.View"
+        xmlns:viewmodel="clr-namespace:WPF.MVVM.ViewModel"
         xmlns:local="clr-namespace:WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate  DataType="{x:Type viewmodel:MainViewModel}">
+            <view:MainView/>
+        </DataTemplate>
+        <DataTemplate  DataType="{x:Type viewmodel:DashboardViewModel}">
+            <view:DashboardView/>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <ContentControl Content="{Binding Navigation.CurrentViewModel}"/>
     </Grid>

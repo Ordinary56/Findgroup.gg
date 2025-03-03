@@ -2,11 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.IO.IsolatedStorage;
-using System.Runtime.CompilerServices;
+using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
 using WPF.Core;
@@ -14,6 +11,7 @@ using WPF.Helpers;
 using WPF.MVVM.Model;
 using WPF.MVVM.ViewModel;
 using WPF.Services;
+using WPF.Services.Interfaces;
 namespace WPF;
 
 /// <summary>
@@ -56,35 +54,44 @@ public partial class App : Application
     {
         services.AddSingleton<IStorageHelper, StorageHelper>();
         services.AddSingleton(Configuration);
-        services.AddSingleton<User>(provider =>
+        services.AddSingleton(provider =>
         {
             var storage = provider.GetRequiredService<IStorageHelper>();
             try
             {
                 string data = storage.LoadData(@"./saved/data.txt");
                 string[] fields = data.Split("-");
-                return new User()
-                {
-                    Username = fields[0],
-                    Password = fields[1],
-                    AuthenticationToken = fields[2],
-                    RefreshToken = fields[3]
-                };
+                return new AdminUser();
             }
             catch (Exception)
             {
-                return new User();
+                return new AdminUser();
             }
         });
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<Func<Type, ViewModelBase>>(provider => viewmodel => (ViewModelBase)provider.GetRequiredService(viewmodel));
         services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<HttpClientHandler>(provider =>
+        {
+            return new HttpClientHandler()
+            {
+                CookieContainer = new(),
+            }; 
+        });
         services.AddSingleton<MainWindow>(provider => new MainWindow()
         {
             DataContext = provider.GetRequiredService<MainViewModel>()
         });
-        services.AddHttpClient<IAuthenticationService, AuthenticationService>().SetHandlerLifetime(TimeSpan.FromMinutes(10));
+        services.AddHttpClient<IAuthenticationService, AuthenticationService>()
+            .ConfigurePrimaryHttpMessageHandler(builder =>
+            {
+                return builder.GetRequiredService<HttpClientHandler>();
+            }).ConfigureHttpClient(client =>
+            {
+                client.BaseAddress = new Uri(Configuration["AppSettings:ApiUrl"]!);
+            })
+            .SetHandlerLifetime(TimeSpan.FromMinutes(10));
     }
     public static void AddLogging(ILoggingBuilder builder)
     {
@@ -94,9 +101,9 @@ public partial class App : Application
     }
     protected override void OnStartup(StartupEventArgs e)
     {
-        base.OnStartup(e);
         Configuration = CreateConfiguration().Build();
         Host = CreateHostBuilder().Build();
+        base.OnStartup(e);
         // this is still an anti-pattern due to manually settings CurrentViewModel, but this will do it 
         Host.Services.GetRequiredService<INavigationService>().CurrentViewModel = Host.Services.GetRequiredService<MainViewModel>();
         var MainWindow = Host.Services.GetRequiredService<MainWindow>();
@@ -109,15 +116,15 @@ public partial class App : Application
     {
         base.OnExit(e);
         // Check if the User already has these properties set
-        User user = Host.Services.GetRequiredService<User>();
+        AdminUser user = Host.Services.GetRequiredService<AdminUser>();
         if (IsUserEmpty(ref user)) return;
         using FileStream stream = new(@"saved/data.json", FileMode.Create);
         await JsonSerializer.SerializeAsync(stream, user);
     }
 
-    private static bool IsUserEmpty(ref User user)
+    private static bool IsUserEmpty(ref AdminUser user)
     {
-        return string.IsNullOrEmpty(user.Username) || string.IsNullOrEmpty(user.Password);
+        return string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password);
     }
 
 }
