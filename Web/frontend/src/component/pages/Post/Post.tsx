@@ -19,6 +19,7 @@ const Post = () => {
     const fetchPost = async () => {
       try {
         const post = await apiService.getPost(parseInt(queryParams.get("id") as string));
+        console.log(post);
         const creator = await apiService.getUser(post.userId);
         setPost(post);
         setCreator(creator);
@@ -36,7 +37,7 @@ const Post = () => {
       const userInfo = await apiService.getUserInfo();
 
       console.log(userInfo)
-      const response = await apiService.joinGroup(post.group.id, userInfo["nameidentifier"]);
+      const response = await apiService.joinGroup(post.group.id, userInfo.nameidentifier);
       console.log("Joined group:", response.data);
       navigate(`/group/${post.group.id}`);
    

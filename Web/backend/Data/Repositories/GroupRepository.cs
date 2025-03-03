@@ -36,23 +36,9 @@ namespace Findgroup_Backend.Data.Repositories
             return await _context.Groups.FindAsync(id);
         }
 
-        public async Task CreateNewGroup(CreateGroupDTO dto,  User Creator)
+        public async Task CreateNewGroup(Group newGroup, User Creator)
         {
-            if (_context.Entry(Creator).State == EntityState.Detached)
-            {
-                _context.Attach(Creator);
-            }
-            Group newGroup = new()
-            {
-                GroupName = dto.GroupName,
-                Description = dto.Description,
-                MemberLimit = dto.MemberLimit,
-                Post = await _context.Posts.FindAsync(dto.PostId)
-            };
-            newGroup.Users = new List<User>()
-            {
-                Capacity = newGroup.MemberLimit
-            };
+            newGroup.Id = Guid.NewGuid();
             newGroup.Users.Add(Creator);
             Creator.JoinedGroups.Add(newGroup);
             await _context.Groups.AddAsync(newGroup);
@@ -61,16 +47,6 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async Task JoinGroup(Group targetGroup, User newMember)
         {
-            // fail safe
-            if (_context.Entry(newMember).State == EntityState.Detached)
-            {
-                _context.Attach(newMember);
-            }
-            if (_context.Entry(targetGroup).State == EntityState.Detached)
-            {
-                _context.Attach(targetGroup);
-            }
-
             if (targetGroup.Users.Count + 1 > targetGroup.MemberLimit)
                 throw new InvalidOperationException("Can't add more users to this");
             targetGroup.Users.Add(newMember);

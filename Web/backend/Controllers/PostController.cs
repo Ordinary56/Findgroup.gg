@@ -45,7 +45,7 @@ namespace Findgroup_Backend.Controllers
             {
                 Post post = _mapper.Map<Post>(postDTO);
                 await _repository.CreateNewPost(post);
-                return CreatedAtAction(nameof(GetPosts), new { Id = post.Id }, post);
+                return CreatedAtAction(nameof(GetPost), new { Id = post.Id }, post);
             }
             catch (Exception ex)
             {

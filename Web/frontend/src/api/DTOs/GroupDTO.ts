@@ -3,5 +3,5 @@ export type GroupDTO = {
     name: string,
     description: string,
     memberSize? : number,
-    
+    postId : number
 }

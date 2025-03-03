@@ -1,15 +1,22 @@
 import styles from "./creategroup.module.css";
 import BackToHomeButton from "../../Back_To_Home_Button/Back_to_Home";
-import { Link } from "react-router-dom";
+import { Link, useAsyncError, useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../App";
 import { useEffect, useState } from "react";
 import { apiService } from "../../../api/apiService";
+import { Category } from "../../../api/Models/Category";
+import { PostDTO } from "../../../api/DTOs/PostDTO";
+import axiosInstance from "../../../api/axiosInstance";
+import { GroupDTO } from "../../../api/DTOs/GroupDTO";
 
 //TODO : Rework this component
 
 const CreateGroup = () => {
   const [postName, setPostName] = useState<string>("");
+  const [postContent, setPostContent] = useState<string>("");
+  const [groupName, setGroupName] = useState<string>("");
   const [groupDesc, setGroupDesc] = useState<string>("");
+  const [categories, setCategories] = useState<Category[]>([]);
   const [memberLimit, setmemberLimit] = useState<number>();
   const [creatorName, setCreatorName] = useState<string>("");
 
@@ -17,20 +24,44 @@ const CreateGroup = () => {
     const fetchUserInfo = async () => {
       try {
         const userInfo = await apiService.getUserInfo();
-
-        console.log(userInfo)
-       
-        setCreatorName( userInfo["name"]); 
+        setCreatorName( userInfo.name); 
       } catch (error) {
         console.error("Failed to fetch user info", error);
       }
     };
-
+    const fetchCategories = async () => {
+      const categories = await apiService.getCategories();
+      setCategories(categories);
+    }
     fetchUserInfo();
+    fetchCategories();
   }, []);
+  const CreateGroupAndPost = async () => {
+    const dto: PostDTO = {
+      title: postName,
+      content: postContent,
+    };
+    const id = await apiService.createPost(dto);
+    if (typeof id !== "number") {
+      alert("There was something wrong with creating the new post");
+      return;
+    }
+    const group: GroupDTO = {
+      name: groupName,
+      description: groupDesc,
+      postId: id,
+    };
+    const groupId = await apiService.createGroup(group);
+    if(typeof groupId !== "string") {
+      alert("something went wrong when creating a new group");
+      return;
+    }
+    alert("Successfully created group and post!");
+    const navigate = useNavigate();
+    navigate("/");
+  };
   return (
     <>
-    
       <div className={styles.Back_to_Home}>
         <BackToHomeButton />
       </div>
@@ -42,18 +73,33 @@ const CreateGroup = () => {
                 type="text"
                 name="postName"
                 placeholder="Group's name..."
-                onInput={(e) => setPostName((e.target as HTMLInputElement).value)}
+                onInput={(e) =>
+                  setPostName((e.target as HTMLInputElement).value)
+                }
               />
               <input
                 type="text"
                 placeholder="Group Description"
                 name="groupDesc"
-                onInput={(e) => setGroupDesc((e.target as HTMLInputElement).value)}
+                onInput={(e) =>
+                  setGroupDesc((e.target as HTMLInputElement).value)
+                }
               />
-              <input type="number"
-              placeholder="Member Limit"
-              name="memberLimit"
-              onInput={(e) => setmemberLimit(parseInt((e.target as HTMLInputElement).value))}/>
+              <input
+                type="number"
+                placeholder="Member Limit"
+                name="memberLimit"
+                onInput={(e) =>
+                  setmemberLimit(parseInt((e.target as HTMLInputElement).value))
+                }
+              />
+              <select>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.categoryName}>
+                    {category.categoryName}
+                  </option>
+                ))}
+              </select>
             </form>
           </div>
         </div>
@@ -70,12 +116,14 @@ const CreateGroup = () => {
           <p className={styles.description}>{groupDesc}</p>
         </div>
 
-        <button className={styles.create_listing}>
-          <Link to={ROUTES.aftercreate.path}>Create Listing</Link>
+        <button
+          className={styles.create_listing}
+          onClick={(e) => CreateGroupAndPost()}
+        >
+          Create Listing
         </button>
       </div>
     </>
-
   );
 };
 

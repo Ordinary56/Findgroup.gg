@@ -1,17 +1,27 @@
-﻿using Findgroup_Backend.Data.Repositories.Interfaces;
+﻿using AutoMapper;
+using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs.Input;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public sealed class GroupController(IGroupRepository groupRepo, IUserRepository userRepo) : ControllerBase
+    public sealed class GroupController : ControllerBase
     {
-        private readonly IGroupRepository _groupRepository = groupRepo;
-        private readonly IUserRepository _userRepository = userRepo;
+        private readonly IGroupRepository _groupRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        public GroupController(IGroupRepository groupRepo, IUserRepository userRepo, IMapper mapper)
+        {
+            _groupRepository = groupRepo;
+            _userRepository = userRepo;
+            _mapper = mapper;
+        }
+
 
         [HttpGet]
         public async IAsyncEnumerable<Group> GetGroups()
@@ -23,7 +33,7 @@ namespace Findgroup_Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Group>> GetGroupById(string id)
+        public async Task<ActionResult<Group>> GetGroup(string id)
         {
             if (!Guid.TryParse(id, out Guid targetGuid))
             {
@@ -46,13 +56,9 @@ namespace Findgroup_Backend.Controllers
                 return BadRequest("memberLimit can't be 0 or negative");
             }
             User creator = await _userRepository.GetUserById(dto.UserId);
-            await _groupRepository.CreateNewGroup(dto, creator);
-            return StatusCode(201, new
-            {
-                Message = "New group successfully created!",
-                dto.GroupName,
-                dto.MemberLimit
-            });
+            Group newGroup = _mapper.Map<Group>(dto);
+            await _groupRepository.CreateNewGroup(newGroup, creator);
+            return CreatedAtAction(nameof(GetGroup), new { Id = newGroup.Id }, newGroup);
         }
         [HttpPost("join"), Authorize]
         public async Task<ActionResult> JoinGroup([FromQuery] string groupId, [FromQuery] string userId)
@@ -80,6 +86,10 @@ namespace Findgroup_Backend.Controllers
                 if (group is null || newMember is null) return BadRequest("Invalid request");
                 await _groupRepository.JoinGroup(group, newMember);
                 return Ok($"User: {newMember.UserName} successfully joined to group (Id) : {group.Id}");
+            }
+            catch(DbUpdateException)
+            {
+                return Conflict("User is already in this group");
             }
             catch (Exception ex)
             {

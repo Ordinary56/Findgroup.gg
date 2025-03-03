@@ -6,6 +6,7 @@ import { Post } from "./Models/Post";
 import { User } from "./Models/User";
 import { Group } from "./Models/Group";
 import { AxiosResponse } from "axios";
+import { UserInfo } from "./Models/UserInfo";
 export const apiService = {
 
   login: async (username: string, password: string): Promise<AxiosResponse> => {
@@ -33,8 +34,8 @@ export const apiService = {
     const {data} : AxiosResponse<User> = await axiosInstance.get(`/User/${id}`);
     return data;
   },
-  getUserInfo : async() : Promise<AxiosResponse<any, any>> => {
-    const {data} = await axiosInstance.get("/User/me");
+  getUserInfo : async() : Promise<UserInfo> => {
+    const {data} : AxiosResponse<UserInfo> = await axiosInstance.get("/User/me");
     return data;
   },
 
@@ -52,19 +53,21 @@ export const apiService = {
   // Get a single post by ID
   getPost: async (id: number): Promise<Post> => {
     const {data} : AxiosResponse<Post>   = await axiosInstance.get(`/Post/${id}`);
-
     return data;
   },
 
   //  Create a new post
-  createPost: async (postDTO: PostDTO): Promise<PostDTO> => {
+  createPost: async (postDTO: PostDTO): Promise<number> => {
     const { data } = await axiosInstance.post("/Post", postDTO);
+    // remember: ID returned here;
     return data;
   },
+
   // Modify an existing post
   modifyPost: async (postDTO: PostDTO): Promise<void> => {
     await axiosInstance.patch(`/Post`, postDTO);
   },
+
   deletePost: async (id : number) : Promise<AxiosResponse> => {
     const response= await axiosInstance.delete(`/Post/${id}`);
     return response
@@ -82,7 +85,7 @@ export const apiService = {
 
 
   // Create a new group associated with the post
-  createGroup: async (GroupDTO: GroupDTO):Promise<AxiosResponse> => {
+  createGroup: async (GroupDTO: GroupDTO):Promise<string> => {
     const { data } = await axiosInstance.post("/Group/create", GroupDTO);
     return data;
   },

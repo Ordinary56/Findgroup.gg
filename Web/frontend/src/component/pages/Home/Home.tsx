@@ -1,52 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import clsx from "clsx";
 import PostList from "../../PostList/PostList";
 import homeStyles from "./home.module.css";
-
-const games = [
-  "League of Legends",
-  "Apex Legends",
-  "CS2",
-  "Valorant",
-  "Dota2",
-];
+import useCategories from "../../../hooks/useCategories";
 
 const Home: React.FC = () => {
-  const [selectedGame, setSelectedGame] = useState<string>(games[0]);
-
+  const { categories, loading, error } = useCategories();
+  console.log(categories, loading, error);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  useEffect(() => {
+    if (categories && categories.length > 0) {
+      setSelectedCategory(categories[0].categoryName);
+    }
+  }, [categories]);
 
   const handleGameChange = (
     event: React.MouseEvent<HTMLElement>,
     newGame: string | null
   ) => {
-    if (newGame) setSelectedGame(newGame);
+    if (newGame) setSelectedCategory(newGame);
   };
 
   return (
     <div className={homeStyles.container}>
       <ToggleButtonGroup
-        value={selectedGame}
+        value={selectedCategory}
         exclusive
         onChange={handleGameChange}
         className={homeStyles.gamechooser}
       >
-        {games.map((game) => (
+        {categories.map((category) => (
           <ToggleButton
-            key={game}
-            value={game}
+            key={category.id}
+            value={category.categoryName}
             className={clsx(
               homeStyles.gamechooserItem,
-              selectedGame !== game && homeStyles.untoggled
+              selectedCategory !== category.categoryName && homeStyles.untoggled
             )}
           >
-            {game}
+            {category.categoryName}
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
       <div className={homeStyles.postListWrapper}>
-        <PostList selectedGame={selectedGame} />
+        <PostList selectedGame={selectedCategory} />
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ const RegisterPage: React.FC = () => {
 
     try {
       await apiService.register(username, password, email);
-      setSuccess("Sikeres regisztráció! Most már bejelentkezhetsz.");
+      setSuccess("Successfull registration! you can now login!");
     } catch (err) {
       console.error(err);
       setError((err as Error).message);

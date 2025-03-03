@@ -32,7 +32,14 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async Task<User> GetUserById(string id)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id) ?? throw new Exception();
+            ArgumentException.ThrowIfNullOrEmpty(id);
+            var user = await _context.Users.FirstOrDefaultAsync(p => p.Id == id);
+            if(user is null)
+            {
+                throw new InvalidOperationException($"User with specified Id: {id} was not found");
+            }
+            return user;
+
         }
 
         public IAsyncEnumerable<User> GetUsers()
