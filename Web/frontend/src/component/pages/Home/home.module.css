@@ -1,30 +1,45 @@
 .gamechooser {
   display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  padding: 20px !important;
+  justify-content: flex-start !important;
+  padding: 5px !important;
   gap: 10px !important;
-  overflow-x:auto !important;
+  overflow-x: auto !important;
   overflow-y: hidden !important;
-  scroll-behavior: smooth !important; 
+  scroll-behavior: smooth !important;
 }
-  
+
 .gamechooserItem {
-  padding: 10px !important;
+  padding: 8px !important;
   cursor: pointer !important;
   background-color: #fc6621 !important;
   border-radius: 5px !important;
   transition: border 0.3s ease !important;
   border: 1px solid white !important;
   flex-shrink: 0 !important;
+  white-space: nowrap !important;
+  font-size: 14px !important;
+  display: flex !important; /* Ensure the ToggleButton behaves correctly in flex */
 }
 
 .untoggled {
-  background-color: #363534!important;
+  background-color: #363534 !important;
 }
+
 @media only screen and (max-width: 992px) {
+  .container{
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content:center !important;
+  }
+
+  .gamechooser {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-behavior: smooth !important;
+  }
+
   .gamechooserItem {
-    width: fit-content;
-    white-space: nowrap;
+    padding: 10px !important;
+    font-size: 16px !important;
   }
 }
