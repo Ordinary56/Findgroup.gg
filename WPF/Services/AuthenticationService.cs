@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -36,12 +37,16 @@ namespace WPF.Services
         }
         public async Task<bool> Authenticate(AdminUser user)
         {
-            var credientials = new
+            var credentials = new
             {
                 Username = user.UserName,
                 Password = user.Password
             };
-            using var response = await _client.PostAsJsonAsync(_client.BaseAddress + "/Auth/login", credientials);
+            var json = JsonSerializer.Serialize(credentials);
+            _logger.LogInformation("Sending login request: {Json}", json);
+            _logger.LogInformation("Requesting URL: {Url}", new Uri(_client.BaseAddress, "Auth/login"));
+
+            using var response = await _client.PostAsJsonAsync(_client.BaseAddress + "/Auth/login", credentials);
             _logger.LogInformation("Attempting to login admin with {UserName} {Password}", user.UserName, user.Password);
             try
             {

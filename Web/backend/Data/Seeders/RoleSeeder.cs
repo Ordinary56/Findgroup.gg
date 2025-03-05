@@ -16,12 +16,13 @@ namespace Findgroup_Backend.Data.Seeders
                     await manager.CreateAsync(new IdentityRole(item));
                 }
             }
+                 User admin= await userManager.FindByNameAsync("admin");
+                if (admin != null)
+                {
+                    await userManager.AddToRoleAsync(admin, "Admin");
+                }
 
-            User? admin = await userManager.FindByNameAsync("admin");
-            if (admin != null) 
-            {
-                await userManager.AddToRoleAsync(admin, "Admin");
-            }
+           
 
         }
     }

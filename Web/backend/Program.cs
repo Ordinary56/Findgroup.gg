@@ -111,6 +111,7 @@ public class Program
         var services = scope.ServiceProvider;
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<User>>();
+        await AdminSeeder.SeedAdminAsync(userManager);
         await RoleSeeder.SeedRolesAsync(roleManager, userManager);
         if (app.Environment.IsDevelopment())
         {

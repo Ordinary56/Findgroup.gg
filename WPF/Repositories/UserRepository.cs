@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using WPF.MVVM.Model;
 using WPF.MVVM.Model.DTOs.Input;
 using WPF.MVVM.Model.DTOs.Output;
+using WPF.Repositories.Interfaces;
 
 namespace WPF.Repositories
 {
