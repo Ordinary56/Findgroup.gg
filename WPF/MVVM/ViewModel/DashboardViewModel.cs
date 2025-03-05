@@ -9,5 +9,7 @@ namespace WPF.MVVM.ViewModel
     {
         private readonly INavigationService _navigation = navigation;
         private readonly ILogger<DashboardViewModel> _logger = logger;
+
+
     }
 }

@@ -23,6 +23,7 @@ namespace WPF.MVVM.View
         public DashboardView()
         {
             InitializeComponent();
+            
         }
     }
 }
