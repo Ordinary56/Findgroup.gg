@@ -9,8 +9,9 @@ namespace Findgroup_Backend.Configuration
         public void Configure(EntityTypeBuilder<Post> builder)
         {
             builder.HasOne(post => post.User).WithMany(user => user.Posts).HasForeignKey(post => post.UserId).IsRequired(false);
-            builder.HasOne(post => post.Category).WithMany().HasForeignKey(post => post.CategoryId).IsRequired(false);
-            builder.HasOne(post => post.Group).WithOne().HasForeignKey<Post>(post => post.GroupId).IsRequired(false);
+            builder.HasOne(post => post.Category).WithMany().HasForeignKey(post => post.CategoryId).IsRequired();
+            builder.Property(p => p.CreatedDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.HasOne(p => p.Group).WithOne(g => g.Post).HasForeignKey<Group>(g => g.PostId).IsRequired(false);
             builder.HasData(new Post
             {
                 Id = 1,
@@ -20,7 +21,6 @@ namespace Findgroup_Backend.Configuration
                 CategoryId = 1,
                 CreatedDate = new DateTime(2025, 01, 02),
                 UserId = "Test",
-                GroupId = new("416ef2a2-260c-420f-9838-f4a8904cfbe1")
             },
             new Post
             {

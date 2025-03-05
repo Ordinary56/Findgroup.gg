@@ -34,7 +34,7 @@ namespace Findgroup_Backend.Data.Repositories
         {
             ArgumentException.ThrowIfNullOrEmpty(id);
             var user = await _context.Users.FirstOrDefaultAsync(p => p.Id == id);
-            if(user is null)
+            if (user is null)
             {
                 throw new InvalidOperationException($"User with specified Id: {id} was not found");
             }

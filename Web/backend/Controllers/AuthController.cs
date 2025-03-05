@@ -42,7 +42,7 @@ public class AuthController(IAuthService authService, IConfiguration config) : C
         {
             Valid = result.IsValid
         });
-        
+
     }
 
     [HttpPost("login")]

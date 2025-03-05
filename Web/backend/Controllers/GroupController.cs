@@ -72,7 +72,7 @@ namespace Findgroup_Backend.Controllers
                     UserId = userId
                 });
             }
-            if(!Guid.TryParse(groupId, out Guid result))
+            if (!Guid.TryParse(groupId, out Guid result))
             {
                 return BadRequest(new
                 {
@@ -87,7 +87,7 @@ namespace Findgroup_Backend.Controllers
                 await _groupRepository.JoinGroup(group, newMember);
                 return Ok($"User: {newMember.UserName} successfully joined to group (Id) : {group.Id}");
             }
-            catch(DbUpdateException)
+            catch (DbUpdateException)
             {
                 return Conflict("User is already in this group");
             }

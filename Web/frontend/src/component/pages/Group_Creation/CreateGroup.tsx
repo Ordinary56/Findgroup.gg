@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { apiService } from "../../../api/apiService";
 import { Category } from "../../../api/Models/Category";
 import { PostDTO } from "../../../api/DTOs/PostDTO";
-import axiosInstance from "../../../api/axiosInstance";
 import { GroupDTO } from "../../../api/DTOs/GroupDTO";
 
 //TODO : Rework this component
@@ -17,14 +16,18 @@ const CreateGroup = () => {
   const [groupName, setGroupName] = useState<string>("");
   const [groupDesc, setGroupDesc] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [memberLimit, setmemberLimit] = useState<number>();
   const [creatorName, setCreatorName] = useState<string>("");
+  const [creatorId, setCreatorId] = useState<string>("")
+
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const userInfo = await apiService.getUserInfo();
-        setCreatorName( userInfo.name); 
+        setCreatorName(userInfo.name);
+        setCreatorId(userInfo.nameidentifier);
       } catch (error) {
         console.error("Failed to fetch user info", error);
       }
@@ -40,6 +43,8 @@ const CreateGroup = () => {
     const dto: PostDTO = {
       title: postName,
       content: postContent,
+      categoryId: selectedCategory,
+      userId: creatorId
     };
     const id = await apiService.createPost(dto);
     if (typeof id !== "number") {
@@ -50,9 +55,10 @@ const CreateGroup = () => {
       name: groupName,
       description: groupDesc,
       postId: id,
+      userId: creatorId
     };
     const groupId = await apiService.createGroup(group);
-    if(typeof groupId !== "string") {
+    if (typeof groupId !== "string") {
       alert("something went wrong when creating a new group");
       return;
     }
@@ -74,7 +80,7 @@ const CreateGroup = () => {
                 name="postName"
                 placeholder="Group's name..."
                 onInput={(e) =>
-                  setPostName((e.target as HTMLInputElement).value)
+                  setGroupName((e.target as HTMLInputElement).value)
                 }
               />
               <input
@@ -95,7 +101,7 @@ const CreateGroup = () => {
               />
               <select>
                 {categories.map((category) => (
-                  <option key={category.id} value={category.categoryName}>
+                  <option key={category.id} value={category.categoryName} onClick={_ => setSelectedCategory(category.id)}>
                     {category.categoryName}
                   </option>
                 ))}
@@ -105,15 +111,20 @@ const CreateGroup = () => {
         </div>
         <div className={styles.preview}>
           <div className={styles.title_wrapper}>
-            <h1 className={styles.title}>{postName}</h1>
+            <input type="text" value={postName}
+              className={styles.title}
+              placeholder="Enter the post's name here"
+              onInput={e => setPostName(e.target.value)} />
           </div>
+
 
           <div className={styles.title_and_team_size}>
             <h3 className={styles.creatorname}>{creatorName}</h3>
             <span className={styles.team_size}>Team size: {memberLimit}</span>
           </div>
 
-          <p className={styles.description}>{groupDesc}</p>
+          <textarea className={styles.description} value={postContent} onInput={e => setPostContent(e.target.value)}></textarea >
+
         </div>
 
         <button

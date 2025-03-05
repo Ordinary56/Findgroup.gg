@@ -8,21 +8,16 @@ namespace Findgroup_Backend.Models
     {
         [Key]
         public int Id { get; set; }
-        
         public required string Title { get; set; }
-
         public required string Content { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public bool IsActive { get; set; } = true;
-
         public string? UserId { get; set; }
-
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public Guid? GroupId { get; set; }
         public User? User { get; set; }
-        public Category? Category { get; set; }
-
-        public Group? Group { get; set; }
+        public Category Category { get; set; }
+        public Group? Group { get; set; } = default!;
 
 
     }

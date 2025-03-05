@@ -31,7 +31,7 @@ namespace Findgroup_Backend.Controllers
         [HttpGet]
         public async IAsyncEnumerable<Message> GetAllMessages()
         {
-            await foreach(var message in _repository.GetMessages())
+            await foreach (var message in _repository.GetMessages())
             {
                 yield return message;
             }
@@ -46,7 +46,7 @@ namespace Findgroup_Backend.Controllers
                 await Task.CompletedTask;
                 yield break;
             }
-            await foreach(Message message in _repository.GetMessages().Where(x => x.GroupId == id))
+            await foreach (Message message in _repository.GetMessages().Where(x => x.GroupId == id))
             {
                 yield return message;
             }
@@ -65,7 +65,7 @@ namespace Findgroup_Backend.Controllers
 
             await _repository.AddNewMessage(message);
             target.Messages.Add(message);
-            return CreatedAtAction(nameof(GetAllMessages), new {Id = message.Id}, dto);
+            return CreatedAtAction(nameof(GetAllMessages), new { Id = message.Id }, dto);
         }
         [Authorize]
         [HttpPatch]

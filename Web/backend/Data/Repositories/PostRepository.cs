@@ -18,7 +18,6 @@ namespace Findgroup_Backend.Data.Repositories
         }
         public async Task CreateNewPost(Post newPost)
         {
-            
             await _context.AddAsync(newPost);
             await Save();
         }

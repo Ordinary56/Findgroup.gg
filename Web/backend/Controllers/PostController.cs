@@ -2,6 +2,7 @@
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs.Output;
+using Findgroup_Backend.Models.DTOs.Input;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -10,10 +11,18 @@ namespace Findgroup_Backend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PostController(IPostRepository repository, IMapper mapper) : ControllerBase
+    public class PostController : ControllerBase
     {
-        private readonly IPostRepository _repository = repository;
-        private readonly IMapper _mapper = mapper;
+        private readonly IPostRepository _repository;
+        private readonly IMapper _mapper;
+        private readonly ILogger<PostController> _logger;
+
+        public PostController(IPostRepository repository, IMapper mapper, ILogger<PostController> logger)
+        {
+            _repository = repository;
+            _mapper = mapper;
+            _logger = logger;
+        }
         [HttpGet]
         [Authorize(Roles = "User")]
         public async IAsyncEnumerable<Post> GetPosts()
@@ -29,7 +38,6 @@ namespace Findgroup_Backend.Controllers
             try
             {
                 Post? post = await _repository.GetPostById(id);
-                
                 return post == null ? NotFound() : Ok(post);
             }
             catch (Exception ex)
@@ -39,11 +47,12 @@ namespace Findgroup_Backend.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult> CreateNewPost([FromBody] PostDTO postDTO)
+        public async Task<ActionResult> CreateNewPost([FromBody] CreatePostDTO postDTO)
         {
             try
             {
                 Post post = _mapper.Map<Post>(postDTO);
+                _logger.LogInformation("Mapper return post with {Post}", post);
                 await _repository.CreateNewPost(post);
                 return CreatedAtAction(nameof(GetPost), new { Id = post.Id }, post);
             }
@@ -56,7 +65,7 @@ namespace Findgroup_Backend.Controllers
 
         [Authorize]
         [HttpPatch]
-        public async Task<ActionResult> ModifyPost([FromBody] PostDTO content)
+        public async Task<ActionResult> ModifyPost([FromBody] CreatePostDTO content)
         {
             try
             {

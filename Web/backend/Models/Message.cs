@@ -14,7 +14,7 @@ namespace Findgroup_Backend.Models
         [ForeignKey(nameof(Group))]
         public Guid GroupId { get; set; }
 
-        
+
         public required string Content { get; set; } = "";
 
         public User User { get; set; } = default!;

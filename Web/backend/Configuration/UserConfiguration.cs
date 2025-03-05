@@ -25,7 +25,7 @@ namespace Findgroup_Backend.Configuration
             {
                 Id = "ADMIN",
                 UserName = "admin"
-                
+
             };
             builder.HasData(new User
             {
