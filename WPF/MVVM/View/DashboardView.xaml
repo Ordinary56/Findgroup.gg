@@ -5,14 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF.MVVM.View"
              mc:Ignorable="d" 
-             Background="#2b2b2b"
-             Height="800" Width="1000"
+             Background="#2b2b2b"     
             >
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
-    <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -25,7 +23,7 @@
         <!-- Sidebar with buttons -->
         <Border Grid.RowSpan="2" Background="#7c7c7c" Padding="10">
             <StackPanel>
-                <TextBlock Text="Dashboard" Style="{StaticResource TextBlockStyle}" Margin="0 0 0 20"/>
+               
                 <Button Content="Export as CSV" Style="{StaticResource ButtonStyle}" Margin="0 20 0 10"/>
                 <Button Content="Logout" Style="{StaticResource ButtonStyle}"/>
             </StackPanel>
@@ -115,5 +113,4 @@
             </TabItem>
         </TabControl>
     </Grid>
-    </Viewbox>
 </UserControl>
