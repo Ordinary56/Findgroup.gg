@@ -20,12 +20,12 @@ namespace Findgroup_Backend.Configuration
                 j => j.HasOne<User>().WithMany().HasForeignKey("UserId")
                 );
             // Don't throw error if users don't have posts yet
-            builder.HasMany(x => x.Posts).WithOne(r => r.User).IsRequired(false);
+            builder.HasMany(x => x.Posts).WithOne(r => r.Creator).IsRequired(false);
             var admin = new User
             {
                 Id = "ADMIN",
                 UserName = "admin"
-                
+
             };
             builder.HasData(new User
             {

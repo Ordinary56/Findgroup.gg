@@ -1,12 +1,13 @@
 .gamechooser {
   display: flex !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   align-items: center !important;
   padding: 20px !important;
   gap: 10px !important;
   overflow-x:auto !important;
   overflow-y: hidden !important;
   scroll-behavior: smooth !important; 
+  margin-top: 3em;
 }
   
 .gamechooserItem {
@@ -22,9 +23,13 @@
 .untoggled {
   background-color: #363534!important;
 }
-@media only screen and (max-width: 992px) {
+@media only screen and (min-width: 992px) {
   .gamechooserItem {
     width: fit-content;
     white-space: nowrap;
+    
+  }
+.gamechooser { 
+    justify-content: center !important;
   }
 }

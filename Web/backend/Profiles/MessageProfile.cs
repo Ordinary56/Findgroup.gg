@@ -9,7 +9,7 @@ namespace Findgroup_Backend.Profiles
         public MessageProfile()
         {
             CreateMap<MessageDTO, Message>();
-            CreateMap<Message, MessageDTO>();   
+            CreateMap<Message, MessageDTO>();
         }
     }
 }

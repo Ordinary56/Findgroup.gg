@@ -1,22 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./profile.module.css";
-import { useParams, Link } from "react-router-dom";
-import { User } from "../../../api/Models/User";
-import { ROUTES } from "../../../App";
+import { useParams } from "react-router-dom";
+import { User } from "../../api/Models/User";
 import pfp from "../../../public/Thepic.png";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
+import { apiService } from "../../api/apiService";
 
-//TODO Work on this component
-
-type UserDetailsPageProps = {
-  users: User[];
-};
-
-const UserDetailsPage = ({ users }: UserDetailsPageProps) => {
+const Profile = () => {
   const { id } = useParams<{ id: string }>();
-  const user = users.find((u) => u.id === id);
-
+  const [user, setUser] = useState<User>();
   const [view, setView] = useState<"friends" | "connected">("friends");
 
   const handleViewChange = (_event: React.MouseEvent<HTMLElement>, newView: "friends" | "connected" | null) => {
@@ -24,12 +17,19 @@ const UserDetailsPage = ({ users }: UserDetailsPageProps) => {
       setView(newView);
     }
   };
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await apiService.getUser(id);
+      setUser(user);
+    };
+    fetchUser();
+  }, []);
 
   if (!user) {
     return <p>User cannot be found.</p>;
   }
 
-    //TO THE PAGE THAT WILL OPEN THIS
+  //TO THE PAGE THAT WILL OPEN THIS
   /*
    onClick={(e) => {
       e.preventDefault(); // Prevent React Router from handling it
@@ -39,7 +39,6 @@ const UserDetailsPage = ({ users }: UserDetailsPageProps) => {
 
   return (
     <>
-      <Link to={ROUTES.aftercreate.path}>Back to previous page</Link>
       <div>
         <div className={styles.user_image_and_name}>
           <h1>{user.userName}</h1>
@@ -74,4 +73,4 @@ const UserDetailsPage = ({ users }: UserDetailsPageProps) => {
   );
 };
 
-export default UserDetailsPage;
+export default Profile;

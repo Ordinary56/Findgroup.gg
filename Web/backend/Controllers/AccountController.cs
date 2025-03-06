@@ -17,7 +17,7 @@ namespace Findgroup_Backend.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
         public AccountController(SignInManager<User> signInManager,
-            UserManager<User> userManager, 
+            UserManager<User> userManager,
             ITokenService tokenService)
         {
             _signInManager = signInManager;
@@ -30,7 +30,7 @@ namespace Findgroup_Backend.Controllers
         public IActionResult GoogleLogin()
         {
             var redirectUrl = Url.Action("GoogleResponse", "Account");
-            var properties = new AuthenticationProperties { RedirectUri = redirectUrl};
+            var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
@@ -38,7 +38,7 @@ namespace Findgroup_Backend.Controllers
         public async Task<IActionResult> GoogleResponse()
         {
             var loginInfo = await _signInManager.GetExternalLoginInfoAsync();
-            if(loginInfo == null)
+            if (loginInfo == null)
             {
                 return BadRequest("Error loading external login info");
             }
@@ -62,7 +62,7 @@ namespace Findgroup_Backend.Controllers
             else
             {
                 var existingLogins = await _userManager.GetLoginsAsync(user);
-                if(!existingLogins.Any(x => x.LoginProvider == loginInfo.LoginProvider))
+                if (!existingLogins.Any(x => x.LoginProvider == loginInfo.LoginProvider))
                 {
                     await _userManager.AddLoginAsync(user, loginInfo);
                 }

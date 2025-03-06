@@ -2,15 +2,15 @@ import { Route, BrowserRouter as Router, Routes, useLocation, Navigate, Outlet }
 import { useAuth, AuthProvider } from "./component/Auth_Context/AuthContext"; // Authentication logic
 import Navbar from "./component/Navbar/Navbar";
 
-import LandingPage from "./component/pages/Landing_Page/LandingPage";
-import LoginPage from "./component/pages/Login/Login";
-import Home from "./component/pages/Home/Home";
-import RegisterPage from "./component/pages/Register/Register";
+import LandingPage from "./pages/Landing_Page/LandingPage";
+import LoginPage from "./pages/Login/Login";
+import Home from "./pages/Home/Home";
+import RegisterPage from "./pages/Register/Register";
 import CreateButton from "./component/Create_group_button/Create_group_button";
-import CreateGroup from "./component/pages/Group_Creation/CreateGroup";
-import CreatorScreenAfterListing from "./component/pages/After_Creation/CreatorScreenAfterListnig";
-import Post from "./component/pages/Post/Post";
-import Group from "./component/pages/Group/Group";
+import CreateGroup from "./pages/Group_Creation/CreateGroup";
+import Post from "./pages/Post/Post";
+import Group from "./pages/Group/Group";
+import Profile from "./pages/Profile/Profile";
 
 // Routes configuration
 export const ROUTES = {
@@ -18,10 +18,10 @@ export const ROUTES = {
   register: { path: "/register", title: "Register" },
   login: { path: "/login", title: "Login" },
   create: { path: "/create", title: "Create" },
-  landingpage:{ path: "/landingpage", title: "LandingPage" },
-  aftercreate:{path:"/aftercreate", title:"CreatorScreenAfterListing"},
-  post: {path : "/post", title : "View Post"},
-  group : {path : "/group/:groupId", title: "Group"}
+  landingpage: { path: "/landingpage", title: "LandingPage" },
+  post: { path: "/post", title: "View Post" },
+  group: { path: "/group/:groupId", title: "Group" },
+  profile: { path: "/profile/:id", title: "User's info" }
 };
 
 const PublicRoute: React.FC = () => {
@@ -44,22 +44,22 @@ const AppContent = () => {
         <Route element={<PublicRoute />}>
           <Route path={ROUTES.login.path} element={<LoginPage />} />
           <Route path={ROUTES.register.path} element={<RegisterPage />} />
-          <Route path="/landingpage" element={<LandingPage />} /> 
+          <Route path="/landingpage" element={<LandingPage />} />
         </Route>
 
         {/* Private routes */}
-        <Route element={<PrivateRoute/>}>
+        <Route element={<PrivateRoute />}>
           <Route index element={<Home />} />
           <Route path={ROUTES.homepage.path} element={<Home />} />
           <Route path={ROUTES.create.path} element={<CreateGroup />} />
-          <Route path={ROUTES.aftercreate.path} element={< CreatorScreenAfterListing/>} />
-          <Route path={ROUTES.post.path} element={<Post/>} />
-          <Route path={ROUTES.group.path} element={<Group/>}/>
+          <Route path={ROUTES.post.path} element={<Post />} />
+          <Route path={ROUTES.group.path} element={<Group />} />
+          <Route path={ROUTES.profile.path} element={<Profile />} />
         </Route>
 
-       
-        
-        
+
+
+
       </Routes>
       {/* Display CreateButton only on homepage */}
       {location.pathname === ROUTES.homepage.path && <CreateButton />}

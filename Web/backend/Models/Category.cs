@@ -1,14 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
-namespace Findgroup_Backend.Models
+using System.Text.Json.Serialization;
+using Findgroup_Backend.Models;
+public class Category
 {
-    public class Category
-    {
 
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        public string CategoryName { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
+    public required string CategoryName { get; set; }
+    [JsonIgnore]
+    public IList<Post> Posts { get; set; } = [];
 }
