@@ -450,3 +450,7 @@ dist/
 
 # secret files
 secrets.*
+
+# Since Windows doesn't like the naming conventions linux has, I decided to add these too just in case
+*.db-shm
+*.db-wal
