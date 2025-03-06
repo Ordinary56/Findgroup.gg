@@ -135,12 +135,12 @@
     <!--#region GRIDVIEW STYLE -->
 
     <Style TargetType="GridViewColumnHeader" x:Key="GridViewColumnHeaderStyle">
-
-        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Background" Value="Gray"/>
+        <Setter Property="Foreground" Value="White"/>
         <Setter Property="FontFamily" Value="Arial"/>
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="MinWidth" Value="100"/>
-        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
 
     </Style>
     <!--#endregion-->
@@ -149,46 +149,27 @@
 
     <!-- it just works (dunno how tho) -->
 
-    <Style TargetType="ListView">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ListView}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <!-- Row for the header -->
-                            <RowDefinition Height="Auto" />
-                            <!-- Row for the list content -->
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+    <!-- ListViewItem rows -->
+    <Style TargetType="ListViewItem" x:Key="ListViewItemStyle">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="DarkGray"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
-                        <Border x:Name="Bd" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
-                            Background="Black" 
-                            Padding="1"
-                            SnapsToDevicePixels="true"
-                            Opacity="0.5"
-                            Grid.RowSpan="2">
-                        </Border>
-
-                        <!-- GridView header row presenter should be in the first row -->
-                        <GridViewHeaderRowPresenter 
-                        Margin="0,0,0,1" 
-                        Columns="{Binding Path=View.Columns, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                        ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}" 
-                        Grid.Row="0" />
-
-                        <!-- ScrollViewer with content in the second row -->
-                        <ScrollViewer Focusable="false" 
-                                  Padding="{TemplateBinding Padding}" 
-                                  Margin="{TemplateBinding BorderThickness}" 
-                                  Grid.Row="1">
-                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </ScrollViewer>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+    <!-- ListView min -->
+    <Style TargetType="ListView" x:Key="ListViewStyle">
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource ListViewItemStyle}"/>
     </Style>
     <!--#endregion-->
     
@@ -197,7 +178,7 @@
     <Style TargetType="Button" x:Key="AlternateButtonStyle">
 
         <Setter Property="Foreground" Value="WhiteSmoke" />
-        <Setter Property="Background" Value="DimGray" />
+        <Setter Property="Background" Value="DarkSlateGray" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Width" Value="100"/>
@@ -222,6 +203,54 @@
         </Style.Triggers>
 
     </Style>
+    <!--#endregion-->
+
+    <!--#region TABITEM STYLE -->
+    
+    <Style x:Key="TabItemStyle" TargetType="TabItem">
+        <Setter Property="Foreground" Value="Gray"/>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Background" Value="#444"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border Name="Border" 
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="#555" 
+                        BorderThickness="1" 
+                        CornerRadius="5"
+                        Margin="1">
+                        <ContentPresenter x:Name="ContentSite"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"
+                                      ContentSource="Header"
+                                      RecognizesAccessKey="True"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Selected -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#666"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="White"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                        </Trigger>
+
+                        <!-- Hover -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="#555"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="White"/>
+                            <Setter Property="Foreground" Value="#FFAA33"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--#endregion-->
 
 </ResourceDictionary>

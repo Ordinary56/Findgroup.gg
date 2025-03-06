@@ -10,6 +10,7 @@ using WPF.Core;
 using WPF.Helpers;
 using WPF.MVVM.Model;
 using WPF.MVVM.ViewModel;
+using WPF.Repositories;
 using WPF.Services;
 using WPF.Services.Interfaces;
 namespace WPF;
@@ -68,6 +69,7 @@ public partial class App : Application
                 return new AdminUser();
             }
         });
+        services.AddScoped<IUserRepostory, UserRepository>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<Func<Type, ViewModelBase>>(provider => viewmodel => (ViewModelBase)provider.GetRequiredService(viewmodel));
@@ -92,6 +94,16 @@ public partial class App : Application
                 client.BaseAddress = new Uri(Configuration["AppSettings:ApiUrl"]!);
             })
             .SetHandlerLifetime(TimeSpan.FromMinutes(10));
+
+        services.AddHttpClient<IUserRepostory,UserRepository>()
+          .ConfigurePrimaryHttpMessageHandler(builder =>
+          {
+              return builder.GetRequiredService<HttpClientHandler>();
+          }).ConfigureHttpClient(client =>
+          {
+              client.BaseAddress = new Uri(Configuration["AppSettings:ApiUrl"]!);
+          })
+          .SetHandlerLifetime(TimeSpan.FromMinutes(10));
     }
     public static void AddLogging(ILoggingBuilder builder)
     {
@@ -101,26 +113,54 @@ public partial class App : Application
     }
     protected override void OnStartup(StartupEventArgs e)
     {
-        Configuration = CreateConfiguration().Build();
-        Host = CreateHostBuilder().Build();
-        base.OnStartup(e);
-        // this is still an anti-pattern due to manually settings CurrentViewModel, but this will do it 
-        Host.Services.GetRequiredService<INavigationService>().CurrentViewModel = Host.Services.GetRequiredService<MainViewModel>();
-        var MainWindow = Host.Services.GetRequiredService<MainWindow>();
-        MainWindow.Show();
+        // 🖥️ Konzol megnyitása debug módban
+        WPF.Helpers.ConsoleHelper.CreateConsole();
+
+        try
+        {
+            Configuration = CreateConfiguration().Build();
+            Host = CreateHostBuilder().Build();
+            base.OnStartup(e);
+
+            // Beállítjuk az első ViewModel-t manuálisan (ezt MVVM-nél érdemes máshogy kezelni)
+            Host.Services.GetRequiredService<INavigationService>().CurrentViewModel = Host.Services.GetRequiredService<MainViewModel>();
+
+            // Ablak megjelenítése
+            var mainWindow = Host.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+
+            Console.WriteLine("WPF alkalmazás elindult."); // Debug log
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[ERROR] Az alkalmazás indításakor hiba történt: {ex.Message}");
+        }
     }
-
-
 
     protected override async void OnExit(ExitEventArgs e)
     {
-        base.OnExit(e);
-        // Check if the User already has these properties set
-        AdminUser user = Host.Services.GetRequiredService<AdminUser>();
-        if (IsUserEmpty(ref user)) return;
-        using FileStream stream = new(@"saved/data.json", FileMode.Create);
-        await JsonSerializer.SerializeAsync(stream, user);
+        try
+        {
+            base.OnExit(e);
+
+            // 🖥️ Konzol bezárása
+            WPF.Helpers.ConsoleHelper.CloseConsole();
+
+            // User adatainak mentése
+            AdminUser user = Host.Services.GetRequiredService<AdminUser>();
+            if (!IsUserEmpty(ref user))
+            {
+                using FileStream stream = new(@"saved/data.json", FileMode.Create);
+                await JsonSerializer.SerializeAsync(stream, user);
+                Console.WriteLine("Felhasználói adatok mentve.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[ERROR] Kilépéskor hiba történt: {ex.Message}");
+        }
     }
+
 
     private static bool IsUserEmpty(ref AdminUser user)
     {

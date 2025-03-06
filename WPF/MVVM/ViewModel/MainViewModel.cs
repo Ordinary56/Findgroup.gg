@@ -47,6 +47,10 @@ namespace WPF.MVVM.ViewModel
             };
             bool res = await _authenticationService.Authenticate(user);
             IsAuthenticated = res;
+            if (IsAuthenticated)
+            {
+                _navigation.MoveTo<DashboardViewModel>();
+            }
         }
     }
 }

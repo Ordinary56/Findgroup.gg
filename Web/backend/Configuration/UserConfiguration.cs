@@ -10,32 +10,34 @@ namespace Findgroup_Backend.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             PasswordHasher<User> hasher = new();
-            // probably a switched off safety check for testing
+
             builder.HasOne(x => x.RefreshToken).WithOne(r => r.User).IsRequired(false);
             builder.HasMany(x => x.JoinedGroups)
                 .WithMany(group => group.Users)
                 .UsingEntity<Dictionary<string, object>>(
-                "UserGroup",
-                j => j.HasOne<Group>().WithMany().HasForeignKey("GroupId"),
-                j => j.HasOne<User>().WithMany().HasForeignKey("UserId")
+                    "UserGroup",
+                    j => j.HasOne<Group>().WithMany().HasForeignKey("GroupId"),
+                    j => j.HasOne<User>().WithMany().HasForeignKey("UserId")
                 );
-            // Don't throw error if users don't have posts yet
+
+            builder.HasMany(x => x.Posts).WithOne(r => r.User).IsRequired(false);
             builder.HasMany(x => x.Posts).WithOne(r => r.Creator).IsRequired(false);
+            var testUser = new User
+            {
+                Id = "Test",
+                UserName = "Test1",
+                NormalizedUserName = "TEST1",  // Ezt se felejtsd el!
+                PasswordHash = hasher.HashPassword(null, "test123")
+            };
             var admin = new User
             {
                 Id = "ADMIN",
-                UserName = "admin"
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",  // Fontos: Identity elvárja a normalized nevet!
+                PasswordHash = hasher.HashPassword(null, "admin")
 
             };
-            builder.HasData(new User
-            {
-                Id = "Test",
-                UserName = "Test1"
-            },
-            admin
-            );
-            var hash = hasher.HashPassword(admin, "admin");
-            admin.PasswordHash = hash;
+            builder.HasData(testUser, admin);
         }
     }
 }

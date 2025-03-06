@@ -4,13 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF.MVVM.View"
-             mc:Ignorable="d" 
-             d:DesignHeight="1080" d:DesignWidth="1920" Background="#2b2b2b">
+             mc:Ignorable="d" d:DesignHeight="1080" d:DesignWidth="1920"
+             Background="#2b2b2b"     
+            >
+    
+    
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
-    <Grid>
-
+    
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
@@ -20,98 +23,109 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Oldalsáv gombokkal -->
+        <!-- Sidebar with buttons -->
         <Border Grid.RowSpan="2" Background="#7c7c7c" Padding="10">
-            <StackPanel>
-                <TextBlock Text="Dashboard" Style="{StaticResource TextBlockStyle}" Margin="0 0 0 20"/>
-                <Button Content="Export as CSV" Style="{StaticResource ButtonStyle}" Margin="0 20 0 10"/>
-                <Button Content="Logout" Style="{StaticResource ButtonStyle}"/>
-            </StackPanel>
+            <DockPanel LastChildFill="False">
+                <Button Content="Export as CSV" Style="{StaticResource ButtonStyle}" DockPanel.Dock="Top" Margin="0 20 0 10"/>
+                <Button Content="Logout" Style="{StaticResource ButtonStyle}" VerticalAlignment="Bottom"/>
+            </DockPanel>
         </Border>
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal"  Height="100">
-            <Button Content="Lista 1"  Command="{Binding ShowFirstListCommand}" Style="{StaticResource ButtonStyle}" Margin="0 0 0 10"/>
-        <Button Content="Lista 2"  Command="{Binding ShowSecondListCommand}" Style="{StaticResource ButtonStyle}" Margin="0 0 0 10"/>
-        <Button Content="Lista 3"  Command="{Binding ShowThirdListCommand}" Style="{StaticResource ButtonStyle}" Margin="0 0 0 10"/>
-        </StackPanel>
-        
-        <!-- Tartalom: 3 ListView váltogatva -->
-        <Grid Grid.Column="1" Grid.Row="3" Margin="10">
-            <!-- Első ListView -->
-            <ListView Visibility="{Binding IsFirstListVisible, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Stretch">
-                <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
-                        <GridViewColumn Header="Első Lista" Width="200">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="17" Foreground="Salmon"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Actions" Width="180">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                                        <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
-                                        <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+        <!-- TabControl for the Lists -->
+        <TabControl Grid.Column="1" Grid.Row="1" Margin="10">
+            <!-- Users Tab -->
+            <TabItem Header="Users" Style="{DynamicResource TabItemStyle}">
+                <StackPanel>
+                    <!-- Loading indikátor -->
+                    <TextBlock Text="Loading..."
+                   VerticalAlignment="Center" HorizontalAlignment="Center" 
+                   FontSize="16" Foreground="Red"
+                   Visibility="{Binding IsLoading, Mode=OneWay, FallbackValue=Collapsed}"/>
 
-            <!-- Második ListView -->
-            <ListView Visibility="{Binding IsSecondListVisible, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Stretch">
-                <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
-                        <GridViewColumn Header="Második Lista" Width="200">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Description}" FontWeight="Bold" FontSize="17" Foreground="LightGreen"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Actions" Width="180">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                                        <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
-                                        <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+                    <!-- Users List -->
+                    <ListView ItemsSource="{Binding Users}" 
+          Style="{StaticResource ListViewStyle}" 
+          SelectionMode="Single">
+                        <ListView.View>
+                            <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                                <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Id}" />
+                                <GridViewColumn Header="Username"  DisplayMemberBinding="{Binding UserName}" />
+                                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" />
+                                <GridViewColumn Header="Actions" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="Edit"
+                                    Command="{Binding DataContext.EditUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}" Style="{DynamicResource AlternateButtonStyle}" />
+                                                <Button Content="Delete"
+                                    Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}" Margin="5,0,0,0" Style="{DynamicResource AlternateButtonStyle}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+            </TabItem>
 
-            <!-- Harmadik ListView -->
-            <ListView Visibility="{Binding IsThirdListVisible, Converter={StaticResource BoolToVisibilityConverter}}" VerticalAlignment="Stretch">
-                <ListView.View>
-                    <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
-                        <GridViewColumn Header="Harmadik Lista" Width="200">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Details}" FontWeight="Bold" FontSize="17" Foreground="LightBlue"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Actions" Width="180">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                                        <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
-                                        <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Grid>
 
+
+            <!-- Posts Tab -->
+            <TabItem Header="Posts" IsSelected="{Binding IsSecondListVisible}" Style="{DynamicResource TabItemStyle}">
+                <ListView VerticalAlignment="Stretch" >
+                    <ListView.View >
+                        <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                            <GridViewColumn Header="Posts" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Description}" FontWeight="Bold" FontSize="17" Foreground="LightGreen"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Actions" Width="180">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
+                                            <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+
+            <!-- Groups Tab -->
+            <TabItem Header="Groups" IsSelected="{Binding IsThirdListVisible}" Style="{DynamicResource TabItemStyle}">
+                <ListView VerticalAlignment="Stretch">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False" ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                            <GridViewColumn Header="Groups" Width="200">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Details}" FontWeight="Bold" FontSize="17" Foreground="LightBlue"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Actions" Width="180">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
+                                            <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>
