@@ -4,7 +4,6 @@ using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 namespace Findgroup_Backend.Controllers
 {
 
@@ -57,7 +56,7 @@ namespace Findgroup_Backend.Controllers
         public async Task<IActionResult> SendMessage([FromBody] MessageDTO dto)
         {
             Message message = _mapper.Map<Message>(dto);
-            Group? target = await _groupRepo.GetGroupById(message.GroupId);
+            Group? target = _mapper.Map<Group>(await _groupRepo.GetGroupById(message.GroupId));
             if (target == null) return BadRequest(new
             {
                 Message = $"Failed to send message to group (Id = {message.GroupId})"

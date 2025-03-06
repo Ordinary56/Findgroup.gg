@@ -1,16 +1,27 @@
-﻿using Findgroup_Backend.Data.Repositories.Interfaces;
+﻿using AutoMapper;
+using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Findgroup_Backend.Data.Repositories
 {
-    public class UserRepository(ApplicationDbContext context, UserManager<User> manager) : IUserRepository, IDisposable
+    public class UserRepository : IUserRepository, IDisposable
     {
-        private readonly ApplicationDbContext _context = context;
-        private readonly UserManager<User> _manager = manager;
+        // Fields
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _manager;
+        private readonly IMapper _mapper;
         private bool _disposed = false;
+
+        public UserRepository(ApplicationDbContext context, UserManager<User> manager, IMapper mapper)
+        {
+            _context = context;
+            _manager = manager;
+            _mapper = mapper;
+        }
+
         public async Task AddNewUser(User newUser, string password)
         {
             ArgumentNullException.ThrowIfNull(newUser);
@@ -29,7 +40,6 @@ namespace Findgroup_Backend.Data.Repositories
             await Save();
         }
 
-
         public async Task<User> GetUserById(string id)
         {
             ArgumentException.ThrowIfNullOrEmpty(id);
@@ -42,9 +52,9 @@ namespace Findgroup_Backend.Data.Repositories
 
         }
 
-        public IAsyncEnumerable<User> GetUsers()
+        public IAsyncEnumerable<UserDTO> GetUsers()
         {
-            return _context.Users.AsAsyncEnumerable();
+            return _context.Users.Select(u => _mapper.Map<UserDTO>(u)).AsAsyncEnumerable();
         }
 
         public async Task Save()

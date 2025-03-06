@@ -2,6 +2,7 @@
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs.Input;
+using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,9 +25,9 @@ namespace Findgroup_Backend.Controllers
 
 
         [HttpGet]
-        public async IAsyncEnumerable<Group> GetGroups()
+        public async IAsyncEnumerable<GroupDTO> GetGroups()
         {
-            await foreach (Group group in _groupRepository.GetGroups())
+            await foreach (GroupDTO group in _groupRepository.GetGroups())
             {
                 yield return group;
             }
@@ -41,7 +42,7 @@ namespace Findgroup_Backend.Controllers
             }
             Group? target = await _groupRepository.GetGroupById(targetGuid);
             if (target == null) return NotFound("Requested user not found");
-            return Ok(target);
+            return Ok(_mapper.Map<GroupDTO>(target));
         }
 
         [HttpPost("create")]

@@ -12,6 +12,7 @@
         public Guid? Groupid { get; init; }
         public UserDTO Creator { get; init; }
         public GroupDTO Group { get; init; }
+        public Category? Category { get; init; }
 
     }
 }

@@ -1,6 +1,4 @@
-﻿using Findgroup_Backend.Models.DTOs.Output;
-
-namespace Findgroup_Backend.Models.DTOs.Input
+﻿namespace Findgroup_Backend.Models.DTOs.Input
 {
     public sealed record CreateGroupDTO
     {

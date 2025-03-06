@@ -1,13 +1,23 @@
-﻿using Findgroup_Backend.Data.Repositories.Interfaces;
+﻿using AutoMapper;
+using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.EntityFrameworkCore;
 
 namespace Findgroup_Backend.Data.Repositories
 {
-    public class GroupRepository(ApplicationDbContext context) : IGroupRepository, IDisposable
+    public class GroupRepository : IGroupRepository, IDisposable
     {
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
         private bool _disposed = false;
-        private readonly ApplicationDbContext _context = context;
+
+        public GroupRepository(ApplicationDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -23,14 +33,18 @@ namespace Findgroup_Backend.Data.Repositories
             _disposed = true;
         }
 
-        public IAsyncEnumerable<Group> GetGroups()
+        public IAsyncEnumerable<GroupDTO> GetGroups()
         {
-            return _context.Groups.Include(g => g.Users).Include(g => g.Post).AsAsyncEnumerable();
+            return _context.Groups.Include(g => g.Users).Include(g => g.Post)
+                .Select(g => _mapper.Map<GroupDTO>(g))
+                .AsAsyncEnumerable();
         }
 
         public async Task<Group?> GetGroupById(Guid id)
         {
-            return await _context.Groups.FindAsync(id);
+            Group? target = await _context.Groups.Include(g => g.Users)
+                .Include(g => g.Post).FirstOrDefaultAsync(g => g.Id == id);
+            return target;
         }
 
         public async Task CreateNewGroup(Group newGroup, User Creator)
@@ -49,7 +63,6 @@ namespace Findgroup_Backend.Data.Repositories
             targetGroup.Users.Add(newMember);
             newMember.JoinedGroups.Add(targetGroup);
             await Save();
-
         }
 
         public async Task DeleteGroup(string name)

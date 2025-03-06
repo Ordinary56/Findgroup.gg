@@ -1,14 +1,12 @@
 import styles from "./creategroup.module.css";
-import BackToHomeButton from "../../Back_To_Home_Button/Back_to_Home";
+import BackToHomeButton from "../../component/Back_To_Home_Button/Back_to_Home";
 import { Link, useAsyncError, useNavigate } from "react-router-dom";
-import { ROUTES } from "../../../App";
+import { ROUTES } from "../../App";
 import { useEffect, useState } from "react";
-import { apiService } from "../../../api/apiService";
-import { Category } from "../../../api/Models/Category";
-import { PostDTO } from "../../../api/DTOs/PostDTO";
-import { GroupDTO } from "../../../api/DTOs/GroupDTO";
-
-//TODO : Rework this component
+import { apiService } from "../../api/apiService";
+import { Category } from "../../api/Models/Category";
+import { PostDTO } from "../../api/DTOs/PostDTO";
+import { GroupDTO } from "../../api/DTOs/GroupDTO";
 
 const CreateGroup = () => {
   const [postName, setPostName] = useState<string>("");
@@ -16,8 +14,8 @@ const CreateGroup = () => {
   const [groupName, setGroupName] = useState<string>("");
   const [groupDesc, setGroupDesc] = useState<string>("");
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<number>(0);
-  const [memberLimit, setmemberLimit] = useState<number>();
+  const [selectedCategory, setSelectedCategory] = useState<number>(1);
+  const [memberLimit, setmemberLimit] = useState<number>(1);
   const [creatorName, setCreatorName] = useState<string>("");
   const [creatorId, setCreatorId] = useState<string>("")
 
@@ -46,20 +44,22 @@ const CreateGroup = () => {
       categoryId: selectedCategory,
       userId: creatorId
     };
-    const id = await apiService.createPost(dto);
-    if (typeof id !== "number") {
-      alert("There was something wrong with creating the new post");
+    // NOTE: CreatedAtAction returns the WHOLE post, not just the id
+    const post = await apiService.createPost(dto);
+    if (!post) {
+      alert("something went wrong when creating a post");
       return;
     }
     const group: GroupDTO = {
-      name: groupName,
+      groupName: groupName,
       description: groupDesc,
-      postId: id,
+      memberLimit: memberLimit,
+      postId: post!.id,
       userId: creatorId
     };
-    const groupId = await apiService.createGroup(group);
-    if (typeof groupId !== "string") {
-      alert("something went wrong when creating a new group");
+    const createdGroup = await apiService.createGroup(group);
+    if (!createdGroup) {
+      alert("something went wrong when creating a post");
       return;
     }
     alert("Successfully created group and post!");

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
-using Findgroup_Backend.Models.DTOs.Output;
 using Findgroup_Backend.Models.DTOs.Input;
+using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -16,16 +16,23 @@ namespace Findgroup_Backend.Controllers
         private readonly IPostRepository _repository;
         private readonly IMapper _mapper;
         private readonly ILogger<PostController> _logger;
+        private readonly IUserRepository _userRepo;
+        private readonly ICategoryRepository _categoryRepo;
 
-        public PostController(IPostRepository repository, IMapper mapper, ILogger<PostController> logger)
+        public PostController(IPostRepository repository, IMapper mapper,
+                ILogger<PostController> logger,
+                IUserRepository userRepo,
+                ICategoryRepository categoryRepo)
         {
             _repository = repository;
             _mapper = mapper;
             _logger = logger;
+            _userRepo = userRepo;
+            _categoryRepo = categoryRepo;
         }
         [HttpGet]
-        [Authorize(Roles = "User")]
-        public async IAsyncEnumerable<Post> GetPosts()
+        [Authorize()]
+        public async IAsyncEnumerable<PostDTO> GetPosts()
         {
             await foreach (var post in _repository.GetPosts())
             {
@@ -33,11 +40,11 @@ namespace Findgroup_Backend.Controllers
             }
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetPost(int id)
+        public async Task<ActionResult<PostDTO>> GetPost(int id)
         {
             try
             {
-                Post? post = await _repository.GetPostById(id);
+                PostDTO? post = await _repository.GetPostById(id);
                 return post == null ? NotFound() : Ok(post);
             }
             catch (Exception ex)
@@ -53,7 +60,11 @@ namespace Findgroup_Backend.Controllers
             {
                 Post post = _mapper.Map<Post>(postDTO);
                 _logger.LogInformation("Mapper return post with {Post}", post);
-                await _repository.CreateNewPost(post);
+                User creator = await _userRepo.GetUserById(postDTO.UserId);
+                Category category = await _categoryRepo.GetCategoryById(postDTO.CategoryId);
+                post.UserId = creator.Id;
+                post.CategoryId = category.Id;
+                await _repository.CreateNewPost(post, creator, category);
                 return CreatedAtAction(nameof(GetPost), new { Id = post.Id }, post);
             }
             catch (Exception ex)

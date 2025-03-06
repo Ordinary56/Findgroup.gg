@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import clsx from "clsx";
-import PostList from "../../PostList/PostList";
+import PostList from "../../component/PostList/PostList";
 import homeStyles from "./home.module.css";
-import useCategories from "../../../hooks/useCategories";
+import useCategories from "../../hooks/useCategories";
 
 const Home: React.FC = () => {
   const { categories, loading, error } = useCategories();

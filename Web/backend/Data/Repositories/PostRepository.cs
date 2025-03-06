@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.EntityFrameworkCore;
 
 namespace Findgroup_Backend.Data.Repositories
@@ -16,9 +17,12 @@ namespace Findgroup_Backend.Data.Repositories
             _context = context;
             _mapper = mapper;
         }
-        public async Task CreateNewPost(Post newPost)
+        public async Task CreateNewPost(Post newPost, User Creator, Category category)
         {
-            await _context.AddAsync(newPost);
+
+            await _context.Posts.AddAsync(newPost);
+            Creator.Posts.Add(newPost);
+            category.Posts.Add(newPost);
             await Save();
         }
 
@@ -34,21 +38,22 @@ namespace Findgroup_Backend.Data.Repositories
         }
 
 
-        public async Task<Post?> GetPostById(int id)
+        public async Task<PostDTO?> GetPostById(int id)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(id);
             Post? target = await _context.Posts
-                .Include(p => p.User)
-                .Include(p => p.Group)
+                .Include(p => p.Creator)
+                .Include(p => p.Group).ThenInclude(g => g.Users)
                 .FirstOrDefaultAsync(p => p.Id == id);
-            return target;
+            return _mapper.Map<PostDTO>(target);
         }
 
-        public IAsyncEnumerable<Post> GetPosts()
+        public IAsyncEnumerable<PostDTO> GetPosts()
         {
             return _context.Posts.Include(p => p.Category)
-                .Include(p => p.User)
-                .Include(p => p.Group).AsAsyncEnumerable();
+                .Include(p => p.Creator)
+                .Include(p => p.Group)
+                .Select(p => _mapper.Map<PostDTO>(p)).AsAsyncEnumerable();
         }
 
         public async Task ModifyPostAsync(Post post)

@@ -9,7 +9,8 @@ namespace Findgroup_Backend.Profiles
     {
         public GroupProfile()
         {
-            CreateMap<Group, GroupDTO>();
+            CreateMap<Group, GroupDTO>()
+                .ForMember(dest => dest.Users, opt => opt.MapFrom(src => src.Users));
             CreateMap<GroupDTO, Group>();
             CreateMap<CreateGroupDTO, Group>();
             CreateMap<Group, CreateGroupDTO>();
