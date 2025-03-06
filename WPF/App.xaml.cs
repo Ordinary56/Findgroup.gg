@@ -10,6 +10,7 @@ using WPF.Core;
 using WPF.Helpers;
 using WPF.MVVM.Model;
 using WPF.MVVM.ViewModel;
+using WPF.Repositories;
 using WPF.Services;
 using WPF.Services.Interfaces;
 namespace WPF;
@@ -68,6 +69,7 @@ public partial class App : Application
                 return new AdminUser();
             }
         });
+        services.AddScoped<IUserRepostory, UserRepository>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<Func<Type, ViewModelBase>>(provider => viewmodel => (ViewModelBase)provider.GetRequiredService(viewmodel));
@@ -92,6 +94,16 @@ public partial class App : Application
                 client.BaseAddress = new Uri(Configuration["AppSettings:ApiUrl"]!);
             })
             .SetHandlerLifetime(TimeSpan.FromMinutes(10));
+
+        services.AddHttpClient<IUserRepostory,UserRepository>()
+          .ConfigurePrimaryHttpMessageHandler(builder =>
+          {
+              return builder.GetRequiredService<HttpClientHandler>();
+          }).ConfigureHttpClient(client =>
+          {
+              client.BaseAddress = new Uri(Configuration["AppSettings:ApiUrl"]!);
+          })
+          .SetHandlerLifetime(TimeSpan.FromMinutes(10));
     }
     public static void AddLogging(ILoggingBuilder builder)
     {

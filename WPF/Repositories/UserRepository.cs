@@ -1,16 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel.__Internals;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WPF.MVVM.Model;
 using WPF.MVVM.Model.DTOs.Input;
 using WPF.MVVM.Model.DTOs.Output;
 using WPF.Repositories.Interfaces;
@@ -20,34 +15,52 @@ namespace WPF.Repositories
     internal class UserRepository : IUserRepostory
     {
         private readonly HttpClient _client;
-        private readonly ILogger _logger;
-        private bool _disposed = false;
+        private readonly ILogger<UserRepository> _logger;
+
         public UserRepository(HttpClient client, ILogger<UserRepository> logger)
         {
             _client = client;
             _logger = logger;
+            // Állítsd be a base URL-t itt
+            _client.BaseAddress = new Uri("http://localhost:5110/"); // Itt a helyes URL
         }
-
 
         public async IAsyncEnumerable<UserDTO> GetUsers()
         {
-            var result = await _client.GetAsync(_client.BaseAddress);
-            result.EnsureSuccessStatusCode();
-            var stream = await result.Content.ReadAsStreamAsync();
-            IAsyncEnumerable<UserDTO> values = await JsonSerializer.DeserializeAsync<IAsyncEnumerable<UserDTO>>(stream) ?? throw new Exception("the stream returned null");
-            await foreach (UserDTO user in values) yield return user;
+            List<UserDTO> users = new List<UserDTO>();
+            try
+            {
+                var response = await _client.GetAsync("users");
+                response.EnsureSuccessStatusCode();
+
+                var stream = await response.Content.ReadAsStreamAsync();
+                users = await JsonSerializer.DeserializeAsync<List<UserDTO>>(stream) ?? new List<UserDTO>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to load users");
+                // Továbbra is üres listát használunk, ha hibát kaptunk
+            }
+
+            // Az iterálás itt történik, kívül a try-catch blokkon
+            foreach (var user in users)
+            {
+                yield return user;
+            }
         }
+
 
         public async Task DeleteUser(UserDTO user)
         {
             try
             {
-                await _client.DeleteAsync(_client.BaseAddress + $"/{user.Id}");
+                var response = await _client.DeleteAsync($"users/{user.Id}"); // Hívja a törlés végpontját
+                response.EnsureSuccessStatusCode(); // Ellenőrizd, hogy sikerült a törlés
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to send request in {MethodName}. Error Message: {Reason}", nameof(DeleteUser), ex.Message);
-                return;
+                _logger.LogError(ex, "Failed to delete user");
+                throw;
             }
         }
 
@@ -55,44 +68,27 @@ namespace WPF.Repositories
         {
             try
             {
-                using HttpRequestMessage message = new(HttpMethod.Get, _client.BaseAddress)
-                {
-                    Content = JsonContent.Create(new
-                    {
-                        Username = modifiedUser.UserName,
-                        Password = modifiedUser.Password,
-                        Email = modifiedUser.Email
-                    })
-                };
-                await _client.SendAsync(message);
+                var response = await _client.PutAsJsonAsync($"users/{modifiedUser.Id}", modifiedUser);
+                response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to send request in {MethodName}. Error Message: {Reason}", nameof(ModifyUser), ex.Message);
+                _logger.LogError(ex, "Failed to modify user");
                 throw;
-
             }
         }
 
         public async Task CreateNew(RegisterNewUserDTO newUser)
         {
-            using HttpRequestMessage message = new(HttpMethod.Get, _client.BaseAddress)
-            {
-                Content = JsonContent.Create(new
-                {
-                    newUser.UserName,
-                    newUser.Password,
-                    newUser.Email
-                })
-            };
             try
             {
-                await _client.SendAsync(message);
+                var response = await _client.PostAsJsonAsync("users", newUser); // Új felhasználó létrehozása
+                response.EnsureSuccessStatusCode();
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
-                _logger.LogError("Failed to send request in {MethodName}. Error Message: {Reason}", nameof(CreateNew), ex.Message);
-                return;
+                _logger.LogError(ex, "Failed to create new user");
+                throw;
             }
         }
     }
