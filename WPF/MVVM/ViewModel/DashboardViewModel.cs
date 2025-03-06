@@ -81,7 +81,7 @@ namespace WPF.MVVM.ViewModel
         {
             if (SelectedUser is null) return;
 
-            _logger.LogInformation("Editing user: {UserName}", SelectedUser.UserName);
+            _logger.LogInformation("Editing user: {UserName}", SelectedUser.username);
             // Itt jöhet popup vagy navigáció
         }
     }

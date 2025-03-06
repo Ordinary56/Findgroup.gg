@@ -38,22 +38,40 @@
                 <StackPanel>
                     <!-- Loading indikátor -->
                     <TextBlock Text="Loading..."
-                               VerticalAlignment="Center" HorizontalAlignment="Center" 
-                               FontSize="16" Foreground="Red"
-                               Visibility="{Binding IsLoading, Mode=OneWay, FallbackValue=Collapsed}"/>
+                   VerticalAlignment="Center" HorizontalAlignment="Center" 
+                   FontSize="16" Foreground="Red"
+                   Visibility="{Binding IsLoading, Mode=OneWay, FallbackValue=Collapsed}"/>
 
                     <!-- Users List -->
-                    <ListView ItemsSource="{Binding Users}" x:Name="UsersListView">
+                    <ListView ItemsSource="{Binding Users}" x:Name="UsersListView" 
+                  SelectionMode="Single" Margin="5">
                         <ListView.View>
                             <GridView>
+                                <!-- ID oszlop -->
                                 <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Id}" />
+
+                                <!-- Username oszlop -->
                                 <GridViewColumn Header="Username" Width="200" DisplayMemberBinding="{Binding UserName}" />
+
+                                <!-- Email oszlop -->
                                 <GridViewColumn Header="Email" Width="300" DisplayMemberBinding="{Binding Email}" />
+
+                                <!-- Actions oszlop (például gombok) -->
+                                <GridViewColumn Header="Actions" Width="200">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Delete" Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
                 </StackPanel>
             </TabItem>
+
+
 
             <!-- Posts Tab -->
             <TabItem Header="Posts" IsSelected="{Binding IsSecondListVisible}" Style="{DynamicResource TabItemStyle}">
