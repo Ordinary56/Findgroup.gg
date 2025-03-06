@@ -1,6 +1,8 @@
 export type PostDTO = {
-    id?: number | undefined,
+    id?: number
     title: string,
     content: string,
+    categoryId: number;
+    userId: string
 }
 

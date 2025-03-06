@@ -16,9 +16,9 @@ namespace Findgroup_Backend.Controllers
         private readonly IMapper _mapper = mapper;
         [HttpGet]
         // [Authorize(Roles = "Admin")]
-        public async IAsyncEnumerable<User> GetUsers()
+        public async IAsyncEnumerable<UserDTO> GetUsers()
         {
-            await foreach (User user in _userRepository.GetUsers())
+            await foreach (UserDTO user in _userRepository.GetUsers())
             {
                 yield return user;
             }

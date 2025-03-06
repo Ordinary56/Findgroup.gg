@@ -42,7 +42,7 @@ public class AuthController(IAuthService authService, IConfiguration config) : C
         {
             Valid = result.IsValid
         });
-        
+
     }
 
     [HttpPost("login")]
@@ -85,6 +85,8 @@ public class AuthController(IAuthService authService, IConfiguration config) : C
         try
         {
             await _auth.LogoutUser();
+            Response.Cookies.Delete("accessToken");
+            Response.Cookies.Delete("refreshToken");
             return Ok(new
             {
                 Message = "Successfully logged out user"

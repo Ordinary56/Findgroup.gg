@@ -6,6 +6,7 @@ using System.Security.Claims;
 
 namespace Findgroup_Backend.Controllers
 {
+    [Obsolete("this class was used for testing purposes. All the authentication works properly")]
     [Route("api/[controller]")]
     [ApiController]
     public class HomeController(ApplicationDbContext context) : ControllerBase

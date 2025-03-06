@@ -4,7 +4,6 @@ using Findgroup_Backend.Models;
 using Findgroup_Backend.Models.DTOs.Output;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 namespace Findgroup_Backend.Controllers
 {
 
@@ -31,7 +30,7 @@ namespace Findgroup_Backend.Controllers
         [HttpGet]
         public async IAsyncEnumerable<Message> GetAllMessages()
         {
-            await foreach(var message in _repository.GetMessages())
+            await foreach (var message in _repository.GetMessages())
             {
                 yield return message;
             }
@@ -46,7 +45,7 @@ namespace Findgroup_Backend.Controllers
                 await Task.CompletedTask;
                 yield break;
             }
-            await foreach(Message message in _repository.GetMessages().Where(x => x.GroupId == id))
+            await foreach (Message message in _repository.GetMessages().Where(x => x.GroupId == id))
             {
                 yield return message;
             }
@@ -57,7 +56,7 @@ namespace Findgroup_Backend.Controllers
         public async Task<IActionResult> SendMessage([FromBody] MessageDTO dto)
         {
             Message message = _mapper.Map<Message>(dto);
-            Group? target = await _groupRepo.GetGroupById(message.GroupId);
+            Group? target = _mapper.Map<Group>(await _groupRepo.GetGroupById(message.GroupId));
             if (target == null) return BadRequest(new
             {
                 Message = $"Failed to send message to group (Id = {message.GroupId})"
@@ -65,7 +64,7 @@ namespace Findgroup_Backend.Controllers
 
             await _repository.AddNewMessage(message);
             target.Messages.Add(message);
-            return CreatedAtAction(nameof(GetAllMessages), new {Id = message.Id}, dto);
+            return CreatedAtAction(nameof(GetAllMessages), new { Id = message.Id }, dto);
         }
         [Authorize]
         [HttpPatch]

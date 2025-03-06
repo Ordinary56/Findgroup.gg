@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiService } from "../../../api/apiService";
-import { useAuth } from "../../Auth_Context/AuthContext";
+import { apiService } from "../../api/apiService";
+import { useAuth } from "../../component/Auth_Context/AuthContext";
 import styles from "./login.module.css";
-import { ROUTES } from "../../../App";
+import { ROUTES } from "../../App";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState<string>("");

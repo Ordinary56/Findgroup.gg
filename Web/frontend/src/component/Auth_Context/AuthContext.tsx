@@ -16,11 +16,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const ranOnce = useRef(false);
   useEffect(() => {
     if(ranOnce.current) return;
-    // TODO: rework authentication check
     const checkValidation = async() => {
       const {data, status} : AxiosResponse<{valid : boolean}> = await axiosInstance.get("/Auth/validate-token");
       if(status !== 200) {
         setIsAuthenticated(false);
+        await apiService.logout();
         console.log(data);
         return;
       }

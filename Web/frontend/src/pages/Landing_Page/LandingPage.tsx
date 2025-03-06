@@ -1,15 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./landingPage.module.css";
+import styles from "./landingpage.module.css";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    navigate("/login"); 
+    navigate("/login");
   };
   const handleRegisterClick = () => {
-    navigate("/register"); 
+    navigate("/register");
   };
 
   return (
@@ -19,10 +19,10 @@ const LandingPage: React.FC = () => {
       <div className={styles.buttonContainer}><button className={styles.loginButton} onClick={handleLoginClick}>
         Login
       </button>
-            <span>Or</span>
-              <button className={styles.registerButton} onClick={handleRegisterClick}>
-        Sign Up
-      </button></div>
+        <span>Or</span>
+        <button className={styles.registerButton} onClick={handleRegisterClick}>
+          Sign Up
+        </button></div>
     </div>
   );
 };

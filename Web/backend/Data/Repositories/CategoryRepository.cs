@@ -4,10 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Findgroup_Backend.Data.Repositories
 {
-    public class CategoryRepository(ApplicationDbContext context) : ICategoryRepository, IDisposable
+    public class CategoryRepository : ICategoryRepository, IDisposable
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<CategoryRepository> _logger;
         private bool _disposed = false;
+
+        public CategoryRepository(ApplicationDbContext context, ILogger<CategoryRepository> logger)
+        {
+            _context = context;
+            _logger = logger;
+        }
 
         public async Task CreateNewCategory(Category newCategory)
         {
@@ -32,10 +39,12 @@ namespace Findgroup_Backend.Data.Repositories
             return _context.Categories.AsAsyncEnumerable();
         }
 
-        public async Task<Category> GetCategoryById(int id)
+        public async Task<Category?> GetCategoryById(int id)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(id);
-            return await _context.Categories.FindAsync(id) ?? throw new Exception("Couldn't find requested category");
+            _logger.LogInformation("Attempting to find category with requested ID: {Id}", id);
+            Category? target = await _context.Categories.FindAsync(id);
+            return target;
         }
 
         public async Task ModifyCategory(Category modifiedCategory)

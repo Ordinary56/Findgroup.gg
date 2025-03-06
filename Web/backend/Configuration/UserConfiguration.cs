@@ -21,15 +21,7 @@ namespace Findgroup_Backend.Configuration
                 );
 
             builder.HasMany(x => x.Posts).WithOne(r => r.User).IsRequired(false);
-
-            var admin = new User
-            {
-                Id = "ADMIN",
-                UserName = "admin",
-                NormalizedUserName = "ADMIN",  // Fontos: Identity elvárja a normalized nevet!
-                PasswordHash = hasher.HashPassword(null, "admin")
-            };
-
+            builder.HasMany(x => x.Posts).WithOne(r => r.Creator).IsRequired(false);
             var testUser = new User
             {
                 Id = "Test",
@@ -37,9 +29,15 @@ namespace Findgroup_Backend.Configuration
                 NormalizedUserName = "TEST1",  // Ezt se felejtsd el!
                 PasswordHash = hasher.HashPassword(null, "test123")
             };
+            var admin = new User
+            {
+                Id = "ADMIN",
+                UserName = "admin",
+                NormalizedUserName = "ADMIN",  // Fontos: Identity elvárja a normalized nevet!
+                PasswordHash = hasher.HashPassword(null, "admin")
 
+            };
             builder.HasData(testUser, admin);
         }
-
     }
 }

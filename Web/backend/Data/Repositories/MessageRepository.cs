@@ -21,10 +21,10 @@ namespace Findgroup_Backend.Data.Repositories
         public async Task ModifyMessage(Message newMessage)
         {
             Message? oldOne = await _context.Messages.FirstOrDefaultAsync(m => m.Id == newMessage.Id);
-            if (oldOne != null) 
+            if (oldOne != null)
             {
                 _context.Entry(oldOne).CurrentValues.SetValues(newMessage);
-                await Save();   
+                await Save();
             }
         }
 
@@ -35,17 +35,17 @@ namespace Findgroup_Backend.Data.Repositories
             _context.Messages.Remove(target);
             await Save();
         }
-        public void Dispose() 
+        public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        protected virtual void Dispose(bool disposing) 
+        protected virtual void Dispose(bool disposing)
         {
             if (disposed) return;
-            if (disposing) 
+            if (disposing)
             {
-                _context.Dispose(); 
+                _context.Dispose();
                 disposed = true;
             }
         }
@@ -57,7 +57,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async Task Save()
         {
-            await _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
         }
     }
 }
