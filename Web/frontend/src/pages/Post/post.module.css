@@ -1,17 +1,27 @@
+.revisit-group {
+margin : 5%;
+}
 .container{
+    padding: 1em;
 display:flex;    
 flex-direction: column;
 align-items: center;
 background:rgba(250, 250, 250, 0.411); 
+    h1 {
+        font-size: 900;
+    }
 }
 .creatorAndLimit{
     display: flex;
-    margin-top: 2%;
+    margin-top: 10%;
     width: 50%;
     justify-content: space-between;
 }
 .Content{
     margin-top: 2%;
-    overflow-y: auto;
+    overflow-y: scroll;
     max-width: 50%;
+    margin-bottom: 3rem;
+    text-align: center;
+    
 }

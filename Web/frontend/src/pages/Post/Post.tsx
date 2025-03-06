@@ -55,39 +55,40 @@ const Post = () => {
   return (
     <>
       <BackToHomeButton />
-      <Button
+      <Button className={styles["revisit-group"]}
         variant="contained"
         color="primary"
         onClick={handleRevisit}>
         Go to this group
-      </Button>
-      {post ? (
-        <div className={styles.container}>
-          <h1>{post.title}</h1>
-          <div className={styles.creatorAndLimit}>
-            <h4>Created by {creator?.userName || "USER NOT FOUND"}</h4>
-            <h4>Member Limit: {post.group?.memberLimit || "NULL"}</h4>
-          </div>
-          <h4>{post.group?.users.map((u, i) => (
-            <Link to={`/profile/${u.id}`} >{u.userName}</Link>
-          )) || "No members found in this group"}</h4>
-          <div className={styles.Content}>
-            <h2>{post.content}</h2>
-          </div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleJoinGroup}
-            disabled={isJoining}
-          >
-            {isJoining ? "Joining..." : "Join Group"}
-          </Button>
+      </Button >
+      {
+        post ? (
+          <div className={styles.container} >
+            <h1>{post.title}</h1>
+            <div className={styles.creatorAndLimit}>
+              <h4>Created by {creator?.userName || "USER NOT FOUND"}</h4>
+              <h4>Member Limit: {post.group?.memberLimit || "NULL"}</h4>
+            </div>
+            <h4>{post.group?.users.map((u, i) => (
+              <Link to={`/profile/${u.id}`} >{u.userName}</Link>
+            )) || "No members found in this group"}</h4>
+            <div className={styles.Content}>
+              <h2>{post.content}</h2>
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleJoinGroup}
+              disabled={isJoining}
+            >
+              {isJoining ? "Joining..." : "Join Group"}
+            </Button>
 
 
-        </div>
-      ) : (
-        <div>error</div>
-      )}
+          </div >
+        ) : (
+          <div>error</div>
+        )}
     </>
   );
 };

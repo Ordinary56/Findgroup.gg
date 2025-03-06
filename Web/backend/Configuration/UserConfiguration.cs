@@ -20,7 +20,7 @@ namespace Findgroup_Backend.Configuration
                     j => j.HasOne<User>().WithMany().HasForeignKey("UserId")
                 );
 
-            builder.HasMany(x => x.Posts).WithOne(r => r.User).IsRequired(false);
+            builder.HasMany(x => x.Posts).WithOne(r => r.Creator).IsRequired(false);
             builder.HasMany(x => x.Posts).WithOne(r => r.Creator).IsRequired(false);
             var testUser = new User
             {

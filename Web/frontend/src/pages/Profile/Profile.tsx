@@ -40,9 +40,9 @@ const Profile = () => {
   return (
     <>
       <div>
-        <div className={styles.user_image_and_name}>
-          <h1>{user.userName}</h1>
+        <div className={styles["profile-container"]}>
           <img src={pfp} alt="User pfp" />
+          <h1>{user.userName}</h1>
         </div>
 
         {/* Toggle Button Group */}
