@@ -43,25 +43,25 @@
                    Visibility="{Binding IsLoading, Mode=OneWay, FallbackValue=Collapsed}"/>
 
                     <!-- Users List -->
-                    <ListView ItemsSource="{Binding Users}" x:Name="UsersListView" 
-                  SelectionMode="Single" Margin="5">
+                    <ListView ItemsSource="{Binding Users}" 
+          Style="{StaticResource ListViewStyle}" 
+          SelectionMode="Single">
                         <ListView.View>
-                            <GridView>
-                                <!-- ID oszlop -->
+                            <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
                                 <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Id}" />
-
-                                <!-- Username oszlop -->
-                                <GridViewColumn Header="Username" Width="200" DisplayMemberBinding="{Binding UserName}" />
-
-                                <!-- Email oszlop -->
-                                <GridViewColumn Header="Email" Width="300" DisplayMemberBinding="{Binding Email}" />
-
-                                <!-- Actions oszlop (például gombok) -->
-                                <GridViewColumn Header="Actions" Width="200">
+                                <GridViewColumn Header="Username"  DisplayMemberBinding="{Binding UserName}" />
+                                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" />
+                                <GridViewColumn Header="Actions" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Content="Delete" Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                        CommandParameter="{Binding}" />
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="Edit"
+                                    Command="{Binding DataContext.EditUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}" Style="{DynamicResource AlternateButtonStyle}" />
+                                                <Button Content="Delete"
+                                    Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}" Margin="5,0,0,0" Style="{DynamicResource AlternateButtonStyle}"/>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -77,7 +77,7 @@
             <TabItem Header="Posts" IsSelected="{Binding IsSecondListVisible}" Style="{DynamicResource TabItemStyle}">
                 <ListView VerticalAlignment="Stretch" >
                     <ListView.View >
-                        <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                        <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
                             <GridViewColumn Header="Posts" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -104,7 +104,7 @@
             <TabItem Header="Groups" IsSelected="{Binding IsThirdListVisible}" Style="{DynamicResource TabItemStyle}">
                 <ListView VerticalAlignment="Stretch">
                     <ListView.View>
-                        <GridView ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
+                        <GridView AllowsColumnReorder="False" ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
                             <GridViewColumn Header="Groups" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
