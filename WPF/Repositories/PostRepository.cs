@@ -43,12 +43,13 @@ namespace WPF.Repositories
         {
             try
             {
-                await _client.DeleteAsync(_client.BaseAddress + $"/{post.Id}");
+                var response = await _client.DeleteAsync($"User/{post.id}"); // Hívja a törlés végpontját
+                response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
             {
                 _logger.LogError("Failed to send request in {MethodName}. Error Message: {Reason}", nameof(DeletePost), ex.Message);
-                return;
+                throw;
             }
         }
 

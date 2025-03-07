@@ -69,7 +69,7 @@ namespace WPF.Repositories
         {
             try
             {
-                var response = await _client.PutAsJsonAsync($"User/{modifiedUser.Id}", modifiedUser);
+                var response = await _client.PutAsJsonAsync($"User/{modifiedUser.id}", modifiedUser);
                 response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
