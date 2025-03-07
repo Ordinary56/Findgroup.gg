@@ -48,9 +48,9 @@
           SelectionMode="Single">
                         <ListView.View>
                             <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
-                                <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Id}" />
-                                <GridViewColumn Header="Username"  DisplayMemberBinding="{Binding UserName}" />
-                                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" />
+                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding id}" />
+                                <GridViewColumn Header="Username"  DisplayMemberBinding="{Binding userName}" />
+                                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding email}" />
                                 <GridViewColumn Header="Actions" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
@@ -75,29 +75,45 @@
 
             <!-- Posts Tab -->
             <TabItem Header="Posts" IsSelected="{Binding IsSecondListVisible}" Style="{DynamicResource TabItemStyle}">
-                <ListView VerticalAlignment="Stretch" >
-                    <ListView.View >
-                        <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{DynamicResource GridViewColumnHeaderStyle}">
-                            <GridViewColumn Header="Posts" Width="200">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Description}" FontWeight="Bold" FontSize="17" Foreground="LightGreen"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Actions" Width="180">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                            <Button Content="Edit" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding EditCommand}"/>
-                                            <Button Content="Delete" Width="80" Style="{StaticResource AlternateButtonStyle}" Command="{Binding DeleteCommand}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <StackPanel>
+                    <!-- Loading indikátor -->
+                    <TextBlock Text="Loading..."
+         VerticalAlignment="Center" HorizontalAlignment="Center" 
+         FontSize="16" Foreground="Red"
+         Visibility="{Binding IsLoading, Mode=OneWay, FallbackValue=Collapsed}"/>
+
+                    <ListView ItemsSource="{Binding Posts}" 
+Style="{StaticResource ListViewStyle}" 
+SelectionMode="Single">
+                        <ListView.View >
+                        <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
+                                <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding id}" />
+                                <GridViewColumn Header="Title"  DisplayMemberBinding="{Binding title}" />
+                                <GridViewColumn Header="Content" DisplayMemberBinding="{Binding content}" />
+                                <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding isActive}" />
+                                <GridViewColumn Header="User Id" DisplayMemberBinding="{Binding userId}" />
+                                <GridViewColumn Header="Categroy Id" DisplayMemberBinding="{Binding categoryId}" />
+                                <GridViewColumn Header="Group Id" DisplayMemberBinding="{Binding groupid}" />
+                                <GridViewColumn Header="Creator" DisplayMemberBinding="{Binding creator}" />
+                                <GridViewColumn Header="Group" DisplayMemberBinding="{Binding group}" />
+                                <GridViewColumn Header="Actions" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Content="Edit"
+                          Command="{Binding DataContext.EditPostCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                          CommandParameter="{Binding}" Style="{DynamicResource AlternateButtonStyle}" />
+                                                <Button Content="Delete"
+                          Command="{Binding DataContext.DeletePostCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                          CommandParameter="{Binding}" Margin="5,0,0,0" Style="{DynamicResource AlternateButtonStyle}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
             </TabItem>
 
             <!-- Groups Tab -->

@@ -22,33 +22,32 @@ namespace WPF.Repositories
             _client = client;
             _logger = logger;
             // Állítsd be a base URL-t itt
-            _client.BaseAddress = new Uri("http://localhost:5110/api/"); // Itt a helyes URL
+            _client.BaseAddress = new Uri("http://localhost:5110/api/"); 
         }
 
         public async IAsyncEnumerable<UserDTO> GetUsers()
         {
-            IAsyncEnumerable<UserDTO> users;
+            List<UserDTO> users;
             try
             {
                 var response = await _client.GetAsync("User");
                 response.EnsureSuccessStatusCode();
 
                 var stream = await response.Content.ReadAsStreamAsync();
-                users = await JsonSerializer.DeserializeAsync<IAsyncEnumerable<UserDTO>>(stream);
+                users = await JsonSerializer.DeserializeAsync<List<UserDTO>>(stream);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to load users");
-                // Továbbra is üres listát használunk, ha hibát kaptunk
                 yield break;
             }
-            await foreach(var user in users)
+
+            foreach (var user in users)
             {
                 yield return user;
             }
-    
-            
         }
+
 
 
         public async Task DeleteUser(UserDTO user)
@@ -69,7 +68,7 @@ namespace WPF.Repositories
         {
             try
             {
-                var response = await _client.PutAsJsonAsync($"User/{modifiedUser.Id}", modifiedUser);
+                var response = await _client.PutAsJsonAsync($"User/{modifiedUser.id}", modifiedUser);
                 response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
