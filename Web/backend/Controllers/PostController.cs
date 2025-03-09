@@ -34,9 +34,9 @@ namespace Findgroup_Backend.Controllers
         [Authorize()]
         public async IAsyncEnumerable<PostDTO> GetPosts()
         {
-            await foreach (var post in _repository.GetPosts())
+            await foreach (Post post in _repository.GetPosts())
             {
-                yield return post;
+                yield return _mapper.Map<PostDTO>(post);
             }
         }
         [HttpGet("{id}")]
@@ -44,8 +44,8 @@ namespace Findgroup_Backend.Controllers
         {
             try
             {
-                PostDTO? post = await _repository.GetPostById(id);
-                return post == null ? NotFound() : Ok(post);
+                Post? post = await _repository.GetPostById(id);
+                return post == null ? NotFound() : Ok(_mapper.Map<PostDTO>(post));
             }
             catch (Exception ex)
             {

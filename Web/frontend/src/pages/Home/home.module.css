@@ -1,3 +1,18 @@
+.container {
+  height: 100vh;
+  display : grid;
+  grid-template-rows : 15% 1fr 1fr;
+  grid-template-columns: 100vw;
+  gap: 1rem;
+}
+
+.postListWrapper {
+  width: 100vw; 
+  height: 100%;
+  overflow-y: scroll;
+  scroll-behaviour: smooth;
+  background-color : #222222;
+}
 .gamechooser {
   display: flex !important;
   justify-content: flex-start !important;
@@ -23,6 +38,7 @@
 .untoggled {
   background-color: #363534!important;
 }
+
 @media only screen and (min-width: 992px) {
   .gamechooserItem {
     width: fit-content;

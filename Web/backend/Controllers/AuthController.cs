@@ -1,4 +1,5 @@
-﻿using Findgroup_Backend.Models.DTOs.Input;
+﻿using Findgroup_Backend.Data.Repositories.Interfaces;
+using Findgroup_Backend.Models.DTOs.Input;
 using Findgroup_Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,10 +11,19 @@ namespace Findgroup_Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IAuthService authService, IConfiguration config) : ControllerBase
+public class AuthController : ControllerBase
 {
-    private readonly IAuthService _auth = authService;
-    private readonly IConfiguration _config = config;
+    private readonly IAuthService _auth;
+    private readonly IConfiguration _config;
+    private readonly ITokenRepository _tokenRepo;
+
+    public AuthController(IAuthService auth, IConfiguration config, ITokenRepository tokenRepo)
+    {
+        _auth = auth;
+        _config = config;
+        _tokenRepo = tokenRepo;
+
+    }
 
     [Authorize]
     [HttpGet("validate-token")]

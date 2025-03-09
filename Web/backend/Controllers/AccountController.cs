@@ -68,7 +68,7 @@ namespace Findgroup_Backend.Controllers
                 }
             }
             var token = await _tokenService.GenerateAccessToken(user);
-            var refreshToken = _tokenService.GenerateRefreshToken();
+            var refreshToken = _tokenService.GenerateRefreshToken(user);
             user.RefreshToken = refreshToken;
             var cookieOptions = new CookieOptions()
             {

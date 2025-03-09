@@ -1,5 +1,6 @@
 ﻿using Findgroup_Backend.Data.Repositories.Interfaces;
 using Findgroup_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Findgroup_Backend.Data.Repositories
 {
@@ -24,13 +25,13 @@ namespace Findgroup_Backend.Data.Repositories
 
         public async Task<RefreshToken?> GetStoredToken(string token)
         {
-            RefreshToken? target = await _context.RefreshTokens.FindAsync(token);
+            RefreshToken? target = await _context.RefreshTokens.Include(t => t.User).FirstOrDefaultAsync(t => t.TokenHash == token);
             return target;
         }
 
         public IAsyncEnumerable<RefreshToken> GetAllTokens()
         {
-            return _context.RefreshTokens.AsAsyncEnumerable();
+            return _context.RefreshTokens.Include(t => t.User).AsAsyncEnumerable();
         }
 
         public async Task AddToken(RefreshToken token)

@@ -42,7 +42,6 @@ namespace Findgroup_Backend.Controllers
         {
             if (!Guid.TryParse(groupId, out var id))
             {
-                await Task.CompletedTask;
                 yield break;
             }
             await foreach (Message message in _repository.GetMessages().Where(x => x.GroupId == id))
@@ -56,21 +55,40 @@ namespace Findgroup_Backend.Controllers
         public async Task<IActionResult> SendMessage([FromBody] MessageDTO dto)
         {
             Message message = _mapper.Map<Message>(dto);
-            Group? target = _mapper.Map<Group>(await _groupRepo.GetGroupById(message.GroupId));
+            Group? target = await _groupRepo.GetGroupById(message.GroupId);
             if (target == null) return BadRequest(new
             {
                 Message = $"Failed to send message to group (Id = {message.GroupId})"
             });
-
-            await _repository.AddNewMessage(message);
-            target.Messages.Add(message);
-            return CreatedAtAction(nameof(GetAllMessages), new { Id = message.Id }, dto);
+            try
+            {
+                target.Messages.Add(message);
+                await _repository.AddNewMessage(message);
+                return CreatedAtAction(nameof(GetAllMessages), new { Id = message.Id }, message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error: " + ex.Message);
+            }
         }
         [Authorize]
         [HttpPatch]
         public async Task<IActionResult> ModifyMessage([FromBody] MessageDTO message)
         {
-            throw new NotImplementedException();
+            Message newMessage = _mapper.Map<Message>(message);
+            try
+            {
+                await _repository.ModifyMessage(newMessage);
+                return Ok(new
+                {
+                    Message = $"Message with Id: {newMessage.Id} successfully modified!"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error: " + ex.Message);
+            }
+
         }
 
         [Authorize]

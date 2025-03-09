@@ -99,11 +99,12 @@ namespace Findgroup_Backend.Controllers
         }
 
         [HttpPost("leave"), Authorize]
-        public async Task<ActionResult> LeaveGroup([FromQuery] Guid groupId, string userId)
+        public async Task<ActionResult> LeaveGroup([FromQuery] string groupId, [FromQuery] string userId)
         {
-            Group? target = await _groupRepository.GetGroupById(groupId);
+            if (!Guid.TryParse(groupId, out Guid res)) return BadRequest("GroupId not found");
+            Group? target = await _groupRepository.GetGroupById(res);
             User? user = await _userRepository.GetUserById(userId);
-            if (user is null || target is null) return BadRequest("Invalid request");
+            if (user is null || target is null) return BadRequest("Invalid request! User not found");
             await _groupRepository.LeaveGroup(target, user);
             return Ok(new
             {

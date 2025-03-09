@@ -1,3 +1,4 @@
+import { Message } from "./Message"
 import { User } from "./User"
 
 export type Group = {
@@ -6,5 +7,6 @@ export type Group = {
     description: string,
     memberLimit: number,
     users: User[],
-    creator: User | undefined | null | ""
+    creator: User | undefined,
+    messages: Message[]
 }

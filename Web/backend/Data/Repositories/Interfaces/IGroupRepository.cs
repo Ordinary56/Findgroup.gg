@@ -5,7 +5,7 @@ namespace Findgroup_Backend.Data.Repositories.Interfaces
 {
     public interface IGroupRepository : IDisposable
     {
-        public IAsyncEnumerable<GroupDTO> GetGroups();
+        public IAsyncEnumerable<Group> GetGroups();
         public Task<Group?> GetGroupById(Guid id);
         public Task CreateNewGroup(Group newGroup, User Creator);
         public Task JoinGroup(Group targetGroup, User newMember);

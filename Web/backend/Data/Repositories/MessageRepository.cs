@@ -52,7 +52,7 @@ namespace Findgroup_Backend.Data.Repositories
 
         public IAsyncEnumerable<Message> GetMessages()
         {
-            return _context.Messages.Include(m => m.User).Include(m => m.Group).AsAsyncEnumerable();
+            return _context.Messages.Include(m => m.User).Include(m => m.Group).AsNoTracking().AsAsyncEnumerable();
         }
 
         public async Task Save()
