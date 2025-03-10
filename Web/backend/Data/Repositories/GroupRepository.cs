@@ -33,17 +33,21 @@ namespace Findgroup_Backend.Data.Repositories
             _disposed = true;
         }
 
-        public IAsyncEnumerable<GroupDTO> GetGroups()
+        public IAsyncEnumerable<Group> GetGroups()
         {
-            return _context.Groups.Include(g => g.Users).Include(g => g.Post)
-                .Select(g => _mapper.Map<GroupDTO>(g))
+            return _context.Groups.Include(g => g.Users)
+                .Include(g => g.Post)
+                .Include(g => g.Messages)
                 .AsAsyncEnumerable();
         }
 
         public async Task<Group?> GetGroupById(Guid id)
         {
-            Group? target = await _context.Groups.Include(g => g.Users)
-                .Include(g => g.Post).FirstOrDefaultAsync(g => g.Id == id);
+            Group? target = await _context.Groups
+                .Include(g => g.Users)
+                .Include(g => g.Post)
+                .Include(g => g.Messages)
+                .FirstOrDefaultAsync(g => g.Id == id);
             return target;
         }
 

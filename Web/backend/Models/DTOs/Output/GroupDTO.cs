@@ -8,5 +8,6 @@
         public required int MemberLimit { get; init; }
         public List<UserDTO> Users { get; set; } = [];
         public UserDTO? Creator => Users.FirstOrDefault();
+        public List<Message> Messages { get; init; }
     }
 }

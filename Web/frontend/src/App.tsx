@@ -56,14 +56,7 @@ const AppContent = () => {
           <Route path={ROUTES.group.path} element={<Group />} />
           <Route path={ROUTES.profile.path} element={<Profile />} />
         </Route>
-
-
-
-
       </Routes>
-      {/* Display CreateButton only on homepage */}
-      {location.pathname === ROUTES.homepage.path && <CreateButton />}
-
     </>
   );
 };

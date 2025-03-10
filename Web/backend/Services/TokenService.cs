@@ -43,7 +43,7 @@ namespace Findgroup_Backend.Services
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: authClaims,
-                expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.UtcNow.AddMinutes(1),
                 signingCredentials: credentials
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -51,7 +51,7 @@ namespace Findgroup_Backend.Services
         }
 
         /// <inheritdoc/>
-        public RefreshToken GenerateRefreshToken()
+        public RefreshToken GenerateRefreshToken(User user)
         {
             byte[] randomBytes = new byte[64];
             using RandomNumberGenerator rng = RandomNumberGenerator.Create();
@@ -59,8 +59,11 @@ namespace Findgroup_Backend.Services
             string token = Convert.ToBase64String(randomBytes);
             return new RefreshToken()
             {
+                Id = Guid.NewGuid(),
                 TokenHash = HashToken(token),
-                ExpiresOnUTC = DateTime.UtcNow.AddDays(7)
+                ExpiresOnUTC = DateTime.UtcNow.AddDays(7),
+                User = user,
+                UserId = user.Id
             };
         }
 

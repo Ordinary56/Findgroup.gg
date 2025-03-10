@@ -38,22 +38,22 @@ namespace Findgroup_Backend.Data.Repositories
         }
 
 
-        public async Task<PostDTO?> GetPostById(int id)
+        public async Task<Post?> GetPostById(int id)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(id);
             Post? target = await _context.Posts
                 .Include(p => p.Creator)
                 .Include(p => p.Group).ThenInclude(g => g.Users)
                 .FirstOrDefaultAsync(p => p.Id == id);
-            return _mapper.Map<PostDTO>(target);
+            return target;
         }
 
-        public IAsyncEnumerable<PostDTO> GetPosts()
+        public IAsyncEnumerable<Post> GetPosts()
         {
             return _context.Posts.Include(p => p.Category)
                 .Include(p => p.Creator)
                 .Include(p => p.Group)
-                .Select(p => _mapper.Map<PostDTO>(p)).AsAsyncEnumerable();
+                .AsAsyncEnumerable();
         }
 
         public async Task ModifyPostAsync(Post post)

@@ -7,6 +7,7 @@ import { User } from "./Models/User";
 import { Group } from "./Models/Group";
 import { AxiosResponse } from "axios";
 import { UserInfo } from "./Models/UserInfo";
+import { Message } from "./Models/Message";
 export const apiService = {
 
   login: async (username: string, password: string): Promise<AxiosResponse> => {
@@ -75,12 +76,12 @@ export const apiService = {
   },
 
   getGroups: async (): Promise<Group[]> => {
-    const data: Group[] = await axiosInstance.get("/Group");
+    const { data }: AxiosResponse = await axiosInstance.get("/Group");
     return data;
   },
 
   getGroupById: async (id: string): Promise<Group> => {
-    const { data }: Group = await axiosInstance.get(`Group/${id}`);
+    const { data }: AxiosResponse = await axiosInstance.get(`Group/${id}`);
     return data;
   },
 
@@ -95,4 +96,20 @@ export const apiService = {
     const res = await axiosInstance.post("/Group/join?groupId=" + groupId + "&userId=" + userId)
     return res;
   },
+  leaveGroup: async (groupId: string, userId: string): Promise<{ data: any, status: number }> => {
+    const { data, status }: AxiosResponse<any, any> = await axiosInstance.post("/Group/leave?groupId=" + groupId + "&userId=" + userId);
+    return { data, status }
+  },
+  sendMessage: async (message: Message) => {
+    const { data } = await axiosInstance.post("/Message", message);
+    return data;
+  },
+  modifyMessage: async (newMessage: Message) => {
+    const { data } = await axiosInstance.patch("/Message", newMessage);
+    return data;
+  },
+  deleteMessage: async (message: Message) => {
+    const { data } = await axiosInstance.delete("/Message", message);
+    return data;
+  }
 };

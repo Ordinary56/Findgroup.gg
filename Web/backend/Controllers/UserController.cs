@@ -18,9 +18,9 @@ namespace Findgroup_Backend.Controllers
         // [Authorize(Roles = "Admin")]
         public async IAsyncEnumerable<UserDTO> GetUsers()
         {
-            await foreach (UserDTO user in _userRepository.GetUsers())
+            await foreach (User user in _userRepository.GetUsers())
             {
-                yield return user;
+                yield return _mapper.Map<UserDTO>(user);
             }
         }
 
@@ -36,12 +36,12 @@ namespace Findgroup_Backend.Controllers
         public async Task<ActionResult<User>> GetUserById(string id)
         {
             User found = await _userRepository.GetUserById(id);
-            if (found != null) return Ok(found);
+            if (found != null) return Ok(_mapper.Map<UserDTO>(found));
             return NotFound();
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult> ModifyUser([FromRoute] string id, [FromBody] UserDTO modifiedUser)
+        public async Task<ActionResult> ModifyUser(string id, [FromBody] UserDTO modifiedUser)
         {
             if (id != modifiedUser.Id)
             {

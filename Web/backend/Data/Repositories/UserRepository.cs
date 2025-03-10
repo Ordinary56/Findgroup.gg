@@ -52,9 +52,9 @@ namespace Findgroup_Backend.Data.Repositories
 
         }
 
-        public IAsyncEnumerable<UserDTO> GetUsers()
+        public IAsyncEnumerable<User> GetUsers()
         {
-            return _context.Users.Select(u => _mapper.Map<UserDTO>(u)).AsAsyncEnumerable();
+            return _context.Users.AsNoTracking().AsAsyncEnumerable();
         }
 
         public async Task Save()

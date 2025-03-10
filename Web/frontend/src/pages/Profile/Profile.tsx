@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import styles from "./profile.module.css";
 import { useParams } from "react-router-dom";
 import { User } from "../../api/Models/User";
-import pfp from "../../../public/Thepic.png";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
 import { apiService } from "../../api/apiService";
@@ -41,7 +40,7 @@ const Profile = () => {
     <>
       <div>
         <div className={styles["profile-container"]}>
-          <img src={pfp} alt="User pfp" />
+          <img src="/Thepic.png" alt={`${user.userName}'s Profile Picture`} />
           <h1>{user.userName}</h1>
         </div>
 
