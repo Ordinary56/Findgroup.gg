@@ -67,14 +67,23 @@ const Home: React.FC = () => {
       <div className={homeStyles.postListWrapper}>
         <PostList selectedGame={selectedCategory} />
       </div>
-      <div>
-        <CreateButton />
+
+      <div className={homeStyles.YourGroups}>
+        
         <h1>Your groups</h1>
         {/*  TODO: Improve upon this UI further*/}
+        <div>
+       
+          
         {groups?.map(group => (
-          <Link to={`/group/${group.id}`}>{group.groupName}</Link>
-        ))}
+          <Link  to={`/group/${group.id}`}>{group.groupName}</Link>
+        )) || "You didn't join any group yet"}
+       
+        </div>
       </div>
+        <div className={homeStyles.createbutton}>
+        <CreateButton/>
+        </div>
     </div>
   );
 };

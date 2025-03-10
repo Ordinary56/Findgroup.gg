@@ -150,8 +150,8 @@
 
 }
 
-/* Desktop nézet (min-width: 768px) */
-@media screen and (min-width: 992px) {
+
+@media only screen and (min-width: 992px) {
 
     /* A fő konténer elrendezése */
     .main {
@@ -203,7 +203,8 @@
     .create_listing_button{
         width: 300px;
         float: right;
-        margin-right: 2%;
+        margin-right: 2%; 
+        color: white;
     }
     /* Leírás és tagek szélesebb megjelenése */
     .description
@@ -229,5 +230,6 @@
         display: flex;
         justify-content: center;
         margin-bottom: 5%;
+        color: white;
     }
 }
