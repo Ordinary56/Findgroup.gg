@@ -12,7 +12,7 @@ using WPF.Repositories.Interfaces;
 
 namespace WPF.Repositories
 {
-    internal class UserRepository : IUserRepostory
+    public class UserRepository : IUserRepostory
     {
         private readonly HttpClient _client;
         private readonly ILogger<UserRepository> _logger;
@@ -34,7 +34,13 @@ namespace WPF.Repositories
                 response.EnsureSuccessStatusCode();
 
                 var stream = await response.Content.ReadAsStreamAsync();
-                users = await JsonSerializer.DeserializeAsync<IAsyncEnumerable<UserDTO>>(stream);
+                JsonSerializerOptions opts = new()
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    WriteIndented = true,
+
+                };
+                users = await JsonSerializer.DeserializeAsync<IAsyncEnumerable<UserDTO>>(stream,opts);
             }
             catch (Exception ex)
             {
@@ -42,7 +48,7 @@ namespace WPF.Repositories
                 // Továbbra is üres listát használunk, ha hibát kaptunk
                 yield break;
             }
-            await foreach(var user in users)
+            await foreach(var user in users!)
             {
                 yield return user;
             }
@@ -55,7 +61,7 @@ namespace WPF.Repositories
         {
             try
             {
-                var response = await _client.DeleteAsync($"User/{user.id}"); // Hívja a törlés végpontját
+                var response = await _client.DeleteAsync($"User/{user.Id}"); // Hívja a törlés végpontját
                 response.EnsureSuccessStatusCode(); // Ellenőrizd, hogy sikerült a törlés
             }
             catch (Exception ex)
@@ -69,7 +75,7 @@ namespace WPF.Repositories
         {
             try
             {
-                var response = await _client.PutAsJsonAsync($"User/{modifiedUser.id}", modifiedUser);
+                var response = await _client.PatchAsJsonAsync($"User/{modifiedUser.id}", modifiedUser);
                 response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
@@ -83,7 +89,7 @@ namespace WPF.Repositories
         {
             try
             {
-                var response = await _client.PostAsJsonAsync("User", newUser); // Új felhasználó létrehozása
+                var response = await _client.PostAsJsonAsync("Auth/register", newUser); // Új felhasználó létrehozása
                 response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)

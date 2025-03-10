@@ -2,10 +2,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Win32.SafeHandles;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Navigation;
 using WPF.Core;
 using WPF.Helpers;
 using WPF.MVVM.Model;
@@ -14,6 +17,7 @@ using WPF.Repositories;
 using WPF.Repositories.Interfaces;
 using WPF.Services;
 using WPF.Services.Interfaces;
+using NavigationService = WPF.Services.NavigationService;
 namespace WPF;
 
 /// <summary>
@@ -54,8 +58,15 @@ public partial class App : Application
     /// <param name="services">The host's service collection</param>
     public static void ServiceConfig(IServiceCollection services)
     {
+        CookieContainer container = new();
         services.AddSingleton<IStorageHelper, StorageHelper>();
         services.AddSingleton(Configuration);
+        services.AddSingleton<HttpClientHandler>(provider => {
+            return new HttpClientHandler()
+            {
+                CookieContainer = container
+            };
+        });
         services.AddSingleton(provider =>
         {
             var storage = provider.GetRequiredService<IStorageHelper>();
@@ -76,13 +87,6 @@ public partial class App : Application
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<Func<Type, ViewModelBase>>(provider => viewmodel => (ViewModelBase)provider.GetRequiredService(viewmodel));
         services.AddSingleton<INavigationService, NavigationService>();
-        services.AddSingleton<HttpClientHandler>(provider =>
-        {
-            return new HttpClientHandler()
-            {
-                CookieContainer = new(),
-            }; 
-        });
         services.AddSingleton<MainWindow>(provider => new MainWindow()
         {
             DataContext = provider.GetRequiredService<MainViewModel>()
@@ -93,7 +97,7 @@ public partial class App : Application
                 return builder.GetRequiredService<HttpClientHandler>();
             }).ConfigureHttpClient(client =>
             {
-                client.BaseAddress = new Uri(Configuration["AppSettings:ApiUrl"]!);
+                client.BaseAddress = new Uri(Configuration["AppSettings:ApiUrl"]!  + "/Auth/login");
             })
             .SetHandlerLifetime(TimeSpan.FromMinutes(10));
 
@@ -115,6 +119,7 @@ public partial class App : Application
             client.BaseAddress = new Uri(Configuration["AppSettings:ApiUrl"]!);
         })
         .SetHandlerLifetime(TimeSpan.FromMinutes(10));
+        services.AddSingleton(container);
     }
     public static void AddLogging(ILoggingBuilder builder)
     {
@@ -124,7 +129,7 @@ public partial class App : Application
     }
     protected override void OnStartup(StartupEventArgs e)
     {
-        // 🖥️ Konzol megnyitása debug módban
+        // Konzol megnyitása debug módban
         WPF.Helpers.ConsoleHelper.CreateConsole();
 
         try
@@ -154,7 +159,7 @@ public partial class App : Application
         {
             base.OnExit(e);
 
-            // 🖥️ Konzol bezárása
+            //  Konzol bezárása
             WPF.Helpers.ConsoleHelper.CloseConsole();
 
             // User adatainak mentése

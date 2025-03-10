@@ -48,18 +48,18 @@
           SelectionMode="Single">
                         <ListView.View>
                             <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
-                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding id}" />
-                                <GridViewColumn Header="Username"  DisplayMemberBinding="{Binding userName}" />
-                                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding email}" />
+                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}" />
+                                <GridViewColumn Header="Username"  DisplayMemberBinding="{Binding UserName}" />
+                                <GridViewColumn Header="Email" DisplayMemberBinding="{Binding Email}" />
                                 <GridViewColumn Header="Actions" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                 <Button Content="Edit"
-                                    Command="{Binding DataContext.EditUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    Command="{Binding EditUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                     CommandParameter="{Binding}" Style="{DynamicResource AlternateButtonStyle}" />
                                                 <Button Content="Delete"
-                                    Command="{Binding DataContext.DeleteUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    Command="{Binding DeleteUserCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                     CommandParameter="{Binding}" Margin="5,0,0,0" Style="{DynamicResource AlternateButtonStyle}"/>
                                             </StackPanel>
                                         </DataTemplate>
@@ -68,13 +68,14 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <Button Content="Create new User" Command="{Binding CreateNewUserCommand}"/>
                 </StackPanel>
             </TabItem>
 
 
 
             <!-- Posts Tab -->
-            <TabItem Header="Posts" IsSelected="{Binding IsSecondListVisible}" Style="{DynamicResource TabItemStyle}">
+            <TabItem Header="Posts" Style="{DynamicResource TabItemStyle}">
                 <StackPanel>
                     <!-- Loading indikátor -->
                     <TextBlock Text="Loading..."
@@ -87,24 +88,24 @@ Style="{StaticResource ListViewStyle}"
 SelectionMode="Single">
                         <ListView.View >
                             <GridView  AllowsColumnReorder="False" ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}">
-                                <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding id}" />
-                                <GridViewColumn Header="Title"  DisplayMemberBinding="{Binding title}" />
-                                <GridViewColumn Header="Content" DisplayMemberBinding="{Binding content}" />
-                                <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding isActive}" />
-                                <GridViewColumn Header="User Id" DisplayMemberBinding="{Binding userId}" />
-                                <GridViewColumn Header="Categroy Id" DisplayMemberBinding="{Binding categoryId}" />
-                                <GridViewColumn Header="Group Id" DisplayMemberBinding="{Binding groupid}" />
-                                <GridViewColumn Header="Creator" DisplayMemberBinding="{Binding creator}" />
-                                <GridViewColumn Header="Group" DisplayMemberBinding="{Binding group}" />
+                                <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Id}" />
+                                <GridViewColumn Header="Title"  DisplayMemberBinding="{Binding Title}" />
+                                <GridViewColumn Header="Content" DisplayMemberBinding="{Binding Content}" />
+                                <GridViewColumn Header="Is Active" DisplayMemberBinding="{Binding IsActive}" />
+                                <GridViewColumn Header="User Id" DisplayMemberBinding="{Binding UserId}" />
+                                <GridViewColumn Header="Categroy Id" DisplayMemberBinding="{Binding CategoryId}" />
+                                <GridViewColumn Header="Group Id" DisplayMemberBinding="{Binding Groupid}" />
+                                <GridViewColumn Header="Creator" DisplayMemberBinding="{Binding Creator}" />
+                                <GridViewColumn Header="Group" DisplayMemberBinding="{Binding Group}" />
                                 <GridViewColumn Header="Actions" >
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                 <Button Content="Edit"
-                          Command="{Binding DataContext.EditPostCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                          Command="{Binding EditPostCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                           CommandParameter="{Binding}" Style="{DynamicResource AlternateButtonStyle}" />
                                                 <Button Content="Delete"
-                          Command="{Binding DataContext.DeletePostCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                          Command="{Binding DeletePostCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                           CommandParameter="{Binding}" Margin="5,0,0,0" Style="{DynamicResource AlternateButtonStyle}"/>
                                             </StackPanel>
                                         </DataTemplate>

@@ -25,15 +25,18 @@ namespace WPF.Services
         private readonly HttpClient _client;
         private readonly ILogger<AuthenticationService> _logger;
         private readonly IStorageHelper _storage;
+        private readonly CookieContainer _container;
         #endregion
 
-        public AuthenticationService( HttpClient client, 
-            ILogger<AuthenticationService> logger, 
-            IStorageHelper helper)
+        public AuthenticationService(HttpClient client,
+            ILogger<AuthenticationService> logger,
+            IStorageHelper helper,
+            CookieContainer container)
         {
             _client = client;
             _logger = logger;
             _storage = helper;
+            _container = container;
         }
         public async Task<bool> Authenticate(AdminUser user)
         {
@@ -44,14 +47,19 @@ namespace WPF.Services
             };
             var json = JsonSerializer.Serialize(credentials);
             _logger.LogInformation("Sending login request: {Json}", json);
-            _logger.LogInformation("Requesting URL: {Url}", new Uri(_client.BaseAddress, "Auth/login"));
+            _logger.LogInformation("Requesting URL: {Url}", _client.BaseAddress);
 
-            using var response = await _client.PostAsJsonAsync(_client.BaseAddress + "/Auth/login", credentials);
+            using var response = await _client.PostAsJsonAsync(_client.BaseAddress, credentials);
             _logger.LogInformation("Attempting to login admin with {UserName} {Password}", user.UserName, user.Password);
             try
             {
                 response.EnsureSuccessStatusCode();
                 var stream = await response.Content.ReadAsStreamAsync();
+                var cookies = _container.GetCookies(_client.BaseAddress);
+                foreach(Cookie cookie in cookies)
+                {
+                    _logger.LogInformation("Cookie: {name}, Value: {value}", cookie.Name, cookie.Value);
+                }
                 return true;
             }
 

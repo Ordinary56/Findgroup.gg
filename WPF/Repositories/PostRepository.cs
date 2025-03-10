@@ -27,12 +27,13 @@ namespace WPF.Repositories
         {
             _client = client;
             _logger = logger;
+            _client.BaseAddress = new Uri("http://localhost:5110/api/");
         }
 
 
-        public async IAsyncEnumerable<PostDTO>GetPost ()
+        public async IAsyncEnumerable<PostDTO>GetPost()
         {
-            var result = await _client.GetAsync(_client.BaseAddress);
+            var result = await _client.GetAsync("Post");
             result.EnsureSuccessStatusCode();
             var stream = await result.Content.ReadAsStreamAsync();
             IAsyncEnumerable<PostDTO> values = await JsonSerializer.DeserializeAsync<IAsyncEnumerable<PostDTO>>(stream) ?? throw new Exception("the stream returned null");
@@ -43,7 +44,7 @@ namespace WPF.Repositories
         {
             try
             {
-                var response = await _client.DeleteAsync($"User/{post.id}"); // Hívja a törlés végpontját
+                var response = await _client.DeleteAsync($"User/{post.Id}"); // Hívja a törlés végpontját
                 response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)

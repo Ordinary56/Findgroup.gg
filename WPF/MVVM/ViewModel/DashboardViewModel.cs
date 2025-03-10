@@ -3,9 +3,12 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using WPF.Core;
+using WPF.MVVM.Model.DTOs.Input;
 using WPF.MVVM.Model.DTOs.Output;
 using WPF.Repositories;
 using WPF.Repositories.Interfaces;
@@ -26,13 +29,17 @@ namespace WPF.MVVM.ViewModel
         public ObservableCollection<GroupDTO> Groups { get; } = new();
 
         [ObservableProperty]
-        private bool isLoading;
+        public bool isLoading;
 
         [ObservableProperty]
         private UserDTO? selectedUser;
 
         [ObservableProperty]
         private PostDTO? selectedPost;
+
+        public AsyncRelayCommand<PostDTO?> DeletePostCommand { get; }
+        public AsyncRelayCommand<UserDTO?> DeleteUserCommand { get; }
+        public AsyncRelayCommand CreateNewUserCommand { get; }
 
 
         // Konstruktor, ami betölti az usereket
@@ -44,6 +51,32 @@ namespace WPF.MVVM.ViewModel
             _postRepository = postRepository;
             _ = LoadUsersAsync();
             _ = LoadPostsAsync();
+            DeleteUserCommand = new(_userRepository.DeleteUser);
+            DeletePostCommand = new(_postRepository.DeletePost);
+            CreateNewUserCommand = new(async () =>
+            {
+                RegisterNewUserDTO newUser = new()
+                {
+                   id = Guid.NewGuid().ToString(),
+                   userName = "asd",
+                   email = "asd@asd.com",
+                   password = "Passwd123$"
+                };
+                try
+                {
+                    await userRepository.CreateNew(newUser);
+                    Users.Add(new UserDTO
+                    {
+                        UserName = newUser.userName,
+                        Email = newUser.email,
+
+                    });
+                }
+                catch(Exception ex)
+                {
+                    return;
+                }
+            });
         }
 
         // Users betöltése az API-ból
@@ -107,46 +140,15 @@ namespace WPF.MVVM.ViewModel
                 IsLoading = false; // Betöltés vége
             }
         }
-
-            // Felhasználó törlése
-            [RelayCommand]
-        private async Task DeleteUser()
-        {
-            if (SelectedUser is null) return;
-
-            try
-            {
-                await _userRepository.DeleteUser(SelectedUser);
-                Users.Remove(SelectedUser); // eltávolítjuk a listából
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to delete user");
-            }
-        }
-        [RelayCommand]
-        private async Task DeletePost()
-        {
-            if (selectedPost is null) return;
-
-            try
-            {
-                await _postRepository.DeletePost(selectedPost);
-                Posts.Remove(selectedPost); // eltávolítjuk a listából
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to delete post");
-            }
-        }
+       
 
         // Felhasználó szerkesztése
-        [RelayCommand]
-        private void EditUser()
+        public void EditUser()
         {
             if (SelectedUser is null) return;
 
-            _logger.LogInformation("Editing user: {UserName}", selectedUser.userName);
+            _logger.LogInformation("Editing user: {UserName}", selectedUser.UserName);
         }
+        
     }
 }
