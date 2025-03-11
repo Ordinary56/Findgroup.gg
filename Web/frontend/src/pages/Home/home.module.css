@@ -77,7 +77,6 @@
   .gamechooserItem {
     width: fit-content;
     white-space: nowrap;
-
   }
 
   .gamechooser {
@@ -94,22 +93,16 @@
       width: 60vw;
       box-shadow: none;
     }
-
-    .createbutton {
-      display: flex;
-      margin-right: 20px;
-      margin-bottom: 20px;
-      justify-content: flex-end;
-      
-    }
   }
-  
-.postListWrapper {
-  border-radius: 25px;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  height: 17vw;
-  background-color : #222222;
-}
+
+  .postListWrapper {
+    border-radius: 25px;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 17vw;
+    background-color: #222222;
+  }
+
+
 }
