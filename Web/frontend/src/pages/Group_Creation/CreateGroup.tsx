@@ -52,7 +52,7 @@ const CreateGroup = () => {
     }
     const group: GroupDTO = {
       groupName: groupName,
-      description: groupDesc,
+      Description: groupDesc,
       memberLimit: memberLimit,
       postId: post!.id,
       userId: creatorId
@@ -79,17 +79,25 @@ const CreateGroup = () => {
                 type="text"
                 name="postName"
                 placeholder="Group's name..."
-                onInput={(e) =>
-                  setGroupName((e.target as HTMLInputElement).value)
-                }
+                max={14}
+                onInput={(e) => {
+                  const value = (e.target as HTMLInputElement).value;
+                  setGroupName(value);
+                  setPostName(value);
+                }}
+                
+
               />
               <input
                 type="text"
                 placeholder="Group Description"
                 name="groupDesc"
-                onInput={(e) =>
-                  setGroupDesc((e.target as HTMLInputElement).value)
-                }
+              
+                onInput={(e) => {
+                  const value = (e.target as HTMLInputElement).value;
+                  setGroupDesc(value);
+                  setPostContent(value);
+                }}
               />
               <input
                 type="number"
@@ -111,19 +119,23 @@ const CreateGroup = () => {
         </div>
         <div className={styles.preview}>
           <div className={styles.title_wrapper}>
-            <input type="text" value={postName}
+            <input type="text" max={14} value={postName}
               className={styles.title}
-              placeholder="Enter the post's name here"
+              placeholder="Enter the Group's name here"
               onInput={e => setPostName(e.target.value)} />
           </div>
 
 
           <div className={styles.title_and_team_size}>
             <h3 className={styles.creatorname}>{creatorName}</h3>
-            <span className={styles.team_size}>Team size: {memberLimit}</span>
+            <span className={styles.team_size}>Member Limit: {memberLimit}</span>
           </div>
 
-          <textarea className={styles.description} value={postContent} onInput={e => setPostContent(e.target.value)}></textarea >
+          <textarea 
+          className={styles.description} 
+          placeholder="Enter the Group's description here" 
+          value={postContent} 
+          onInput={e => setPostContent(e.target.value)}></textarea >
 
         </div>
 

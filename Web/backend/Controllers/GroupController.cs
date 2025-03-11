@@ -27,14 +27,14 @@ namespace Findgroup_Backend.Controllers
         [HttpGet]
         public async IAsyncEnumerable<GroupDTO> GetGroups()
         {
-            await foreach (GroupDTO group in _groupRepository.GetGroups())
+            await foreach (Group group in _groupRepository.GetGroups())
             {
-                yield return group;
+                yield return _mapper.Map<GroupDTO>(group);
             }
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Group>> GetGroup(string id)
+        public async Task<ActionResult<GroupDTO>> GetGroup(string id)
         {
             if (!Guid.TryParse(id, out Guid targetGuid))
             {

@@ -1,9 +1,5 @@
 .button{
-    position: absolute;
-    bottom: 100px;
-    right: 50px;
     padding: 5px; 
-    align-items: center; 
     font-size: 1.2rem;
     color: #fff;
     background-color: #fc6621;

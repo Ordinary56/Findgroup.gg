@@ -10,11 +10,11 @@ html, body {
   min-width: 100% !important;
 }
 
+html{
+  background: linear-gradient(to top, #2b2b2b,black);
+}
 body {
   color: white;
-  background: linear-gradient(to top, #2b2b2b, black);
-  background-size: cover;
-  background-repeat: no-repeat;
   display: flex; 
 }
 

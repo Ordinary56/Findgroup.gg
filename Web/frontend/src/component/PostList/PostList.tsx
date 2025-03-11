@@ -2,6 +2,7 @@ import styles from "./PostList.module.css"
 
 import { Link } from "react-router-dom";
 import UsePosts from "../../hooks/usePosts";
+import Group from "../../pages/Group/Group";
 // TODO: Work on this component further
 interface PostListProps {
     selectedGame: string;

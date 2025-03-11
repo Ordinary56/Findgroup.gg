@@ -47,37 +47,29 @@ const Post = () => {
       setIsJoining(false);
     }
   };
-  const handleRevisit = async () => {
-    if (!post) return;
-    navigate(`/group/${post.group.id}`);
-  };
+  
 
   return (
     <>
       <BackToHomeButton />
-      <Button className={styles["revisit-group"]}
-        variant="contained"
-        color="primary"
-        onClick={handleRevisit}>
-        Go to this group
-      </Button >
       {
         post ? (
           <div className={styles.container} >
             <h1>{post.title}</h1>
             <div className={styles.creatorAndLimit}>
               <h4>Created by {creator?.userName || "USER NOT FOUND"}</h4>
-              <h4>Member Limit: {post.group?.memberLimit || "NULL"}</h4>
+              <h4>Member Limit: {post.group?.memberLimit || "NO MEMBERS IN THIS GROUP"}</h4>
             </div>
-            <h4>{post.group?.users.map((u, i) => (
+            <h4 className={styles.members}>{post.group?.users.map((u, i) => (
               <Link to={`/profile/${u.id}`} >{u.userName}</Link>
             )) || "No members found in this group"}</h4>
             <div className={styles.Content}>
+              <h2>{post.group.description}</h2>
               <h2>{post.content}</h2>
             </div>
             <Button
-              variant="contained"
-              color="primary"
+              className={styles.Joinbutton}
+
               onClick={handleJoinGroup}
               disabled={isJoining}
             >
