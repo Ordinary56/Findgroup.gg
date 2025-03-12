@@ -65,6 +65,19 @@ public class Program
                         context.Token = context.Request.Cookies["accessToken"];
                         return Task.CompletedTask;
                     },
+                    OnChallenge = context =>
+                    {
+                        if (!context.Response.HasStarted)
+                        {
+                            context.HandleResponse();
+                            context.Response.ContentType = "application/json";
+                            context.Response.Body = ;
+                            return context.Response.WriteAsync("\"error\": \"Unauthorized\"}");
+                        }
+                        return Task.CompletedTask;
+
+                    }
+
                 };
             });
         builder.Services.AddAuthorization();
