@@ -78,24 +78,41 @@ const CreateGroup = () => {
               <input
                 type="text"
                 name="postName"
+                placeholder="Post's name..."
+                maxLength={14}
+                onInput={(e) => {
+                  const value = (e.target as HTMLInputElement).value;
+                  setPostName(value);
+                }} />
+              <input
+                type="text"
+                name="groupname"
                 placeholder="Group's name..."
-                max={14}
+                maxLength={14}
                 onInput={(e) => {
                   const value = (e.target as HTMLInputElement).value;
                   setGroupName(value);
-                  setPostName(value);
                 }}
-                
+
 
               />
               <input
                 type="text"
                 placeholder="Group Description"
                 name="groupDesc"
-              
                 onInput={(e) => {
                   const value = (e.target as HTMLInputElement).value;
                   setGroupDesc(value);
+                  
+                }}
+              />
+                 <input
+                type="text"
+                placeholder="Post Description"
+                name="postcontent"
+                onInput={(e) => {
+                  const value = (e.target as HTMLInputElement).value;
+               
                   setPostContent(value);
                 }}
               />
@@ -119,9 +136,12 @@ const CreateGroup = () => {
         </div>
         <div className={styles.preview}>
           <div className={styles.title_wrapper}>
-            <input type="text" max={14} value={postName}
+            <input
+              type="text"
+              maxLength={14}
+              value={postName}
               className={styles.title}
-              placeholder="Enter the Group's name here"
+              placeholder="Enter the Post's name here"
               onInput={e => setPostName(e.target.value)} />
           </div>
 
@@ -131,11 +151,11 @@ const CreateGroup = () => {
             <span className={styles.team_size}>Member Limit: {memberLimit}</span>
           </div>
 
-          <textarea 
-          className={styles.description} 
-          placeholder="Enter the Group's description here" 
-          value={postContent} 
-          onInput={e => setPostContent(e.target.value)}></textarea >
+          <textarea
+            className={styles.description}
+            placeholder="Enter the Group's description here"
+            value={postContent}
+            onInput={e => setPostContent(e.target.value)}></textarea >
 
         </div>
 

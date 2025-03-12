@@ -16,11 +16,13 @@ html{
 body {
   color: white;
   display: flex; 
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100vh;
   min-width: 100vw;
+  overflow-x: hidden;
 }
 
 @media screen and (max-height: 720px) {

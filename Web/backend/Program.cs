@@ -46,6 +46,7 @@ public class Program
         })
             .AddJwtBearer(options =>
             {
+                options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new()
                 {
                     ValidateAudience = true,
@@ -54,7 +55,8 @@ public class Program
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtSettings["Issuer"],
                     ValidAudience = jwtSettings["Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero
                 };
                 options.Events = new JwtBearerEvents()
                 {
@@ -62,7 +64,7 @@ public class Program
                     {
                         context.Token = context.Request.Cookies["accessToken"];
                         return Task.CompletedTask;
-                    }
+                    },
                 };
             });
         builder.Services.AddAuthorization();
@@ -73,8 +75,9 @@ public class Program
         {
             options.AddDefaultPolicy(policy =>
             {
-                policy.AllowAnyHeader()
+                policy
                 .WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
             });

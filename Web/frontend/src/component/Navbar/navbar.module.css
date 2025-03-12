@@ -1,15 +1,12 @@
 .desktop{
     display: flex;
-    justify-content: center;
-    position: relative;    
-    >div{
-        height: 70px;
-        display: flex;
-        gap: 20px;
-        background-color:rgba(19, 16, 16, 0.877);
-        width: 100%;
-        justify-content: center;
-    }
+    align-items: center;
+    position: relative;
+    padding: 0 20px;
+    height: 70px;
+    background-color: rgba(19, 16, 16, 0.877);
+    backdrop-filter: blur(5px);
+
     a , .buttonstyle {
         font-size: 25px;
         text-transform: uppercase;
@@ -23,9 +20,31 @@
     }
 
 }
+.linksWrapper {
+    flex-grow: 1;  
+    display: flex;
+}
+.centerContainer {
+    flex: 1; /* Ez középre igazítja */
+    display: flex;
+    justify-content: center;
+}
 .links{
-
+    display: flex;
+    gap: 20px;
     a:hover,.buttonstyle:hover{
+        border-bottom: 2px solid white;
+        cursor: pointer;
+        background-color: transparent;
+        color: white;
+    }
+}
+.createButtonWrapper {
+    position:absolute;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    :hover{
         border-bottom: 2px solid white;
         cursor: pointer;
         background-color: transparent;
@@ -34,14 +53,10 @@
 }
 
 .buttonstyle,.mobilebuttonstyle{
-    
     font-size: 16px;
     background-color: transparent;
     border: none;
 }
-
-    
-
 
 .logo{
     position: absolute;
