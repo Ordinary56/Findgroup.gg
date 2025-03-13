@@ -61,7 +61,7 @@ const Post = () => {
               <h4>Member Limit: {post.group?.memberLimit || "NO MEMBERS IN THIS GROUP"}</h4>
             </div>
             <h4 className={styles.members}>{post.group?.users.map((u, i) => (
-              <Link to={`/profile/${u.id}`} >{u.userName}</Link>
+              <Link to={`/profile/${u.id}`}>{u.userName}</Link>
             )) || "No members found in this group"}</h4>
             <div className={styles.Content}>
               <h2>{post.group.description}</h2>

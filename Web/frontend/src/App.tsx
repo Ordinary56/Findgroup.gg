@@ -6,7 +6,6 @@ import LandingPage from "./pages/Landing_Page/LandingPage";
 import LoginPage from "./pages/Login/Login";
 import Home from "./pages/Home/Home";
 import RegisterPage from "./pages/Register/Register";
-import CreateButton from "./component/Create_group_button/Create_group_button";
 import CreateGroup from "./pages/Group_Creation/CreateGroup";
 import Post from "./pages/Post/Post";
 import Group from "./pages/Group/Group";
@@ -35,10 +34,9 @@ const PrivateRoute: React.FC = () => {
 };
 
 const AppContent = () => {
-  const location = useLocation();
   return (
     <>
-      <Navbar />
+      <Navbar/>
       <Routes>
         {/* Public routes */}
         <Route element={<PublicRoute />}>

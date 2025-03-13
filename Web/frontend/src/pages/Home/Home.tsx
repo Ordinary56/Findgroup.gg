@@ -5,7 +5,6 @@ import clsx from "clsx";
 import PostList from "../../component/PostList/PostList";
 import homeStyles from "./home.module.css";
 import useCategories from "../../hooks/useCategories";
-import CreateButton from "../../component/Create_group_button/Create_group_button";
 import { apiService } from "../../api/apiService";
 import { UserInfo } from "../../api/Models/UserInfo";
 import { Group } from "../../api/Models/Group";
@@ -81,9 +80,6 @@ const Home: React.FC = () => {
        
         </div>
       </div>
-        <div className={homeStyles.createbutton}>
-        <CreateButton/>
-        </div>
     </div>
   );
 };

@@ -1,18 +1,9 @@
-.button{
-    padding: 5px; 
-    font-size: 1.2rem;
-    color: #fff;
-    background-color: #fc6621;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 150px;
-    text-align: center;
-    justify-content: center;
-    a{
-        text-decoration: none;
-        color: #fff;
+
+@media only screen and (min-width: 992px) {
+    .button {
+        font-size: 25px;
+        text-transform: uppercase;
+        color: white;
+        margin-right: 10px;
     }
-   
 }

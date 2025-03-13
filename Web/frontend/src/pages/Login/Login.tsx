@@ -55,7 +55,7 @@ const LoginPage: React.FC = () => {
         <button type="submit" className={styles.LoginButton}>
           Login
         </button>
-        <p>{error}</p>
+    
         <div>
           Don't have an account?
           <Link to={ROUTES.register.path}> Register now!</Link>

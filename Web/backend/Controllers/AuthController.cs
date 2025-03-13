@@ -25,7 +25,6 @@ public class AuthController : ControllerBase
 
     }
 
-    [Authorize]
     [HttpGet("validate-token")]
     public async Task<IActionResult> ValidateToken()
     {
@@ -66,7 +65,7 @@ public class AuthController : ControllerBase
                 HttpOnly = true,
                 Expires = DateTime.UtcNow.AddDays(7),
                 Secure = true,
-                SameSite = SameSiteMode.Strict,
+                SameSite = SameSiteMode.Lax,
             };
             Response.Cookies.Append("refreshToken", result.RefreshToken, cookieOptions);
             Response.Cookies.Append("accessToken", result.Token, cookieOptions);
